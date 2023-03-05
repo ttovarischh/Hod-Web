@@ -1,13 +1,44 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #000000;
+  margin: 0;
+  min-height: 100vh;
+  width: 100vw;
+  position: relative;
+  overflow: auto;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@font-face {
+  font-family: "PPBook";
+  src: local("PPBook"),
+   url("./fonts/PP/PPNeueMontreal-Book.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "PPMeduim";
+  src: local("PPMeduim"),
+   url("./fonts/PP/PPNeueMontreal-Medium.otf") format("opentype");
+}
+
+
+@font-face {
+  font-family: "Panama";
+  src: local("Panama"),
+   url("./fonts/Panama/Panama-Demo-Italic.otf") format("opentype");
+}
+
+.PPbook {
+  font-family: "PPBook";
+}
+
+.PPMeduim {
+  font-family: "PPMeduim";
+}
+
+.Panama {
+  font-family: "Panama";
 }
