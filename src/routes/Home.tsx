@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { FlexBox, Panama, Large, Note } from "../components";
 import A_Button from "../components/A_Button";
 import { Link } from "react-router-dom";
+import useAuth from "../authContext/useAuth";
 
 const HomeWrapper = styled(FlexBox)`
   width: 100%;
@@ -36,10 +37,21 @@ const MainImage = styled.div`
 `;
 
 export default function Home() {
+  // async function getCurrentUser() {
+  //   const value = localStorage.getItem("@AuthData");
+  //   console.log(value);
+  // }
+  const { user, logout } = useAuth();
+
+  const getCurrentUser = () => {
+    logout(user!.email);
+  };
+
   return (
     <HomeWrapper>
       <PPWrapper>
         <Panama color="#4C4C4C">Ход Web</Panama>
+        {user && <Large color="white">Hello, {user!.username}</Large>}
         <Large color="white">
           Эта версия предназначена для тех мастеров, которые предпочитают вести
           игры с&nbsp;ноутбуком и&nbsp;им&nbsp;не&nbsp;удобно открывать Ход
@@ -50,20 +62,37 @@ export default function Home() {
           к&nbsp;существующей сесии
         </Large>
       </PPWrapper>
-      <FlexBox direction="column" style={{ gap: 20 }}>
-        <Note color="white">Чтобы начать игру надо войти в аккаунт:</Note>
-        <FlexBox alignItems="center" style={{ gap: 42 }}>
-          <Link to="login">
-            <A_Button solid handleButtonClick={() => console.log("Clicked")}>
-              Войтииии
+      {!user ? (
+        <FlexBox direction="column" style={{ gap: 20 }}>
+          <Note color="white">Чтобы начать игру надо войти в аккаунт:</Note>
+          <FlexBox alignItems="center" style={{ gap: 42 }}>
+            <Link to="login">
+              <A_Button solid handleButtonClick={() => console.log("Clicked")}>
+                Войтииии
+              </A_Button>
+            </Link>
+            <Note color="white">или</Note>
+            <A_Button handleButtonClick={getCurrentUser}>
+              Зарегестрироваться
             </A_Button>
-          </Link>
-          <Note color="white">или</Note>
-          <A_Button handleButtonClick={() => console.log("Clicked")}>
-            Зарегестрироваться
-          </A_Button>
+          </FlexBox>
         </FlexBox>
-      </FlexBox>
+      ) : (
+        <FlexBox direction="column" style={{ gap: 20 }}>
+          <Note color="white">Пора отправляться в новое приключение?</Note>
+          <FlexBox alignItems="center" style={{ gap: 42 }}>
+            <Link to="login">
+              <A_Button handleButtonClick={getCurrentUser}>
+                Выйти из акка
+              </A_Button>
+              <Note color="white">или</Note>
+              <A_Button solid handleButtonClick={() => console.log("Clicked")}>
+                Начать игру
+              </A_Button>
+            </Link>
+          </FlexBox>
+        </FlexBox>
+      )}
       <MainImage
         style={{
           backgroundImage: "url(" + require("../images/dragon.png") + ")",

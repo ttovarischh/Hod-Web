@@ -4,6 +4,8 @@ import A_Button from "../../components/A_Button";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import A_Input from "../../components/A_Input";
+import useAuth from "../../authContext/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const AuthWrapper = styled(FlexBox)`
   width: 100%;
@@ -60,25 +62,67 @@ const Breadcrumb = styled.p`
 
 export default function SignIn() {
   const [isEmpty, setIsEmpty] = useState(false);
-  const [user, setUser] = useState({
+  const [newUser, setNewUser] = useState({
     email: "",
     password: "",
   });
+  // const { login } = useAuth();
+  const { login, loading, error } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = (event: any) => {
-    if (user.password.length < 6) {
+    if (newUser.password.length < 6) {
       setIsEmpty(true);
     } else {
-      alert("Logged in sucessfully");
+      login(newUser.email, newUser.password);
+      navigate("/");
     }
     event.preventDefault();
   };
 
+  // const doSignIn = async () => {
+  //   try {
+  //     const response = await fetch(apiUrl + "login", {
+  //       method: "POST",
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         user: {
+  //           email: newUser.email,
+  //           password: newUser.password,
+  //         },
+  //       }),
+  //     });
+  //     let json = await response.json();
+  //     console.log(json);
+
+  //     if (typeof json["jti"] !== "undefined") {
+  //       const handleLogin = () => {
+  //         login({
+  //           username: json.username,
+  //           email: json.email,
+  //           id: json.id,
+  //           authToken: json.jti,
+  //         });
+  //       };
+
+  //       alert('You are successfully logged in as a user "' + json.email + '"');
+  //     } else if (typeof json["message"] !== "undefined") {
+  //       alert(json.message);
+  //     } else console.log(json);
+  //   } catch (error) {
+  //     alert(error);
+  //   } finally {
+  //   }
+  // };
+
   const handleInputChange = (event: any) => {
     setIsEmpty(false);
     const { name, value } = event.target;
-    console.log(user);
-    setUser((prevState) => {
+    console.log(newUser);
+    setNewUser((prevState) => {
       return {
         ...prevState,
         [name]: value,
@@ -139,7 +183,7 @@ export default function SignIn() {
             placeholder="dungeonmaster@gmail.com"
             onChange={handleInputChange}
             label="Почта"
-            style={{marginBottom: 12}}
+            style={{ marginBottom: 12 }}
           ></A_Input>
           <A_Input
             name="password"
@@ -152,7 +196,7 @@ export default function SignIn() {
           <MyLink className="PPbook">Забыли пароль?</MyLink>
           <A_Button
             solid
-            disabled={user.email === "" || user.password === ""}
+            disabled={newUser.email === "" || newUser.password === ""}
             handleButtonClick={handleSubmit}
           >
             Вход

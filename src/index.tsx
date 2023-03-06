@@ -9,9 +9,10 @@ import About from "./routes/About";
 import Home from "./routes/Home";
 import { ThemeProvider } from "styled-components";
 import theme from "./themes/mainTheme";
-import ScrollToTop from "./helpers/ScrollToTop";
 import SignIn from "./routes/Auth/SignIn";
-import { Sign } from "crypto";
+import { AuthContext } from "./authContext/AuthContext";
+import useAuth, { AuthProvider } from "./authContext/useAuth";
+import Profile from "./routes/Profile";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -36,14 +37,29 @@ const router = createBrowserRouter([
         path: "login",
         element: <SignIn />,
       },
+      {
+        path: "account",
+        element: <Profile />,
+      },
     ],
   },
 ]);
 
-root.render(
-  <React.StrictMode>
+const App = () => {
+  const { user, loading, error, login, signUp, logout } = useAuth();
+  console.log("user from context" + JSON.stringify(user));
+
+  return (
     <ThemeProvider theme={theme}>
       <RouterProvider router={router} />
     </ThemeProvider>
+  );
+};
+
+root.render(
+  <React.StrictMode>
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </React.StrictMode>
 );

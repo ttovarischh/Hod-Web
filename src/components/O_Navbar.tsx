@@ -3,6 +3,7 @@ import { FlexBox } from "./FlexBox";
 import { HeaderFooter } from "./StyledFont";
 import { Link } from "react-router-dom";
 import A_Icon from "./A_Icon";
+import useAuth from "../authContext/useAuth";
 
 const NavBar = styled(FlexBox)`
   position: absolute;
@@ -21,12 +22,13 @@ const NavBar = styled(FlexBox)`
 `;
 
 const O_Navbar = (props: any) => {
+  const { user, logout } = useAuth();
   return (
     <NavBar>
       <Link to={`/`} style={{ textDecoration: "none" }}>
         <A_Icon iconName="logo" fill="white"></A_Icon>
       </Link>
-      <Link to={`contacts/1`} style={{ textDecoration: "none" }}>
+      <Link to={user ? `account` : `login`} style={{ textDecoration: "none" }}>
         <HeaderFooter color="white">Профиль</HeaderFooter>
       </Link>
     </NavBar>
