@@ -26,7 +26,8 @@ interface AuthContextType {
   signUp: (
     email: string,
     password: string,
-    password_confirmation: string
+    password_confirmation: string,
+    username: string
   ) => void;
   logout: (email: string) => void;
 }
@@ -70,12 +71,13 @@ export function AuthProvider({
   function signUp(
     email: string,
     password: string,
-    password_confirmation: string
+    password_confirmation: string,
+    username: string,
   ) {
     setLoading(true);
 
     usersApi
-      .signUp({ email, password, password_confirmation })
+      .signUp({ email, password, password_confirmation, username })
       .then((user) => {
         // setUser(user);
         // navigate("/");

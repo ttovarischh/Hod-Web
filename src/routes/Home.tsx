@@ -72,9 +72,11 @@ export default function Home() {
               </A_Button>
             </Link>
             <Note color="white">или</Note>
-            <A_Button handleButtonClick={getCurrentUser}>
-              Зарегестрироваться
-            </A_Button>
+            <Link to="registration">
+              <A_Button handleButtonClick={() => console.log("Clicked")}>
+                Зарегистрироваться
+              </A_Button>
+            </Link>
           </FlexBox>
         </FlexBox>
       ) : (

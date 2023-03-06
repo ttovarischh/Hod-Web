@@ -5,7 +5,7 @@ export async function getCurrentUser() {
     return JSON.parse(value!);
 }
 
-export async function signUp(params: { email: string; password: string; password_confirmation: string;}) {
+export async function signUp(params: { email: string; password: string; password_confirmation: string; username: string}) {
     try {
         const response = await fetch(apiUrl + "signup", {
           method: "POST",
@@ -18,6 +18,7 @@ export async function signUp(params: { email: string; password: string; password
               email: params.email,
               password: params.password,
               password_confirmation: params.password_confirmation,
+              username: params.username,
             },
           }),
         });
@@ -37,14 +38,3 @@ export async function signUp(params: { email: string; password: string; password
         console.log("Signup");
       }
 }
-
-// export async function getCurrentUser(): Promise<User> {
-//   const response = await redaxios.get("/api/user");
-//   return response.data.data;
-// }
-
-// export async function signUp(params: { email: string; name: string; password: string;}): Promise<User> {
-//   const response = await redaxios.post("/api/user", { user: params });
-
-//   return response.data.data;
-// }

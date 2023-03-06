@@ -13,6 +13,7 @@ import SignIn from "./routes/Auth/SignIn";
 import { AuthContext } from "./authContext/AuthContext";
 import useAuth, { AuthProvider } from "./authContext/useAuth";
 import Profile from "./routes/Profile";
+import SignUp from "./routes/Auth/SignUp";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: "account",
         element: <Profile />,
+      },
+      {
+        path: "registration",
+        element: <SignUp />,
       },
     ],
   },
