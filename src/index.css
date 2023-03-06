@@ -42,3 +42,7 @@ body {
 .Panama {
   font-family: "Panama";
 }
+
+.empty {
+  background: #240404 !important;
+}

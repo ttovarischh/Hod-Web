@@ -4,14 +4,6 @@ import { HeaderFooter } from "./StyledFont";
 import { Link } from "react-router-dom";
 import A_Icon from "./A_Icon";
 
-
-// type HeaderProps = {
-//   left: string;
-//   center: string;
-//   right: string;
-//   handleRightPress(): any;
-// };
-
 const NavBar = styled(FlexBox)`
   position: absolute;
   opacity: 0.5;

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { FlexBox, Panama, Large, Note } from "../components";
 import A_Button from "../components/A_Button";
+import { Link } from "react-router-dom";
 
 const HomeWrapper = styled(FlexBox)`
   width: 100%;
@@ -34,54 +35,6 @@ const MainImage = styled.div`
   pointer-events: none;
 `;
 
-const BB = styled.button`
-  padding: 0;
-  margin: 0;
-  font-size: 20px;
-  line-height: 24px;
-  text-align: center;
-  color: #1a1a1a;
-  margin: 0;
-  border: none;
-  outline: none;
-  background-color: ${({ theme }) => theme.button.fill};
-  padding-left: 74px;
-  padding-right: 74px;
-  padding-top: 14px;
-  padding-bottom: 14px;
-  border-radius: 10px;
-  &:active {
-    background-color: red;
-  }
-`;
-
-const PrimaryButton = styled(FlexBox)`
-  // background: #f0ff00;
-  padding-left: 74px;
-  padding-right: 74px;
-  padding-top: 14px;
-  padding-bottom: 14px;
-  border-radius: 10px;
-  background-color: ${({ theme }) => theme.button.fill};
-`;
-
-const SecondaryButton = styled(FlexBox)`
-  border: 1px solid #f0ff00;
-  padding-left: 74px;
-  padding-right: 74px;
-  padding-top: 14px;
-  padding-bottom: 14px;
-  border-radius: 10px;
-`;
-
-const ButtonText = styled.p`
-  font-size: 20px;
-  line-height: 24px;
-  text-align: center;
-  color: #1a1a1a;
-  margin: 0;
-`;
-
 export default function Home() {
   return (
     <HomeWrapper>
@@ -97,18 +50,18 @@ export default function Home() {
           к&nbsp;существующей сесии
         </Large>
       </PPWrapper>
-
       <FlexBox direction="column" style={{ gap: 20 }}>
         <Note color="white">Чтобы начать игру надо войти в аккаунт:</Note>
         <FlexBox alignItems="center" style={{ gap: 42 }}>
-          <A_Button solid handleButtonClick={() => console.log("Clicked")}>Войтииии</A_Button>
+          <Link to="login">
+            <A_Button solid handleButtonClick={() => console.log("Clicked")}>
+              Войтииии
+            </A_Button>
+          </Link>
           <Note color="white">или</Note>
-          <A_Button handleButtonClick={() => console.log("Clicked")}>Зарегестрироваться</A_Button>
-          {/* <SecondaryButton>
-            <ButtonText style={{ color: "#F0FF00" }} className="PPMeduim">
-              Зарегестрироваться
-            </ButtonText>
-          </SecondaryButton> */}
+          <A_Button handleButtonClick={() => console.log("Clicked")}>
+            Зарегестрироваться
+          </A_Button>
         </FlexBox>
       </FlexBox>
       <MainImage

@@ -4,7 +4,9 @@ import styled from "styled-components";
 type ButtonProps = {
   children: React.ReactNode;
   solid?: boolean;
-  handleButtonClick(): any;
+//   handleButtonClick(): any;
+//   handleButtonClick: () => void;
+  handleButtonClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
   small?: boolean;
 };

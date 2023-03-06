@@ -22,7 +22,7 @@ const Footer = styled(FlexBox)`
 const O_Footer = (props: any) => {
   return (
     <Footer>
-      <Link to={`contacts/1`} style={{ textDecoration: "none" }}>
+      <Link to={`about`} style={{ textDecoration: "none" }}>
         <HeaderFooter color="white">О проекте</HeaderFooter>
       </Link>
       <Link to={`policy`} style={{ textDecoration: "none" }}>
