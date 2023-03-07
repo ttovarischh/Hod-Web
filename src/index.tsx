@@ -1,19 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Root from "./routes/root";
-import ErrorPage from "./routes/Error";
-import PrivacyPolicy from "./routes/PrivacyPolicy";
-import About from "./routes/About";
-import Home from "./routes/Home";
 import { ThemeProvider } from "styled-components";
 import theme from "./themes/mainTheme";
-import SignIn from "./routes/Auth/SignIn";
-import { AuthContext } from "./authContext/AuthContext";
 import useAuth, { AuthProvider } from "./authContext/useAuth";
-import Profile from "./routes/Profile";
+// pages_here
+import Profile from "./routes/Account/Profile";
 import SignUp from "./routes/Auth/SignUp";
+import PrivacyPolicy from "./routes/Commercial/PrivacyPolicy";
+import About from "./routes/Commercial/About";
+import Home from "./routes/Home";
+import ErrorPage from "./routes/Error";
+import SignIn from "./routes/Auth/SignIn";
+import Settings from "./routes/Account/Settings";
+
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -45,6 +47,10 @@ const router = createBrowserRouter([
       {
         path: "registration",
         element: <SignUp />,
+      },
+      {
+        path: "settings",
+        element: <Settings />,
       },
     ],
   },

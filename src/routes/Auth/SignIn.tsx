@@ -1,11 +1,10 @@
-import styled from "styled-components";
-import { FlexBox, HeaderFooter } from "../../components";
+import styled, { keyframes } from "styled-components";
+import { FlexBox, Breadcrumb } from "../../components";
 import A_Button from "../../components/A_Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import A_Input from "../../components/A_Input";
 import useAuth from "../../authContext/useAuth";
-import { useNavigate } from "react-router-dom";
 
 const AuthWrapper = styled(FlexBox)`
   width: 100%;
@@ -21,6 +20,12 @@ const AuthWrapper = styled(FlexBox)`
   }
 `;
 
+const bg = keyframes`
+ 0% { filter: blur(50px); }
+ 40% { filter: blur(10px); }
+ 100% { filter: blur(50px);}
+`
+
 const MainImage = styled.div`
   position: absolute;
   width: 1967.22px;
@@ -29,6 +34,10 @@ const MainImage = styled.div`
   top: calc(50vh - 794.385px);
   pointer-events: none;
   filter: blur(50px);
+  animation-name: ${bg};
+  animation-duration: 8s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
   svg {
     width: 1967.22px;
     height: 1588.77px;
@@ -37,9 +46,12 @@ const MainImage = styled.div`
 
 const ActionWrapper = styled(FlexBox)`
   z-index: 100;
+  a {
+    text-decoration: underline;
+  }
 `;
 
-const MyLink = styled.a`
+const MyLink = styled.p`
   font-size: 18px;
   line-height: 22px;
   text-decoration-line: underline;
@@ -49,24 +61,12 @@ const MyLink = styled.a`
   margin-bottom: 30px;
 `;
 
-const Breadcrumb = styled.p`
-  font-size: 14px;
-  line-height: 17px;
-  color: #a4a4ac;
-  opacity: 0.8;
-  margin-top: 30px;
-  a {
-    text-decoration: underline;
-  }
-`;
-
 export default function SignIn() {
   const [isEmpty, setIsEmpty] = useState(false);
   const [newUser, setNewUser] = useState({
     email: "",
     password: "",
   });
-  // const { login } = useAuth();
   const { login, loading, error } = useAuth();
   const navigate = useNavigate();
 
@@ -79,44 +79,6 @@ export default function SignIn() {
     }
     event.preventDefault();
   };
-
-  // const doSignIn = async () => {
-  //   try {
-  //     const response = await fetch(apiUrl + "login", {
-  //       method: "POST",
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         user: {
-  //           email: newUser.email,
-  //           password: newUser.password,
-  //         },
-  //       }),
-  //     });
-  //     let json = await response.json();
-  //     console.log(json);
-
-  //     if (typeof json["jti"] !== "undefined") {
-  //       const handleLogin = () => {
-  //         login({
-  //           username: json.username,
-  //           email: json.email,
-  //           id: json.id,
-  //           authToken: json.jti,
-  //         });
-  //       };
-
-  //       alert('You are successfully logged in as a user "' + json.email + '"');
-  //     } else if (typeof json["message"] !== "undefined") {
-  //       alert(json.message);
-  //     } else console.log(json);
-  //   } catch (error) {
-  //     alert(error);
-  //   } finally {
-  //   }
-  // };
 
   const handleInputChange = (event: any) => {
     setIsEmpty(false);
@@ -175,12 +137,12 @@ export default function SignIn() {
       <ActionWrapper direction="column">
         <form
           onSubmit={handleSubmit}
-          style={{ display: "flex", flexDirection: "column" }}
+          style={{ display: "flex", flexDirection: "column", marginBottom: 30 }}
         >
           <A_Input
             name="email"
             type="email"
-            placeholder="dungeonmaster@gmail.com"
+            placeholder="Почта"
             onChange={handleInputChange}
             label="Почта"
             style={{ marginBottom: 12 }}
@@ -188,12 +150,12 @@ export default function SignIn() {
           <A_Input
             name="password"
             type="password"
-            placeholder="∗∗∗∗∗∗∗"
+            placeholder="Пароль"
             onChange={handleInputChange}
             className={isEmpty ? "empty" : ""}
             label="Пароль"
           ></A_Input>
-          <MyLink className="PPbook">Забыли пароль?</MyLink>
+          <MyLink className="ppbook">Забыли пароль?</MyLink>
           <A_Button
             solid
             disabled={newUser.email === "" || newUser.password === ""}
@@ -202,8 +164,8 @@ export default function SignIn() {
             Вход
           </A_Button>
         </form>
-        <Breadcrumb className="PPMedium">
-          Нет аккаунта? <Link to="/">Зарегистрируйтесь</Link>
+        <Breadcrumb>
+          Нет аккаунта? <Link to="../registration">Зарегистрируйтесь</Link>
         </Breadcrumb>
       </ActionWrapper>
     </AuthWrapper>

@@ -12,6 +12,10 @@ body {
   overflow: auto;
 }
 
+* > a {
+  color: inherit !important;
+}
+
 @font-face {
   font-family: "PPBook";
   src: local("PPBook"),
@@ -31,18 +35,14 @@ body {
    url("./fonts/Panama/Panama-Demo-Italic.otf") format("opentype");
 }
 
-.PPbook {
+.ppbook {
   font-family: "PPBook";
 }
 
-.PPMeduim {
+.ppmedium {
   font-family: "PPMeduim";
 }
 
-.Panama {
+.panama {
   font-family: "Panama";
-}
-
-.empty {
-  background: #240404 !important;
 }

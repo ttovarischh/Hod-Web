@@ -23,10 +23,10 @@ const O_Footer = (props: any) => {
   return (
     <Footer>
       <Link to={`about`} style={{ textDecoration: "none" }}>
-        <HeaderFooter color="white">О проекте</HeaderFooter>
+        <HeaderFooter>О проекте</HeaderFooter>
       </Link>
       <Link to={`policy`} style={{ textDecoration: "none" }}>
-        <HeaderFooter color="white">Политика конфиденциальности</HeaderFooter>
+        <HeaderFooter>Политика конфиденциальности</HeaderFooter>
       </Link>
     </Footer>
   );

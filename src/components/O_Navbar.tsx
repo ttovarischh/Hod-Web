@@ -22,15 +22,21 @@ const NavBar = styled(FlexBox)`
 `;
 
 const O_Navbar = (props: any) => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   return (
     <NavBar>
       <Link to={`/`} style={{ textDecoration: "none" }}>
         <A_Icon iconName="logo" fill="white"></A_Icon>
       </Link>
-      <Link to={user ? `account` : `login`} style={{ textDecoration: "none" }}>
-        <HeaderFooter color="white">Профиль</HeaderFooter>
-      </Link>
+      {user ? (
+        <Link to={`account`} style={{ textDecoration: "none" }}>
+          <HeaderFooter>{user!.username}</HeaderFooter>
+        </Link>
+      ) : (
+        <Link to={`login`} style={{ textDecoration: "none" }}>
+          <HeaderFooter>Профиль</HeaderFooter>
+        </Link>
+      )}
     </NavBar>
   );
 };

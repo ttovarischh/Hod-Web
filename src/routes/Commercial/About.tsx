@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { FlexBox, Panama, Large, Note } from "../components";
+import { FlexBox, Panama, Large, Note } from "../../components";
 
 const PrivacyWrapper = styled(FlexBox)`
   width: 100%;
@@ -29,6 +29,7 @@ const MainImage = styled.div`
   left: -17vw;
   top: 20vw;
   pointer-events: none;
+  background-repeat: no-repeat;
 `;
 
 export default function About() {
@@ -36,12 +37,12 @@ export default function About() {
     <PrivacyWrapper direction="column">
       <MainImage
         style={{
-          backgroundImage: "url(" + require("../images/lady.png") + ")",
+          backgroundImage: "url(" + require("../../images/lady.png") + ")",
         }}
       ></MainImage>
       <PPWrapper style={{ width: "65vw" }}>
-        <Panama color="#4C4C4C">О проекте</Panama>
-        <Large color="white">
+        <Panama>О проекте</Panama>
+        <Large>
           &laquo;Ход&raquo;&nbsp;&mdash; это приложение-трекер для отслеживания
           инициативы, количества ходов и&nbsp;продолжительных состояний для
           игроков в&nbsp;нри.
@@ -50,8 +51,8 @@ export default function About() {
 
       <FlexBox direction="column" style={{ marginLeft: "auto", marginRight: 0 }}>
         <PPWrapper style={{ width: "57vw", paddingTop: 248 }}>
-          <Panama color="#4C4C4C">Для Мастеров</Panama>
-          <Large color="white">
+          <Panama>Для Мастеров</Panama>
+          <Large>
             Сделай свои игры более дружелюбными к&nbsp;новичкам, показав
             им&nbsp;больше информации и&nbsp;помоги опытным игрокам улучшить
             свои тактики
@@ -59,13 +60,13 @@ export default function About() {
           <FlexBox>
             <FlexBox direction="column" style={{ width: "50%" }}>
               <FlexBox style={{ gap: 31, marginTop: 26, flexWrap: "nowrap" }}>
-                <Note color="white">
+                <Note>
                   Теперь не&nbsp;надо спрашивать языки и&nbsp;пассивные
                   характеристики, они всегда под рукой
                 </Note>
               </FlexBox>
               <FlexBox style={{ gap: 25, marginTop: 24, flexWrap: "nowrap" }}>
-                <Note color="white">
+                <Note>
                   Делись информацией об&nbsp;эффектах, наложенных
                   на&nbsp;персонажей и&nbsp;нпс
                 </Note>
@@ -74,12 +75,12 @@ export default function About() {
 
             <FlexBox direction="column" style={{ width: "50%" }}>
               <FlexBox style={{ gap: 31, marginTop: 26, flexWrap: "nowrap" }}>
-                <Note color="white">
+                <Note>
                   Отслеживай концентрацию и&nbsp;пс, и&nbsp;нпс
                 </Note>
               </FlexBox>
               <FlexBox style={{ gap: 25, marginTop: 24, flexWrap: "nowrap" }}>
-                <Note color="white">
+                <Note>
                   Сохраняй порядок инициативы, контролируй хп&nbsp;монстров
                   на&nbsp;одном экране
                 </Note>
@@ -88,8 +89,8 @@ export default function About() {
           </FlexBox>
         </PPWrapper>
         <PPWrapper style={{ width: "57vw", paddingTop: 248, marginBottom: 0 }}>
-          <Panama color="#4C4C4C">Для Игроков</Panama>
-          <Large color="white">
+          <Panama>Для Игроков</Panama>
+          <Large>
             Погрузись в&nbsp;игру, следя за&nbsp;информацией о&nbsp;всей пати.
             Не&nbsp;пропускай изменения в&nbsp;состояниях и&nbsp;действуй
             эффективнее
@@ -97,12 +98,12 @@ export default function About() {
           <FlexBox>
             <FlexBox direction="column" style={{ width: "50%" }}>
               <FlexBox style={{ gap: 31, marginTop: 26, flexWrap: "nowrap" }}>
-                <Note color="white">
+                <Note>
                   Легко узнавай, кто из&nbsp;других игроков знает нужный язык
                 </Note>
               </FlexBox>
               <FlexBox style={{ gap: 25, marginTop: 24, flexWrap: "nowrap" }}>
-                <Note color="white">
+                <Note>
                   Теперь проще выбрать, кто пойдёт вперёд, все пассивные
                   характеристики партии на&nbsp;одном экране
                 </Note>
@@ -111,13 +112,13 @@ export default function About() {
 
             <FlexBox direction="column" style={{ width: "50%" }}>
               <FlexBox style={{ gap: 31, marginTop: 26, flexWrap: "nowrap" }}>
-                <Note color="white">
+                <Note>
                   Следи за&nbsp;эффектами, которые наложены на&nbsp;союзников
                   и&nbsp;меняй свою тактику в&nbsp;зависимости от&nbsp;ситуации
                 </Note>
               </FlexBox>
               <FlexBox style={{ gap: 25, marginTop: 24, flexWrap: "nowrap" }}>
-                <Note color="white">
+                <Note>
                   Понятно, кто из&nbsp;врагов под какими состояниями находится
                 </Note>
               </FlexBox>

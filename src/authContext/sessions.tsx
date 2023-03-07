@@ -20,7 +20,7 @@ export async function login(params: { email: string; password: string }) {
     console.log(json);
     if (typeof json["jti"] !== "undefined") {
       localStorage.setItem("@AuthData", JSON.stringify(json));
-      alert('You are successfully logged in as a user "' + json.email + '"');
+      console.log('You are successfully logged in as a user "' + json.email + '"');
     } else if (typeof json["message"] !== "undefined") {
       alert(json.message);
     } else console.log(json);
@@ -46,7 +46,7 @@ export async function logout(params: { email: string }) {
       }),
     });
     localStorage.removeItem("@AuthData");
-    alert("You are successfully logged out");
+    console.log("You successfully logged out");
   } catch (error) {
     alert(error);
   } finally {

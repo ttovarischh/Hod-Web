@@ -15,6 +15,7 @@ const HomeWrapper = styled(FlexBox)`
   position: relative;
   direction: column;
   align-content: center;
+  align-content: space-around;
 `;
 
 const PPWrapper = styled(FlexBox)`
@@ -22,79 +23,70 @@ const PPWrapper = styled(FlexBox)`
   width: 884px;
   padding-top: 85px;
   gap: 39px;
-  margin-bottom: 88px;
 `;
 
 const MainImage = styled.div`
   position: absolute;
-  background-size: 70vw 100vh;
+  background-size: auto 100vh;
   height: 100%;
-  width: 1482px;
-  height: 1080px;
-  left: 438px;
+  width: 972px;
+  right: 0;
+  background-repeat: no-repeat;
+  background-position: center right;
   top: 0px;
   pointer-events: none;
 `;
 
 export default function Home() {
-  // async function getCurrentUser() {
-  //   const value = localStorage.getItem("@AuthData");
-  //   console.log(value);
-  // }
-  const { user, logout } = useAuth();
-
-  const getCurrentUser = () => {
-    logout(user!.email);
-  };
+  const { user } = useAuth();
 
   return (
     <HomeWrapper>
       <PPWrapper>
-        <Panama color="#4C4C4C">Ход Web</Panama>
-        {user && <Large color="white">Hello, {user!.username}</Large>}
-        <Large color="white">
+        <Panama>Ход Web</Panama>
+        <Large>
           Эта версия предназначена для тех мастеров, которые предпочитают вести
-          игры с&nbsp;ноутбуком и&nbsp;им&nbsp;не&nbsp;удобно открывать Ход
+          игры с&nbsp;ноутбуком и&nbsp;им&nbsp;неудобно открывать Ход
           на&nbsp;телефоне.
         </Large>
-        <Large color="white">
+        <Large>
           Здесь невозможно выступить в&nbsp;роли игрока и&nbsp;присоединиться
           к&nbsp;существующей сесии
         </Large>
       </PPWrapper>
-      {!user ? (
-        <FlexBox direction="column" style={{ gap: 20 }}>
-          <Note color="white">Чтобы начать игру надо войти в аккаунт:</Note>
-          <FlexBox alignItems="center" style={{ gap: 42 }}>
-            <Link to="login">
-              <A_Button solid handleButtonClick={() => console.log("Clicked")}>
-                Войтииии
-              </A_Button>
-            </Link>
-            <Note color="white">или</Note>
-            <Link to="registration">
-              <A_Button handleButtonClick={() => console.log("Clicked")}>
-                Зарегистрироваться
-              </A_Button>
-            </Link>
-          </FlexBox>
-        </FlexBox>
-      ) : (
-        <FlexBox direction="column" style={{ gap: 20 }}>
-          <Note color="white">Пора отправляться в новое приключение?</Note>
-          <FlexBox alignItems="center" style={{ gap: 42 }}>
-            <Link to="login">
-              <A_Button handleButtonClick={getCurrentUser}>
-                Выйти из акка
-              </A_Button>
-              <Note color="white">или</Note>
+      <FlexBox direction="column" style={{ gap: 20, marginBottom: 16 }}>
+        <Note>
+          {user
+            ? "Пора отправляться в новое приключение?"
+            : "Чтобы начать игру надо войти в аккаунт:"}
+        </Note>
+        <FlexBox alignItems="center" style={{ gap: 42 }}>
+          {!user ? (
+            <>
+              <Link to="login">
+                <A_Button
+                  solid
+                  handleButtonClick={() => console.log("Clicked")}
+                >
+                  Войти
+                </A_Button>
+              </Link>
+              <Note>или</Note>
+              <Link to="registration">
+                <A_Button handleButtonClick={() => console.log("Clicked")}>
+                  Зарегистрироваться
+                </A_Button>
+              </Link>
+            </>
+          ) : (
+            <>
               <A_Button solid handleButtonClick={() => console.log("Clicked")}>
                 Начать игру
               </A_Button>
-            </Link>
-          </FlexBox>
+            </>
+          )}
         </FlexBox>
-      )}
+      </FlexBox>
       <MainImage
         style={{
           backgroundImage: "url(" + require("../images/dragon.png") + ")",
