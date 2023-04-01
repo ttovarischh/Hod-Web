@@ -1,6 +1,3 @@
-import { apiUrl } from "../const";
-import { User } from "./useAuth";
-
 export async function login(params: { email: string; password: string }) {
   try {
     const response = await fetch("http://localhost:3000/api/v1/login", {
@@ -52,30 +49,3 @@ export async function logout(params: { email: string }) {
   } finally {
   }
 }
-
-// const doSignOut = async () => {
-//   try {
-//     const response = await fetch(apiUrl + "logout", {
-//       method: "DELETE",
-//       headers: {
-//         Accept: "application/json",
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({
-//         user: {
-//           email: "polinasot@gmail.com",
-//         },
-//       }),
-//     });
-//     await AsyncStorage.removeItem("@AuthData");
-//     alert("You are successfully logged out");
-//   } catch (error) {
-//     alert(error);
-//   } finally {
-//   }
-// };
-
-// export async function logout() {
-//   const response = await redaxios.delete("/api/sessions");
-//   return response.data.data;
-// }

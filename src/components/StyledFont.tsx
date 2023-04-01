@@ -16,6 +16,24 @@ export const HeaderFooter = (props: TextProps) => {
   );
 };
 
+export const CardText = (props: TextProps) => {
+  const theme = useContext(ThemeContext)
+  return (
+    <p className="PPMeduim" style={{ fontSize: 18, lineHeight: "21px", margin: 0, color: props.color || theme.text.white}}>
+      {props.children}
+    </p>
+  );
+};
+
+export const EffectText = (props: TextProps) => {
+  const theme = useContext(ThemeContext)
+  return (
+    <p className="PPMeduim" style={{ fontSize: 20, lineHeight: "24px", margin: 0, color: props.color || "#A4A4AC"}}>
+      {props.children}
+    </p>
+  );
+};
+
 export const Panama = (props: TextProps) => {
   const theme = useContext(ThemeContext)
     return (
@@ -56,6 +74,15 @@ export const Breadcrumb = (props: TextProps) => {
   const theme = useContext(ThemeContext)
     return (
       <p className="ppmedium" style={{ fontSize: 14, lineHeight: "17px", opacity: 0.8, margin: 0, color: props.color || theme.text.grey }}>
+        {props.children}
+      </p>
+    );
+};
+
+export const SuperSmallText = (props: TextProps) => {
+  const theme = useContext(ThemeContext)
+    return (
+      <p className="ppmedium" style={{ fontSize: 11, lineHeight: "13px", margin: 0, color: props.color || "#A4A4AC" }}>
         {props.children}
       </p>
     );

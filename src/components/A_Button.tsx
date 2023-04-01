@@ -4,11 +4,10 @@ import styled from "styled-components";
 type ButtonProps = {
   children: React.ReactNode;
   solid?: boolean;
-//   handleButtonClick(): any;
-//   handleButtonClick: () => void;
   handleButtonClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
   small?: boolean;
+  warning?: boolean;
 };
 
 const BigButton = styled.button`
@@ -52,6 +51,13 @@ const SolidButton = styled(BigButton)`
   }
 `;
 
+const SmallButton = styled(SolidButton)`
+  padding: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 100%;
+`;
+
 const HollowButton = styled(BigButton)`
   color: ${(props) =>
     props.disabled
@@ -77,33 +83,70 @@ const HollowButton = styled(BigButton)`
     background: ${(props) =>
       props.disabled ? "transparent" : props.theme.button.press_border};
     border-color: ${(props) =>
-      props.disabled
-        ? props.theme.button.disabled_border
-        : "transparent"};
+      props.disabled ? props.theme.button.disabled_border : "transparent"};
+  }
+`;
+
+const RedHollowButton = styled(BigButton)`
+  color: ${(props) =>
+    props.disabled ? props.theme.button.border_disabled_text : "#FF4040"};
+  background: transparent;
+  border: 1px solid;
+  border-color: ${(props) =>
+    props.disabled ? props.theme.button.disabled_border : "#FF4040"};
+  &:hover {
+    opacity: 0.7;
+  }
+  &:active {
+    opacity: 0.5;
   }
 `;
 
 const A_Button = (props: ButtonProps) => {
   if (props.solid) {
-    return (
-      <SolidButton
-        className="PPMeduim"
-        onClick={props.disabled ? undefined : props.handleButtonClick}
-        disabled={props.disabled}
-      >
-        {props.children}
-      </SolidButton>
-    );
+    if (props.small) {
+      return (
+        <SmallButton
+          className="PPMeduim"
+          onClick={props.disabled ? undefined : props.handleButtonClick}
+          disabled={props.disabled}
+        >
+          {props.children}
+        </SmallButton>
+      );
+    } else {
+      return (
+        <SolidButton
+          className="PPMeduim"
+          onClick={props.disabled ? undefined : props.handleButtonClick}
+          disabled={props.disabled}
+        >
+          {props.children}
+        </SolidButton>
+      );
+    }
   } else {
-    return (
-      <HollowButton
-        className="PPMeduim"
-        onClick={props.disabled ? undefined : props.handleButtonClick}
-        disabled={props.disabled}
-      >
-        {props.children}
-      </HollowButton>
-    );
+    if (props.warning) {
+      return (
+        <RedHollowButton
+          className="PPMeduim"
+          onClick={props.disabled ? undefined : props.handleButtonClick}
+          disabled={props.disabled}
+        >
+          {props.children}
+        </RedHollowButton>
+      );
+    } else {
+      return (
+        <HollowButton
+          className="PPMeduim"
+          onClick={props.disabled ? undefined : props.handleButtonClick}
+          disabled={props.disabled}
+        >
+          {props.children}
+        </HollowButton>
+      );
+    }
   }
   return <></>;
 };

@@ -21,13 +21,16 @@ const ProfileWrapper = styled(FlexBox)`
 const CountFlexbox = styled(FlexBox)``;
 const UserInfo = styled(FlexBox)``;
 
-const Label = styled.p`
-  font-size: 18px;
-  line-height: 22px;
-  letter-spacing: -0.011em;
-  color: #a4a4ac;
-  margin: 0;
-  margin-bottom: 4px;
+const MainImage = styled.div`
+  position: absolute;
+  background-size: auto 100vh;
+  height: 100%;
+  width: 972px;
+  right: -100px;
+  background-repeat: no-repeat;
+  background-position: center right;
+  top: 50px;
+  pointer-events: none;
 `;
 
 export default function Settings() {
@@ -81,7 +84,7 @@ export default function Settings() {
               <Large color={theme.text.grey}>игр проведено</Large>
             </CountFlexbox>
           </FlexBox>
-          <form>
+          <form style={{display: "flex", justifyContent: "space-between", flexDirection: "column", flex: 1, marginTop: 90}}>
             <UserInfo direction="column" style={{ gap: 12 }}>
               <A_Input
                 name="email"
@@ -110,13 +113,20 @@ export default function Settings() {
             </UserInfo>
             <FlexBox alignItems="center" style={{ gap: 46 }}>
               <Link to="login">
-                <A_Button handleButtonClick={() => navigate(-1)} solid>Отменить изменения</A_Button>
+                <A_Button handleButtonClick={() => navigate(-1)}>
+                  Отменить изменения
+                </A_Button>
               </Link>
-              <A_Button handleButtonClick={() => console.log("saved")}>
+              <A_Button handleButtonClick={() => console.log("saved")} solid>
                 Сохранить изменения
               </A_Button>
             </FlexBox>
           </form>
+          <MainImage
+            style={{
+              backgroundImage: "url(" + require("../../images/bird.png") + ")",
+            }}
+          ></MainImage>
         </ProfileWrapper>
       )}
     </>

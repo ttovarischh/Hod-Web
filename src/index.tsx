@@ -15,7 +15,13 @@ import Home from "./routes/Home";
 import ErrorPage from "./routes/Error";
 import SignIn from "./routes/Auth/SignIn";
 import Settings from "./routes/Account/Settings";
+import Create from "./routes/GamePath/Create";
+import axios from "axios";
+import SingleGame from "./routes/GamePath/SingleGame";
 
+// axios.defaults.withCredentials = true;
+axios.defaults.headers.common["Authorization"] =
+  "Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4NGViMjIwMS1iZDcyLTQ0MGUtODI3ZC1kODc3NmVkMWQyNDQiLCJzdWIiOiIxIiwic2NwIjoidXNlciIsImF1ZCI6bnVsbCwiaWF0IjoxNjgwMzE5MTIzLCJleHAiOjE2ODAzMjI3MjN9.P70bOVzUZpFVxTuOqOao1DTQo-67DWqcD69wg09skp8";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -52,6 +58,14 @@ const router = createBrowserRouter([
         path: "settings",
         element: <Settings />,
       },
+      {
+        path: "create",
+        element: <Create />,
+      },
+      {
+        path: "game",
+        element: <SingleGame />,
+      },
     ],
   },
 ]);
@@ -68,9 +82,9 @@ const App = () => {
 };
 
 root.render(
-  <React.StrictMode>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <AuthProvider>
+    <App />
+  </AuthProvider>
+  // </React.StrictMode>
 );

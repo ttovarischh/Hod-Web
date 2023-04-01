@@ -29,6 +29,18 @@ const Label = styled.p`
   margin-bottom: 4px;
 `;
 
+const MainImage = styled.div`
+  position: absolute;
+  background-size: auto 100vh;
+  height: 100%;
+  width: 972px;
+  right: -100px;
+  background-repeat: no-repeat;
+  background-position: center right;
+  top: 50px;
+  pointer-events: none;
+`;
+
 export default function Profile() {
   const [isLoading, setLoading] = useState(true);
   const [effectsData, setEffectsData] = useState<any[]>([]);
@@ -54,6 +66,9 @@ export default function Profile() {
       });
   }, []);
 
+  const filteredGames = effectsData.filter((game) => !game.active);
+  console.log(filteredGames);
+
   return (
     <>
       {isLoading ? (
@@ -66,7 +81,7 @@ export default function Profile() {
               <Large color={theme.text.grey}>игр сыграно</Large>
             </CountFlexbox>
             <CountFlexbox direction="column">
-              <Big_Panama>{effectsData!.length * 3}</Big_Panama>
+              <Big_Panama>{filteredGames!.length}</Big_Panama>
               <Large color={theme.text.grey}>игр проведено</Large>
             </CountFlexbox>
           </FlexBox>
@@ -91,6 +106,11 @@ export default function Profile() {
             <Note>или</Note>
             <A_Button handleButtonClick={doLogout}>Выйти из профиля</A_Button>
           </FlexBox>
+          <MainImage
+            style={{
+              backgroundImage: "url(" + require("../../images/bird.png") + ")",
+            }}
+          ></MainImage>
         </ProfileWrapper>
       )}
     </>

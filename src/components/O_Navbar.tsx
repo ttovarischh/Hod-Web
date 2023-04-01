@@ -31,10 +31,11 @@ const O_Navbar = (props: any) => {
       {user ? (
         <Link to={`account`} style={{ textDecoration: "none" }}>
           <HeaderFooter>{user!.username}</HeaderFooter>
+          {/* <HeaderFooter>Выйти</HeaderFooter> */}
         </Link>
       ) : (
         <Link to={`login`} style={{ textDecoration: "none" }}>
-          <HeaderFooter>Профиль</HeaderFooter>
+          <HeaderFooter>Войти</HeaderFooter>
         </Link>
       )}
     </NavBar>

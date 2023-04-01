@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import styled from "styled-components";
 import type { InputHTMLAttributes } from "react";
 import { FlexBox } from "./FlexBox";
+import A_Icon from "./A_Icon";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   handleChange?: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -9,6 +10,10 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   type: string;
   placeholder: string;
   label: string;
+  value?: string;
+  perc?: boolean;
+  ins?: boolean;
+  inv?: boolean;
 }
 
 const FlyingLabel = styled.label`
@@ -85,16 +90,48 @@ const InputFlexBox = styled(FlexBox)`
   }
 `;
 
-const A_Input = ({ name, type, placeholder, label, ...rest }: InputProps) => {
+const IconWrapper = styled(FlexBox)`
+  position: absolute;
+  right: 12px;
+  top: 11.5px;
+`;
+
+const A_Input = ({
+  name,
+  type,
+  placeholder,
+  label,
+  value,
+  perc,
+  ins,
+  inv,
+  ...rest
+}: InputProps) => {
   return (
     <InputFlexBox direction="column" style={{ gap: 10 }}>
       <InputWrapper
         name={name}
         type={type}
         placeholder={placeholder}
+        value={value}
         {...rest}
       ></InputWrapper>
       <FlyingLabel className="ppmedium">{label}</FlyingLabel>
+      {perc && (
+        <IconWrapper style={{top: 16}}>
+          <A_Icon iconName="perception"></A_Icon>
+        </IconWrapper>
+      )}
+      {ins && (
+        <IconWrapper>
+          <A_Icon iconName="insight"></A_Icon>
+        </IconWrapper>
+      )}
+      {inv && (
+        <IconWrapper>
+          <A_Icon iconName="investigation"></A_Icon>
+        </IconWrapper>
+      )}
     </InputFlexBox>
   );
 };

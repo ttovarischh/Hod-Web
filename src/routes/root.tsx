@@ -15,7 +15,7 @@ export default function Root() {
       <MainWrapper>
         <ScrollToTop></ScrollToTop>
         <Outlet />
-        <O_Navbar />
+        {window.location.href != "http://localhost:3006/game" && <O_Navbar />}
         <O_Footer />
       </MainWrapper>
     </>
