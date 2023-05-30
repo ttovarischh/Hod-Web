@@ -10,6 +10,7 @@ body {
   width: 100vw;
   position: relative;
   overflow: auto;
+  overflow-x: hidden;
 }
 
 * > a {
@@ -19,20 +20,19 @@ body {
 @font-face {
   font-family: "PPBook";
   src: local("PPBook"),
-   url("./fonts/PP/PPNeueMontreal-Book.otf") format("opentype");
+    url("./fonts/PP/PPNeueMontreal-Book.otf") format("opentype");
 }
 
 @font-face {
   font-family: "PPMeduim";
   src: local("PPMeduim"),
-   url("./fonts/PP/PPNeueMontreal-Medium.otf") format("opentype");
+    url("./fonts/PP/PPNeueMontreal-Medium.otf") format("opentype");
 }
-
 
 @font-face {
   font-family: "Panama";
   src: local("Panama"),
-   url("./fonts/Panama/Panama-Demo-Italic.otf") format("opentype");
+    url("./fonts/Panama/Panama-Demo-Italic.otf") format("opentype");
 }
 
 .ppbook {
@@ -45,4 +45,21 @@ body {
 
 .panama {
   font-family: "Panama";
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px; /* Added height property */
+  background-color: #0e0e0e;
+}
+
+/* Thumb */
+::-webkit-scrollbar-thumb {
+  background-color: #1c1c1c;
+  border-radius: 9px;
+}
+
+/* Optionally, you can style the scrollbar track */
+::-webkit-scrollbar-track {
+  background-color: #0e0e0e;
 }

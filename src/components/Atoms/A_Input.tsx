@@ -1,8 +1,9 @@
-import React, { FC } from "react";
+import React from "react";
 import styled from "styled-components";
 import type { InputHTMLAttributes } from "react";
-import { FlexBox } from "./FlexBox";
+import { FlexBox } from "../Common/FlexBox";
 import A_Icon from "./A_Icon";
+import A_Tag from "./A_Tag";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   handleChange?: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -10,11 +11,18 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   type: string;
   placeholder: string;
   label: string;
-  value?: string;
+  value?: any;
   perc?: boolean;
   ins?: boolean;
   inv?: boolean;
+  languages?: boolean;
+  tags?: any;
+  handleCrossPress?: any;
+  handleTextChange?: any;
+  removeTag?: any;
 }
+
+// print('u r so hot (*__*' )')
 
 const FlyingLabel = styled.label`
   font-size: 18px;
@@ -28,6 +36,17 @@ const FlyingLabel = styled.label`
   transition: all 0.5s ease;
   color: ${({ theme }) => theme.input.placeholder};
   pointer-events: none;
+`;
+
+const Label = styled.label`
+  font-size: 18px;
+  line-height: 18px;
+  letter-spacing: -0.011em;
+  margin: 0;
+  padding: 0;
+  color: ${({ theme }) => theme.input.placeholder};
+  pointer-events: none;
+  margin-bottom: 12px;
 `;
 
 const InputWrapper = styled.input`
@@ -96,6 +115,49 @@ const IconWrapper = styled(FlexBox)`
   top: 11.5px;
 `;
 
+const TextAreaFlexBox = styled(FlexBox)`
+  position: relative;
+  background-color: #0e0e0e;
+  border-radius: 9px;
+  padding-top: 12px;
+  padding-left: 16px;
+  padding-bottom: 12px;
+  margin-bottom: 18px;
+  max-width: 392px;
+  &:focus-within {
+    outline: 1px solid;
+    outline-color: ${({ theme }) => theme.input.simple_border};
+  }
+`;
+
+const PlayerRealInputWrapper = styled.input`
+  border: none;
+  height: 35px;
+  background-color: ${({ theme }) => theme.input.fill};
+  font-size: 16px;
+  line-height: 18px;
+  letter-spacing: -0.011em;
+  color: #383838;
+  width: 120px;
+  padding: 0;
+  :focus {
+    outline: none;
+  }
+`;
+
+const TagsScroll = styled(FlexBox)`
+  gap: 8px;
+  max-height: 35px;
+  max-width: calc(100% - 120px);
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+  &::-webkit-scrollbar {
+    display: none; 
+  }
+`;
+
 const A_Input = ({
   name,
   type,
@@ -105,8 +167,39 @@ const A_Input = ({
   perc,
   ins,
   inv,
+  languages,
+  handleTextChange,
+  tags,
+  handleCrossPress,
+  removeTag,
   ...rest
 }: InputProps) => {
+  if (languages) {
+    return (
+      <TextAreaFlexBox>
+        <Label className="ppmedium">Языки</Label>
+        <FlexBox
+          style={{ width: "100%", maxWidth: "100%", flexWrap: "nowrap" }}
+        >
+          <TagsScroll style={{ marginRight: tags.length === 0 ? 0 : 6 }}>
+            {tags.map((tag: any, index: any) => (
+              <A_Tag create language removeTag={() => removeTag(index)} key={index}>
+                {tag}
+              </A_Tag>
+            ))}
+          </TagsScroll>
+          <PlayerRealInputWrapper
+            placeholder="Впишите..."
+            value={value}
+            autoCapitalize="none"
+            autoComplete="off"
+            onChange={(e) => handleTextChange(e.target.value)}
+            {...rest}
+          />
+        </FlexBox>
+      </TextAreaFlexBox>
+    );
+  }
   return (
     <InputFlexBox direction="column" style={{ gap: 10 }}>
       <InputWrapper
@@ -118,7 +211,7 @@ const A_Input = ({
       ></InputWrapper>
       <FlyingLabel className="ppmedium">{label}</FlyingLabel>
       {perc && (
-        <IconWrapper style={{top: 16}}>
+        <IconWrapper>
           <A_Icon iconName="perception"></A_Icon>
         </IconWrapper>
       )}

@@ -15,6 +15,7 @@ export interface User {
   created_at: any;
   updated_at: any;
   jti: any;
+  jwt: any;
   username: string;
 }
 

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@rails/actioncable": "^7.0.4-3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -13,10 +14,14 @@
     "@types/react-router": "^5.1.20",
     "@types/react-router-dom": "^5.3.3",
     "@types/styled-components": "^5.1.26",
+    "@types/websocket": "^1.0.5",
+    "actioncable": "^5.2.8-1",
     "axios": "^1.3.4",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
+    "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
+    "react-actioncable-provider": "^2.0.0",
     "react-dom": "^18.2.0",
     "react-loader-spinner": "^5.3.4",
     "react-router-dom": "^6.8.2",
@@ -25,7 +30,8 @@
     "sort-by": "^1.2.0",
     "styled-components": "^5.3.8",
     "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "websocket": "^1.0.34"
   },
   "scripts": {
     "start": "PORT=3006 react-scripts start",
@@ -50,5 +56,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/actioncable": "^5.2.7"
   }
 }

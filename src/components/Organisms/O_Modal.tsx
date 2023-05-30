@@ -1,10 +1,8 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import { FlexBox } from "./FlexBox";
-import A_Button from "./A_Button";
-import { Breadcrumb } from "./StyledFont";
-import A_Icon from "./A_Icon";
-import { Panama, Large } from "./StyledFont";
+import { FlexBox } from "../Common/FlexBox";
+import A_Button from "../Atoms/A_Button";
+import { Panama, D_Text } from "../Common/StyledFont";
 import O_Tracker from "./O_Tracker";
 
 type ButtonProps = {
@@ -41,25 +39,21 @@ const O_Modal = (props: ButtonProps) => {
       <ModalWrapper>
         <PPWrapper>
           <Panama>Готово</Panama>
-          <Large>
+          <D_Text>
             Вся нужная информация сохранена, драконы отправлены в подземелья
             и всё готово к приключению. Карточки игроков будут в центре,
             а QR-код для присоединения в меню слева.
-          </Large>
-          <Large>
-            Код сессии: {props.code}
-          </Large>
+          </D_Text>
+          <D_Text>Код сессии: {props.code}</D_Text>
         </PPWrapper>
         <FlexBox
           justifyContent="flex-end"
           style={{ width: "100%", marginTop: 65, marginBottom: 65 }}
         >
           <O_Tracker step="gamecreated">
-            {/* <Link to="../game" state={{ code: code }}> */}
             <A_Button solid handleButtonClick={props.handleButtonCLick}>
               Продолжить
             </A_Button>
-            {/* </Link> */}
           </O_Tracker>
         </FlexBox>
       </ModalWrapper>

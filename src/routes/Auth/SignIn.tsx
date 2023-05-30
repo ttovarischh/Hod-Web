@@ -1,10 +1,11 @@
 import styled, { keyframes } from "styled-components";
-import { FlexBox, Breadcrumb } from "../../components";
-import A_Button from "../../components/A_Button";
+import { FlexBox, J_Text } from "../../components/Common";
+import A_Button from "../../components/Atoms/A_Button";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import A_Input from "../../components/A_Input";
+import A_Input from "../../components/Atoms/A_Input";
 import useAuth from "../../authContext/useAuth";
+import A_UnderlinedButton from "../../components/Atoms/A_UnderlinedButton";
 
 const AuthWrapper = styled(FlexBox)`
   width: 100%;
@@ -24,7 +25,7 @@ const bg = keyframes`
  0% { filter: blur(50px); }
  40% { filter: blur(10px); }
  100% { filter: blur(50px);}
-`
+`;
 
 const MainImage = styled.div`
   position: absolute;
@@ -49,16 +50,6 @@ const ActionWrapper = styled(FlexBox)`
   a {
     text-decoration: underline;
   }
-`;
-
-const MyLink = styled.p`
-  font-size: 18px;
-  line-height: 22px;
-  text-decoration-line: underline;
-  color: #a4a4ac;
-  opacity: 0.5;
-  margin-top: 24px;
-  margin-bottom: 30px;
 `;
 
 export default function SignIn() {
@@ -155,18 +146,17 @@ export default function SignIn() {
             className={isEmpty ? "empty" : ""}
             label="Пароль"
           ></A_Input>
-          <MyLink className="ppbook">Забыли пароль?</MyLink>
+          <A_UnderlinedButton>Забыли пароль?</A_UnderlinedButton>
           <A_Button
-            solid
             disabled={newUser.email === "" || newUser.password === ""}
             handleButtonClick={handleSubmit}
           >
             Вход
           </A_Button>
         </form>
-        <Breadcrumb>
+        <J_Text>
           Нет аккаунта? <Link to="../registration">Зарегистрируйтесь</Link>
-        </Breadcrumb>
+        </J_Text>
       </ActionWrapper>
     </AuthWrapper>
   );

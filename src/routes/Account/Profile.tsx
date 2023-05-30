@@ -1,12 +1,14 @@
 import axios from "axios";
 import { useEffect, useState, useContext } from "react";
-import { FlexBox, Big_Panama, Note, Large } from "../../components";
+import { FlexBox, E_Text } from "../../components/Common";
 import styled from "styled-components";
-import A_Button from "../../components/A_Button";
+import A_Button from "../../components/Atoms/A_Button";
 import useAuth from "../../authContext/useAuth";
 import { useNavigate, Link } from "react-router-dom";
 import { ThemeContext } from "styled-components";
-import A_Loader from "../../components/A_Loader";
+import A_Loader from "../../components/Atoms/A_Loader";
+import A_Counter from "../../components/Atoms/A_Counter";
+import A_InactiveField from "../../components/Atoms/A_InactiveField";
 
 const ProfileWrapper = styled(FlexBox)`
   padding-top: 88px;
@@ -15,18 +17,6 @@ const ProfileWrapper = styled(FlexBox)`
   width: 100%;
   height: calc(100vh - 176px);
   justify-content: space-between;
-`;
-
-const CountFlexbox = styled(FlexBox)``;
-const UserInfo = styled(FlexBox)``;
-
-const Label = styled.p`
-  font-size: 18px;
-  line-height: 22px;
-  letter-spacing: -0.011em;
-  color: #a4a4ac;
-  margin: 0;
-  margin-bottom: 4px;
 `;
 
 const MainImage = styled.div`
@@ -67,52 +57,35 @@ export default function Profile() {
   }, []);
 
   const filteredGames = effectsData.filter((game) => !game.active);
-  console.log(filteredGames);
+
+  if (isLoading) {
+    return <A_Loader></A_Loader>;
+  }
 
   return (
-    <>
-      {isLoading ? (
-        <A_Loader></A_Loader>
-      ) : (
-        <ProfileWrapper direction="column">
-          <FlexBox style={{ gap: 80 }}>
-            <CountFlexbox direction="column">
-              <Big_Panama>{effectsData!.length}</Big_Panama>
-              <Large color={theme.text.grey}>игр сыграно</Large>
-            </CountFlexbox>
-            <CountFlexbox direction="column">
-              <Big_Panama>{filteredGames!.length}</Big_Panama>
-              <Large color={theme.text.grey}>игр проведено</Large>
-            </CountFlexbox>
-          </FlexBox>
-          <UserInfo direction="column" style={{ gap: 12 }}>
-            <FlexBox direction="column">
-              <Label className="ppmedium">Почта</Label>
-              <Note>{user!.email}</Note>
-            </FlexBox>
-            <FlexBox direction="column">
-              <Label className="ppmedium">Пароль</Label>
-              <Note>∗∗∗∗∗∗∗</Note>
-            </FlexBox>
-            <FlexBox direction="column">
-              <Label className="ppmedium">Никнейм</Label>
-              <Note>{user!.username}</Note>
-            </FlexBox>
-          </UserInfo>
-          <FlexBox alignItems="center" style={{ gap: 42 }}>
-            <Link to="../settings">
-              <A_Button solid>Редактировать профиль</A_Button>
-            </Link>
-            <Note>или</Note>
-            <A_Button handleButtonClick={doLogout}>Выйти из профиля</A_Button>
-          </FlexBox>
-          <MainImage
-            style={{
-              backgroundImage: "url(" + require("../../images/bird.png") + ")",
-            }}
-          ></MainImage>
-        </ProfileWrapper>
-      )}
-    </>
+    <ProfileWrapper direction="column">
+      <FlexBox style={{ gap: 80 }}>
+        <A_Counter header="игр сыграно">{effectsData!.length}</A_Counter>
+        <A_Counter header="игр проведено">{filteredGames!.length}</A_Counter>
+      </FlexBox>
+      <FlexBox direction="column" style={{ gap: 12 }}>
+        <A_InactiveField header="Почта">{user!.email}</A_InactiveField>
+        <A_InactiveField header="Пароль">∗∗∗∗∗∗∗</A_InactiveField>
+        <A_InactiveField header="Никнейм">{user!.username}</A_InactiveField>
+      </FlexBox>
+      <FlexBox alignItems="center" style={{ gap: 42 }}>
+        <Link to="../settings">
+          <A_Button solid>Редактировать профиль</A_Button>
+        </Link>
+        <A_Button secondary handleButtonClick={doLogout}>
+          Выйти из профиля
+        </A_Button>
+      </FlexBox>
+      <MainImage
+        style={{
+          backgroundImage: "url(" + require("../../images/bird.png") + ")",
+        }}
+      ></MainImage>
+    </ProfileWrapper>
   );
 }

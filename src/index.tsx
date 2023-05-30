@@ -18,6 +18,8 @@ import Settings from "./routes/Account/Settings";
 import Create from "./routes/GamePath/Create";
 import axios from "axios";
 import SingleGame from "./routes/GamePath/SingleGame";
+import { ActionCableProvider } from "react-actioncable-provider";
+import { API_WS_ROOT } from "./constants";
 
 // axios.defaults.withCredentials = true;
 axios.defaults.headers.common["Authorization"] =
@@ -63,7 +65,7 @@ const router = createBrowserRouter([
         element: <Create />,
       },
       {
-        path: "game",
+        path: "game/:code",
         element: <SingleGame />,
       },
     ],
@@ -83,8 +85,10 @@ const App = () => {
 
 root.render(
   // <React.StrictMode>
-  <AuthProvider>
-    <App />
-  </AuthProvider>
+  <ActionCableProvider url={API_WS_ROOT}>
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  </ActionCableProvider>
   // </React.StrictMode>
 );

@@ -1,13 +1,15 @@
 import axios from "axios";
 import { useEffect, useState, useContext } from "react";
-import { FlexBox, Big_Panama, Note, Large } from "../../components";
+import { FlexBox } from "../../components/Common";
 import styled from "styled-components";
-import A_Button from "../../components/A_Button";
+import A_Button from "../../components/Atoms/A_Button";
 import useAuth from "../../authContext/useAuth";
 import { useNavigate, Link } from "react-router-dom";
 import { ThemeContext } from "styled-components";
-import A_Loader from "../../components/A_Loader";
-import A_Input from "../../components/A_Input";
+import A_Loader from "../../components/Atoms/A_Loader";
+import A_Input from "../../components/Atoms/A_Input";
+import A_Counter from "../../components/Atoms/A_Counter";
+import A_UnderlinedButton from "../../components/Atoms/A_UnderlinedButton";
 
 const ProfileWrapper = styled(FlexBox)`
   padding-top: 88px;
@@ -17,9 +19,6 @@ const ProfileWrapper = styled(FlexBox)`
   height: calc(100vh - 176px);
   justify-content: space-between;
 `;
-
-const CountFlexbox = styled(FlexBox)``;
-const UserInfo = styled(FlexBox)``;
 
 const MainImage = styled.div`
   position: absolute;
@@ -40,8 +39,9 @@ export default function Settings() {
   const navigate = useNavigate();
   const theme = useContext(ThemeContext);
   const [newUser, setNewUser] = useState({
-    email: "",
+    email: user!.email,
     password: "",
+    username: user!.username,
   });
 
   useEffect(() => {
@@ -68,67 +68,82 @@ export default function Settings() {
     });
   };
 
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    if (newUser.email !== user!.email) {
+      console.log("Email changed");
+    } else if (newUser.username !== user!.username) {
+      console.log("Username changed");
+    }
+    navigate("/account");
+  };
+
+  const filteredGames = effectsData.filter((game) => !game.active);
+
+  if (isLoading) {
+    return <A_Loader />;
+  }
+
   return (
-    <>
-      {isLoading ? (
-        <A_Loader></A_Loader>
-      ) : (
-        <ProfileWrapper direction="column">
-          <FlexBox style={{ gap: 80 }}>
-            <CountFlexbox direction="column">
-              <Big_Panama>{effectsData!.length}</Big_Panama>
-              <Large color={theme.text.grey}>игр сыграно</Large>
-            </CountFlexbox>
-            <CountFlexbox direction="column">
-              <Big_Panama>{effectsData!.length * 3}</Big_Panama>
-              <Large color={theme.text.grey}>игр проведено</Large>
-            </CountFlexbox>
-          </FlexBox>
-          <form style={{display: "flex", justifyContent: "space-between", flexDirection: "column", flex: 1, marginTop: 90}}>
-            <UserInfo direction="column" style={{ gap: 12 }}>
-              <A_Input
-                name="email"
-                type="email"
-                placeholder="Почта"
-                onChange={handleInputChange}
-                label="Почта"
-                style={{ marginBottom: 12 }}
-              ></A_Input>
-              <A_Input
-                name="email"
-                type="email"
-                placeholder="Почта"
-                onChange={handleInputChange}
-                label="Почта"
-                style={{ marginBottom: 12 }}
-              ></A_Input>
-              <A_Input
-                name="email"
-                type="email"
-                placeholder="Почта"
-                onChange={handleInputChange}
-                label="Почта"
-                style={{ marginBottom: 12 }}
-              ></A_Input>
-            </UserInfo>
-            <FlexBox alignItems="center" style={{ gap: 46 }}>
-              <Link to="login">
-                <A_Button handleButtonClick={() => navigate(-1)}>
-                  Отменить изменения
-                </A_Button>
-              </Link>
-              <A_Button handleButtonClick={() => console.log("saved")} solid>
-                Сохранить изменения
+    <ProfileWrapper direction="column">
+      <FlexBox style={{ gap: 80 }}>
+        <A_Counter header="игр сыграно">{effectsData!.length}</A_Counter>
+        <A_Counter header="игр проведено">{filteredGames!.length}</A_Counter>
+      </FlexBox>
+      <form
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: "column",
+          flex: 1,
+          marginTop: 90,
+        }}
+      >
+        <FlexBox direction="column" style={{ gap: 12 }}>
+          <A_Input
+            name="email"
+            type="email"
+            placeholder={user!.email}
+            onChange={handleInputChange}
+            label={user!.email}
+            style={{ marginBottom: 12 }}
+          ></A_Input>
+          <A_Input
+            name="password"
+            type="password"
+            placeholder="∗∗∗∗∗∗∗"
+            onChange={handleInputChange}
+            label="∗∗∗∗∗∗∗"
+            style={{ marginBottom: 12 }}
+          ></A_Input>
+          <A_Input
+            name="nickname"
+            type="text"
+            placeholder={user!.username}
+            onChange={handleInputChange}
+            label={user!.username}
+            style={{ marginBottom: 12 }}
+          ></A_Input>
+        </FlexBox>
+        <FlexBox direction="column" alignItems="center">
+          <FlexBox alignItems="center" style={{ gap: 46 }}>
+            <Link to="login">
+              <A_Button secondary handleButtonClick={() => navigate(-1)}>
+                Отменить изменения
               </A_Button>
-            </FlexBox>
-          </form>
-          <MainImage
-            style={{
-              backgroundImage: "url(" + require("../../images/bird.png") + ")",
-            }}
-          ></MainImage>
-        </ProfileWrapper>
-      )}
-    </>
+            </Link>
+            <A_Button handleButtonClick={handleSubmit}>
+              Сохранить изменения
+            </A_Button>
+          </FlexBox>
+          <A_UnderlinedButton>Удалить аккаунт</A_UnderlinedButton>
+        </FlexBox>
+      </form>
+      <MainImage
+        style={{
+          backgroundImage: "url(" + require("../../images/bird.png") + ")",
+        }}
+      ></MainImage>
+    </ProfileWrapper>
   );
 }

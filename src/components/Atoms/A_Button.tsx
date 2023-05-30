@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React from "react";
 import styled from "styled-components";
 
 type ButtonProps = {
@@ -8,6 +8,9 @@ type ButtonProps = {
   disabled?: boolean;
   small?: boolean;
   warning?: boolean;
+  //
+  secondary?: boolean;
+  tracker?: boolean;
 };
 
 const BigButton = styled.button`
@@ -19,13 +22,14 @@ const BigButton = styled.button`
   margin: 0;
   border: none;
   outline: none;
-  padding-left: 74px;
-  padding-right: 74px;
+  padding-left: 32px;
+  padding-right: 32px;
   padding-top: 14px;
   padding-bottom: 14px;
   border-radius: 10px;
-  cursor: pointer;
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   transition: all 0.5s ease;
+  min-width: 257px;
 `;
 
 const SolidButton = styled(BigButton)`
@@ -103,6 +107,48 @@ const RedHollowButton = styled(BigButton)`
 `;
 
 const A_Button = (props: ButtonProps) => {
+  if (props.secondary) {
+    return (
+      <HollowButton
+        className="PPMeduim"
+        onClick={props.disabled ? undefined : props.handleButtonClick}
+        disabled={props.disabled}
+      >
+        {props.children}
+      </HollowButton>
+    );
+  }
+  if (props.warning) {
+    return (
+      <RedHollowButton
+        className="PPMeduim"
+        onClick={props.disabled ? undefined : props.handleButtonClick}
+        disabled={props.disabled}
+      >
+        {props.children}
+      </RedHollowButton>
+    );
+  }
+  if (props.tracker) {
+    return (
+      <SmallButton
+        className="PPMeduim"
+        onClick={props.disabled ? undefined : props.handleButtonClick}
+        disabled={props.disabled}
+      >
+        {props.children}
+      </SmallButton>
+    );
+  }
+  return (
+    <SolidButton
+      className="PPMeduim"
+      onClick={props.disabled ? undefined : props.handleButtonClick}
+      disabled={props.disabled}
+    >
+      {props.children}
+    </SolidButton>
+  );
   if (props.solid) {
     if (props.small) {
       return (

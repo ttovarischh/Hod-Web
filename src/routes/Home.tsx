@@ -1,10 +1,8 @@
 import styled from "styled-components";
-import { FlexBox, Panama, Large, Note } from "../components";
-import A_Button from "../components/A_Button";
-import { Link } from "react-router-dom";
+import { FlexBox, Panama, E_Text, D_Text } from "../components/Common";
+import A_Button from "../components/Atoms/A_Button";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../authContext/useAuth";
-import axios from "axios";
-import { useState } from "react";
 
 const HomeWrapper = styled(FlexBox)`
   width: 100%;
@@ -41,105 +39,63 @@ const MainImage = styled.div`
 
 export default function Home() {
   const { user } = useAuth();
-  const [isLoading, setLoading] = useState(true);
+  const dateTime = new Date().toJSON();
+  const navigate = useNavigate();
 
-  function handleClick() {
-    axios
-      .post(
-        "http://localhost:3000/api/v1/games",
-        {
-          game: {
-            name: "Kill meh!",
-          },
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
+    if (!user!.jwt) {
+      console.log("Error: missing token");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3000/api/v1/games", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user!.jwt}`,
+          jti: `${user!.jti}`,
+          "Authorization-Session": `Bearer ${user!.jwt}`,
         },
-        {
-          headers: {
-            method: "no-cors",
-            "Access-Control-Allow-Origin": "http://localhost:3006",
+        body: JSON.stringify({
+          game: {
+            name: dateTime,
           },
-        }
-      )
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-      .finally(() => setLoading(false));
-  }
-
-  axios.interceptors.request.use((x) => {
-    console.log(JSON.stringify(x));
-    return x;
-  });
-
-  // function handleClick() {
-  //   (async () => {
-  //     const rawResponse = await fetch("http://localhost:3000/api/v1/games", {
-  //       method: "POST",
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //         Accept: "application/json, text/plain, */*",
-
-  //       },
-  //       body: JSON.stringify({ game: { name: "MMMM" } }),
-  //     });
-  //     const content = await rawResponse.json();
-
-  //     console.log(content);
-  //   })();
-  // }
-
-  // {"adapter": ["xhr", "http"], "data": {"game": {"name": "2023-03-15T12:07:22.724Z"}}, "env": {"Blob": [Function Blob], "FormData": [Function FormData]}, "headers": {"Accept": "application/json, text/plain, */*"}, "maxBodyLength": -1, "maxContentLength": -1, "method": "post", "timeout": 0, "transformRequest": [[Function transformRequest]], "transformResponse": [[Function transformResponse]], "transitional": {"clarifyTimeoutError": false, "forcedJSONParsing": true, "silentJSONParsing": true}, "url": "http://localhost:3000/api/v1//games", "validateStatus": [Function validateStatus], "xsrfCookieName": "XSRF-TOKEN", "xsrfHeaderName": "X-XSRF-TOKEN"}
-
-  async function postData(
-    url = "http://localhost:3000/api/v1/games",
-    data = { game: { name: "MMMM" } }
-  ) {
-    // Default options are marked with *
-    const response = await fetch(url, {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
-      mode: "no-cors", // no-cors, *cors, same-origin
-      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: "same-origin", // include, *same-origin, omit
-      headers: {
-        "Content-Type": "application/json",
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      redirect: "follow", // manual, *follow, error
-      referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-      body: JSON.stringify(data), // body data type must match "Content-Type" header
-    });
-    return response.json(); // parses JSON response into native JavaScript objects
-  }
-
-  // postData("http://localhost:3000/api/v1/games", {
-  //   game: { name: "MMMM" },
-  // }).then((data) => {
-  //   console.log(data);
-  // });
+          session: user!.jwt,
+        }),
+      });
+      const data = await response.json();
+      console.log(`Game with a name ${dateTime} created successfully!`);
+      console.log(data);
+      navigate("/create", { state: { code: data.code } });
+    } catch (error) {
+      console.log(`Error: ${error}`);
+    }
+  };
 
   return (
     <HomeWrapper>
       <PPWrapper>
         <Panama>Ход Web</Panama>
-        <Large>
+        <D_Text>
           Эта версия предназначена для тех мастеров, которые предпочитают вести
           игры с&nbsp;ноутбуком и&nbsp;им&nbsp;неудобно открывать Ход
           на&nbsp;телефоне.
-        </Large>
-        <Large>
+        </D_Text>
+        <D_Text>
           Здесь невозможно выступить в&nbsp;роли игрока и&nbsp;присоединиться
           к&nbsp;существующей сесии
-        </Large>
+        </D_Text>
       </PPWrapper>
       <FlexBox direction="column" style={{ gap: 20, marginBottom: 16 }}>
-        <Note>
+        <E_Text>
           {user
             ? "Пора отправляться в новое приключение:"
             : "Чтобы начать игру надо войти в аккаунт:"}
-        </Note>
+        </E_Text>
         <FlexBox alignItems="center" style={{ gap: 42 }}>
           {!user ? (
             <>
@@ -151,23 +107,19 @@ export default function Home() {
                   Войти
                 </A_Button>
               </Link>
-              <Note>или</Note>
+              <E_Text>или</E_Text>
               <Link to="registration">
-                <A_Button handleButtonClick={() => console.log("Clicked")}>
+                <A_Button
+                  secondary
+                  handleButtonClick={() => console.log("Clicked")}
+                >
                   Зарегистрироваться
                 </A_Button>
               </Link>
             </>
           ) : (
             <>
-              <Link to="create">
-                <A_Button
-                  solid
-                  handleButtonClick={() => console.log("Clicked")}
-                >
-                  Начать игру
-                </A_Button>
-              </Link>
+              <A_Button handleButtonClick={handleSubmit}>Начать игру</A_Button>
             </>
           )}
         </FlexBox>

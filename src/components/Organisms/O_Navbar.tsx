@@ -1,9 +1,8 @@
 import styled from "styled-components";
-import { FlexBox } from "./FlexBox";
-import { HeaderFooter } from "./StyledFont";
+import { FlexBox, H_Text } from "../Common";
 import { Link } from "react-router-dom";
-import A_Icon from "./A_Icon";
-import useAuth from "../authContext/useAuth";
+import A_Icon from "../Atoms/A_Icon";
+import useAuth from "../../authContext/useAuth";
 
 const NavBar = styled(FlexBox)`
   position: absolute;
@@ -30,12 +29,11 @@ const O_Navbar = (props: any) => {
       </Link>
       {user ? (
         <Link to={`account`} style={{ textDecoration: "none" }}>
-          <HeaderFooter>{user!.username}</HeaderFooter>
-          {/* <HeaderFooter>Выйти</HeaderFooter> */}
+          <H_Text medium>{user!.username}</H_Text>
         </Link>
       ) : (
         <Link to={`login`} style={{ textDecoration: "none" }}>
-          <HeaderFooter>Войти</HeaderFooter>
+          <H_Text medium>Войти</H_Text>
         </Link>
       )}
     </NavBar>

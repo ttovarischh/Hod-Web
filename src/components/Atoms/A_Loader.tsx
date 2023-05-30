@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { FlexBox } from "./FlexBox";
+import { FlexBox } from "../Common/FlexBox";
 import { Circles } from "react-loader-spinner";
 
 const LoaderWrapper = styled(FlexBox)`

@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { FlexBox } from "./FlexBox";
-import { CardText } from "./StyledFont";
-import A_Icon from "./A_Icon";
+import { FlexBox } from "../Common/FlexBox";
+import { A_Text } from "../Common/StyledFont";
+import A_Icon from "../Atoms/A_Icon";
 
 type CardProps = {
   children: React.ReactNode;
@@ -197,7 +197,7 @@ const M_Card = (props: CardProps) => {
         </FlexBox>
         <BottomStates>
           <StatesWrapper>
-            <CardText>Состояния</CardText>
+            <A_Text>Состояния</A_Text>
             <States>
               <PlusIcon>
                 <p
@@ -214,7 +214,7 @@ const M_Card = (props: CardProps) => {
             </States>
           </StatesWrapper>
           <StatesWrapper style={{ marginTop: 24 }}>
-            <CardText>Языки</CardText>
+            <A_Text>Языки</A_Text>
             <States style={{gap: 6}}>
               {props.children}
             </States>

@@ -1,21 +1,16 @@
-import styled, { keyframes } from "styled-components";
-import { FlexBox } from "../../components";
-import A_Button from "../../components/A_Button";
-import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { FlexBox } from "../../components/Common";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
-import A_Input from "../../components/A_Input";
 import useAuth from "../../authContext/useAuth";
-import M_Card from "../../components/M_Card";
-import Select, { StylesConfig } from "react-select";
 import axios from "axios";
 import { useEffect } from "react";
-import A_Loader from "../../components/A_Loader";
-import O_Tracker from "../../components/O_Tracker";
-import { Link } from "react-router-dom";
+import A_Loader from "../../components/Atoms/A_Loader";
+import O_Tracker from "../../components/Organisms/O_Tracker";
+import T_PlayersList from "../../components/Templates/T_PlayersList";
+import O_CreationCard from "../../components/Organisms/O_CreationCard";
 
-const AuthWrapper = styled(FlexBox)`
-  // display: grid;
-  // grid-template-columns: 1fr 1fr 1fr;
+const Wrapper = styled(FlexBox)`
   justify-content: space-between;
   width: 100%;
   height: calc(100vh - 176px);
@@ -32,156 +27,6 @@ const AuthWrapper = styled(FlexBox)`
   padding-right: 66px;
   transition: all 1s all;
 `;
-
-const BlankColumn = styled.div`
-  width: 292px;
-  height: 100%;
-`;
-
-const ActionWrapper = styled(FlexBox)`
-  z-index: 100;
-  a {
-    text-decoration: underline;
-  }
-`;
-
-const PlayerAvatarWrapper = styled(FlexBox)`
-  width: 100%;
-  height: 150px;
-  background: #0e0e0e;
-  justify-content: flex-start;
-`;
-
-const CardStack = styled.div`
-  position: relative;
-  height: 100%;
-  max-width: 50%;
-`;
-
-const Card = styled(FlexBox)`
-  box-shadow: -6px 2px 13px rgba(0, 0, 0, 0.3);
-  border-radius: 20px;
-  transition: all 0.5s ease;
-  &:hover {
-    z-index: 1000;
-    box-shadow: -6px 2px 13px rgba(0, 0, 0, 0.8);
-    align-self: flex-start;
-    transition: all 0.5s ease;
-    transform: scale(1) !important;
-  }
-`;
-
-const colourStyles: StylesConfig<any> = {
-  container: (styles) => ({
-    ...styles,
-    width: "100%",
-  }),
-  control: (styles) => ({
-    ...styles,
-    backgroundColor: "#0E0E0E",
-    color: "yellow",
-    height: 150,
-    border: "none",
-    width: "100%",
-    borderRadius: 0,
-  }),
-  valueContainer: (styles) => ({
-    ...styles,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 0,
-    height: 150,
-    width: "100%",
-  }),
-  singleValue: (styles) => ({
-    ...styles,
-    height: "100%",
-    width: "100%",
-    marginBottom: 0,
-    position: "absolute",
-  }),
-  placeholder: (styles) => ({
-    fontSize: 11,
-    lineHeight: "13px",
-    textAlign: "center",
-    color: "#4C4C4C",
-  }),
-  menu: (styles) => ({
-    ...styles,
-    margin: 0,
-    backgroundColor: "#1A1A1A",
-    borderRadius: 0,
-  }),
-  menuList: (styles) => ({
-    ...styles,
-    padding: 0,
-    maxHeight: "517px",
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr",
-    columnGap: 20,
-    rowGap: 20,
-    paddingLeft: 50,
-    paddingRight: 50,
-    justifyItems: "center",
-    justifyContent: "center",
-    alignContent: "center",
-  }),
-  option: (styles) => ({
-    ...styles,
-    display: "inline-block",
-    width: 150,
-    height: 150,
-    padding: 0,
-    border: 1,
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderColor: "#EDF2DC",
-    borderRadius: 12,
-    overflow: "hidden",
-    ":active": {
-      ...styles,
-      backgroundColor: "red",
-    },
-  }),
-
-  // option: (styles, { data, isDisabled, isFocused, isSelected }) => {
-  //   const color = chroma(data.color);
-  //   return {
-  //     ...styles,
-  //     backgroundColor: isDisabled
-  //       ? undefined
-  //       : isSelected
-  //       ? data.color
-  //       : isFocused
-  //       ? color.alpha(0.1).css()
-  //       : undefined,
-  //     color: isDisabled
-  //       ? '#ccc'
-  //       : isSelected
-  //       ? chroma.contrast(color, 'white') > 2
-  //         ? 'white'
-  //         : 'black'
-  //       : data.color,
-  //     cursor: isDisabled ? 'not-allowed' : 'default',
-
-  //     ':active': {
-  //       ...styles[':active'],
-  //       backgroundColor: !isDisabled
-  //         ? isSelected
-  //           ? data.color
-  //           : color.alpha(0.3).css()
-  //         : undefined,
-  //     },
-  //   };
-  // },
-  // input: (styles) => ({ ...styles, ...dot() }),
-  // placeholder: (styles) => ({ ...styles, ...dot('#ccc') }),
-  // singleValue: (styles, { data }) => ({ ...styles, ...dot(data.color) }),
-};
-
-const url = require("../../images/Vector.png");
-const url2 = "https://ttovarischh.github.io/WikiMEDIUMM/images/img.png";
 
 const options = [
   {
@@ -251,42 +96,9 @@ const options = [
   },
 ];
 
-const InfoFlexBox = styled(FlexBox)`
-  height: 55px;
-  width: calc(392px - 16px);
-  background-color: ${({ theme }) => theme.input.fill};
-  border-radius: 9px;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 16px;
-  gap: 2px;
-`;
-
-const PlayerInfo = styled.p`
-  color: ${({ theme }) => theme.input.text};
-  font-size: 18px;
-  line-height: 22px;
-  letter-spacing: -0.011em;
-  margin: 0;
-`;
-
-const PlayerAvatar = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`;
-
-const FlyingLabel = styled.p`
-  font-size: 11px;
-  line-height: 11px;
-  letter-spacing: -0.011em;
-  color: ${({ theme }) => theme.input.placeholder};
-  margin: 0;
-`;
-
 export default function Create() {
-  const [isEmpty, setIsEmpty] = useState(false);
-  const [gameData, setGameData] = useState<any[]>([]);
+  const location = useLocation();
+  const { code } = location.state;
   const { user } = useAuth();
   const [newPlayer, setNewPlayer] = useState({
     name: "",
@@ -306,17 +118,63 @@ export default function Create() {
     language: "",
     imagestring: "",
   });
-  const { login, loading, error } = useAuth();
   const navigate = useNavigate();
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
+  const [players, setPlayers] = useState<any[]>([]);
+  const [tags, setTags] = useState<string[]>([]);
+  const [inputValue, setInputValue] = useState("");
+  const [selectedOption, setSelectedOption] = useState(null);
 
-  const handleSubmit = (event: any) => {
+  const handleTextChange = (text: string) => {
+    if (!text.endsWith(" ")) {
+      setInputValue(text);
+      console.log(inputValue);
+      console.log(tags);
+    }
+  };
+
+  const handleKeyPress = (event: any) => {
+    if (event.key === " ") {
+      event.preventDefault();
+      addTag();
+    }
+  };
+
+  const addTag = () => {
+    if (inputValue.trim() !== "") {
+      setTags([...tags, inputValue.trim()]);
+      setInputValue("");
+    }
+  };
+
+  const removeTag = (index: number) => {
+    const newTags = [...tags];
+    newTags.splice(index, 1);
+    setTags(newTags);
+  };
+
+  useEffect(() => {
+    fetchInitialPlayers();
+    console.log(code);
+  }, []);
+
+  const fetchInitialPlayers = async () => {
+    const response = await fetch(
+      `http://localhost:3000/api/v1/games/${code}/players`
+    );
+    const data = await response.json();
+    setPlayers(data);
+    setLoading(false);
+  };
+
+  const handlePostNewPlayer = (event: any) => {
+    const tagsString = tags.join(" ");
     axios
       .post("http://localhost:3000/api/v1/games/" + code + "/players", {
         player: {
           name: newPlayer.name,
           username: newPlayer.username,
-          language: newPlayer.language,
+          language: tagsString,
           inv: newPlayer.inv,
           ins: newPlayer.ins,
           perc: newPlayer.perc,
@@ -330,96 +188,39 @@ export default function Create() {
         console.log(error);
       })
       .finally(() => {
-        handleClick();
         setNewPlayer(initialState);
+        setTags([]);
+        setSelectedOption(null);
+        handleFetchCreated();
       });
   };
 
-  const dateTime = new Date().toJSON();
-  const [code, setCode] = useState("KY816");
-
-  // useEffect(() => {
-  //   const requestOptions = {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify({
-  //       game: {
-  //         name: "HELLO",
-  //       },
-  //     }),
-  //   };
-  //   fetch("http://localhost:3000/api/v1/games", requestOptions).then(
-  //     (response) => response.json()
-  //   );
-  // }, []);
-
-  useEffect(() => {
-    axios
-      .post(
-        "http://localhost:3000/api/v1/games",
-        {
-          game: {
-            name: dateTime,
-          },
-        },
-        {
-          headers: {
-            method: "no-cors",
-            "Access-Control-Allow-Origin": "http://localhost:3006",
-          },
-        }
-      )
-      .then(function (response) {
-        console.log(response);
-        setCode(response.data.code);
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-      .finally(() => setLoading(false));
-  }, []);
-
-  // warning!
-
-  // function handleClick() {
-  //   axios
-  //     .post(
-  //       "http://localhost:3000/api/v1/games",
-  //       {
-  //         game: {
-  //           name: "Kill meh!",
-  //         },
-  //       },
-  //       {
-  //         headers: {
-  //           method: "no-cors",
-  //           "Access-Control-Allow-Origin": "http://localhost:3006",
-  //         },
-  //       }
-  //     )
-  //     .then(function (response) {
-  //       console.log(response);
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     })
-  //     .finally(() => setLoading(false));
-  // }
-
-  function handleClick() {
+  function handleFetchCreated() {
     axios
       .get("http://localhost:3000/api/v1/games/" + code + "/players")
       .then(({ data }) => {
-        setGameData(data);
+        setPlayers(data);
+        console.log("Done get");
+        console.log(players);
       })
       .catch((error) => console.error(error))
-      .finally(() => {
-        console.log("Done get");
-        console.log(gameData);
-      });
+      .finally(() => {});
+  }
+
+  function handleDeleteNewPlayer(playerId: any) {
+    axios
+      .delete(
+        "http://localhost:3000/api/v1/games/" + code + "/players/" + playerId
+      )
+      .then(({ data }) => {
+        console.log("Done delete");
+      })
+      .catch((error) => console.error(error))
+      .finally(() => {});
   }
 
   const handleSelectChange = (selectedOption: any) => {
+    setSelectedOption(selectedOption);
     setNewPlayer((prevState) => {
       return {
         ...prevState,
@@ -430,7 +231,6 @@ export default function Create() {
   };
 
   const handleInputChange = (event: any) => {
-    setIsEmpty(false);
     const { name, value } = event.target;
     console.log(newPlayer);
     setNewPlayer((prevState) => {
@@ -441,247 +241,51 @@ export default function Create() {
     });
   };
 
-  const list = () => {
-    return gameData.map((player: any, index: any) => {
-      return (
-        <Card
-          style={{
-            position: "absolute",
-            left: 24 * index,
-            transform: `scale(${
-              index == gameData.length - 1
-                ? 1
-                : 1 - 0.025 * (gameData.length - index)
-            })`,
-          }}
-        >
-          <M_Card
-            type="chCreate"
-            key={player.id}
-          >
-            <FlexBox direction="column">
-              <PlayerAvatarWrapper>
-                <PlayerAvatar src={`${player.imagestring}`} alt="new" />
-              </PlayerAvatarWrapper>
-              <FlexBox
-                direction="column"
-                style={{
-                  gap: 6,
-                  marginTop: 18,
-                  marginLeft: 14,
-                  marginRight: 14,
-                }}
-              >
-                <InfoFlexBox>
-                  <PlayerInfo>{player.name}</PlayerInfo>
-                  <FlyingLabel className="ppmedium">Имя персонажа</FlyingLabel>
-                </InfoFlexBox>
-                <InfoFlexBox>
-                  <PlayerInfo>{player.username}</PlayerInfo>
-                  <FlyingLabel className="ppmedium">Имя игрока</FlyingLabel>
-                </InfoFlexBox>
-                <InfoFlexBox>
-                  <PlayerInfo>{player.ins}</PlayerInfo>
-                  <FlyingLabel className="ppmedium">
-                    Проницательность // Insight
-                  </FlyingLabel>
-                </InfoFlexBox>
-                <InfoFlexBox>
-                  <PlayerInfo>{player.inv}</PlayerInfo>
-                  <FlyingLabel className="ppmedium">
-                    Расследование // Investigation
-                  </FlyingLabel>
-                </InfoFlexBox>
-                <InfoFlexBox>
-                  <PlayerInfo>{player.perc}</PlayerInfo>
-                  <FlyingLabel className="ppmedium">
-                    Восприятие // Perception
-                  </FlyingLabel>
-                </InfoFlexBox>
-                <InfoFlexBox style={{ marginBottom: 34 }}>
-                  <PlayerInfo>{player.language}</PlayerInfo>
-                  <FlyingLabel className="ppmedium">Языки</FlyingLabel>
-                </InfoFlexBox>
-                <A_Button
-                  warning
-                  handleButtonClick={() => console.log("Это был пранк")}
-                >
-                  Удалить
-                </A_Button>
-              </FlexBox>
-            </FlexBox>
-          </M_Card>
-        </Card>
-      );
-    });
-  };
+  if (isLoading) {
+    return <A_Loader />;
+  }
 
   return (
-    <>
-      {isLoading ? (
-        <A_Loader></A_Loader>
-      ) : (
-        <AuthWrapper className="AuthWrapper">
-          {gameData.length > 0 ? (
-            <CardStack
-              className="CardStakc"
-              style={{ width: 24 * (gameData.length - 1) + 420 }}
-            >
-              {list()}
-            </CardStack>
-          ) : (
-            <BlankColumn></BlankColumn>
-          )}
-          <ActionWrapper direction="column">
-            <M_Card type="chCreate">
-              <FlexBox direction="column">
-                <Select
-                  options={options}
-                  styles={colourStyles}
-                  name="imagestring"
-                  onChange={handleSelectChange}
-                  formatOptionLabel={(country) => (
-                    <div
-                      style={{
-                        display: "flex",
-                        alignContent: "center",
-                        alignItems: "center",
-                        justifyContent: "flex-start",
-                        width: "100%",
-                        height: "100%",
-                      }}
-                      className="country-option"
-                    >
-                      <img
-                        src={country.image}
-                        alt="country-image"
-                        style={{
-                          objectFit: "cover",
-                          width: "100%",
-                          height: "100%",
-                        }}
-                      />
-                    </div>
-                  )}
-                  isSearchable={false}
-                  placeholder={
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        marginTop: "32px",
-                      }}
-                    >
-                      <img
-                        style={{ width: 22, height: 28 }}
-                        src={url}
-                        alt="country-image"
-                      />
-                      <p>Выберите аватар</p>
-                    </div>
-                  }
-                  components={{
-                    DropdownIndicator: () => null,
-                    IndicatorSeparator: () => null,
-                  }}
-                />
-                <div
-                  style={{ paddingLeft: 14, paddingRight: 14, paddingTop: 18 }}
-                >
-                  <A_Input
-                    name="name"
-                    type="text"
-                    placeholder="Почта"
-                    onChange={handleInputChange}
-                    label="Имя игрока"
-                    style={{ marginBottom: 6 }}
-                    value={newPlayer.name}
-                  ></A_Input>
-                  <A_Input
-                    name="username"
-                    type="text"
-                    placeholder="Пароль"
-                    onChange={handleInputChange}
-                    className={isEmpty ? "empty" : ""}
-                    label="Имя игрока"
-                    style={{ marginBottom: 6 }}
-                    value={newPlayer.username}
-                  ></A_Input>
-                  <A_Input
-                    name="ins"
-                    ins
-                    type="number"
-                    placeholder="Пароль"
-                    onChange={handleInputChange}
-                    className={isEmpty ? "empty" : ""}
-                    label="Проницательность"
-                    style={{ marginBottom: 6 }}
-                    value={newPlayer.ins}
-                  ></A_Input>
-                  <A_Input
-                    name="inv"
-                    type="number"
-                    placeholder="Пароль"
-                    onChange={handleInputChange}
-                    className={isEmpty ? "empty" : ""}
-                    label="Расследование"
-                    style={{ marginBottom: 6 }}
-                    value={newPlayer.inv}
-                    inv
-                  ></A_Input>
-                  <A_Input
-                    name="perc"
-                    type="number"
-                    perc
-                    placeholder="Пароль"
-                    onChange={handleInputChange}
-                    className={isEmpty ? "empty" : ""}
-                    label="Восприятие"
-                    style={{ marginBottom: 6 }}
-                    value={newPlayer.perc}
-                  ></A_Input>
-                  <A_Input
-                    name="language"
-                    type="text"
-                    placeholder="Пароль"
-                    onChange={handleInputChange}
-                    className={isEmpty ? "empty" : ""}
-                    label="Языки"
-                    style={{ marginBottom: 40 }}
-                    value={newPlayer.language}
-                  ></A_Input>
-                  <A_Button
-                    disabled={
-                      newPlayer.username === "" ||
-                      newPlayer.name === "" ||
-                      newPlayer.ins === "" ||
-                      newPlayer.inv === "" ||
-                      newPlayer.perc === "" ||
-                      newPlayer.language === "" ||
-                      newPlayer.imagestring === ""
-                    }
-                    handleButtonClick={handleSubmit}
-                  >
-                    Добавить
-                  </A_Button>
-                </div>
-              </FlexBox>
-            </M_Card>
-          </ActionWrapper>
-          <O_Tracker step="gamecreation">
-            <Link to="../game" state={{ code: code }}>
-              <A_Button
-                solid
-                handleButtonClick={() => console.log("Next Step")}
-                disabled={gameData.length < 1}
-              >
-                Продолжить
-              </A_Button>
-            </Link>
-          </O_Tracker>
-        </AuthWrapper>
-      )}
-    </>
+    <Wrapper className="AuthWrapper">
+      <T_PlayersList
+        context="create"
+        code={code}
+        data={players}
+        handleDeleteNewPlayer={handleDeleteNewPlayer}
+      />
+      <O_CreationCard
+        options={options}
+        handleSelectChange={handleSelectChange}
+        handleInputChange={handleInputChange}
+        handlePostNewPlayer={handlePostNewPlayer}
+        disabled={
+          newPlayer.username === "" ||
+          newPlayer.name === "" ||
+          newPlayer.ins === "" ||
+          newPlayer.inv === "" ||
+          newPlayer.perc === "" ||
+          newPlayer.imagestring === "" ||
+          tags.length == 0
+        }
+        name={newPlayer.name}
+        username={newPlayer.username}
+        ins={newPlayer.ins}
+        inv={newPlayer.inv}
+        perc={newPlayer.perc}
+        language={newPlayer.language}
+        inputValue={inputValue}
+        handleTextChange={handleTextChange}
+        handleKeyPress={handleKeyPress}
+        tags={tags}
+        removeTag={removeTag}
+        selectedOption={selectedOption}
+      />
+      <O_Tracker
+        step="gamecreation"
+        disabled={players.length < 1}
+        handleButtonClick={() => navigate(`/game/${code}`)}
+        // handleButtonClick={() => navigate(`/game`, { state: { code } })}
+      />
+    </Wrapper>
   );
 }
