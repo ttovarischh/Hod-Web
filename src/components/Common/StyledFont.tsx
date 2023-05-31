@@ -243,6 +243,33 @@ export const J_Text = (props: TextProps) => {
   );
 };
 
+export const K_Text = (props: TextProps) => {
+  return (
+    <p
+      className="ppmedium"
+      style={{
+        fontSize: props.size || 48,
+        lineHeight: props.lineHeight || "57px",
+        color: props.color || "#FFFFFF",
+        margin: 0,
+        opacity: 0.8,
+        textAlign: props.center ? "center" : "left",
+        marginTop: props.offsetTop ? props.offsetTop : 0,
+        marginBottom: props.offsetBottom ? props.offsetBottom : 0,
+        marginLeft: props.offsetLeft ? props.offsetLeft : 0,
+        marginRight: props.offsetRight ? props.offsetRight : 0,
+        textTransform: props.uppercase
+          ? "uppercase"
+          : props.capitalize
+          ? "capitalize"
+          : "none",
+      }}
+    >
+      {props.children}
+    </p>
+  );
+};
+
 export const Panama = (props: TextProps) => {
   const theme = useContext(ThemeContext);
   return (

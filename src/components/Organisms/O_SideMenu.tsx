@@ -19,6 +19,7 @@ type SMProps = {
   isLeftOpened?: any;
   isRightOpened?: any;
   type?: string;
+  effectsData?: any;
 };
 
 const SMWrapper = styled(FlexBox)`
@@ -60,8 +61,16 @@ const EffectsWrapper = styled(FlexBox)`
   background: #0e0e0e;
 `;
 
-const O_SideMenu = (props: SMProps) => {
-  const [effectsData, setEffectsData] = useState<any[]>([]);
+const O_SideMenu = ({
+  disabled,
+  children,
+  code,
+  handleButtonCLick,
+  isLeftOpened,
+  isRightOpened,
+  type,
+  effectsData,
+}: SMProps) => {
   const [selectedEffect, setSelectedEffect] = useState<any>(null);
   const [note, setNote] = useState("");
 
@@ -74,33 +83,27 @@ const O_SideMenu = (props: SMProps) => {
     setNote(value);
   };
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/api/v1/effects")
-      .then(({ data }) => {
-        setEffectsData(data);
-      })
-      .catch((error) => console.error(error))
-      .finally(() => {});
-  }, []);
-
   const list = () => {
-    return effectsData.map((effect) => {
+    return effectsData?.map((effect: any, index: any) => {
       return (
-        <M_ListItem effect={effect} handleEffectClick={handleEffectClick} />
+        <M_ListItem
+          key={index}
+          effect={effect}
+          handleEffectClick={handleEffectClick}
+        />
       );
     });
   };
 
-  if (props.type == "left") {
+  if (type == "left") {
     return (
       <SMWrapper
         style={{
-          left: props.isLeftOpened ? 0 : -345,
+          left: isLeftOpened ? 0 : -345,
           zIndex: 1001,
         }}
       >
-        <ActionWrapper onClick={props.handleButtonCLick}>
+        <ActionWrapper onClick={handleButtonCLick}>
           <Chevrone className="Chev">
             <A_Icon iconName="Chevrone" />
           </Chevrone>
@@ -111,7 +114,7 @@ const O_SideMenu = (props: SMProps) => {
           </FlexBox>
           {list()}
         </EffectsWrapper>
-        {props.isLeftOpened && (
+        {isLeftOpened && (
           <O_EffectCard
             effect={selectedEffect}
             handleCloseModal={() => setSelectedEffect(null)}
@@ -123,11 +126,11 @@ const O_SideMenu = (props: SMProps) => {
   return (
     <SMWrapper
       style={{
-        right: props.isRightOpened ? 0 : -345,
+        right: isRightOpened ? 0 : -345,
         zIndex: 1001,
       }}
     >
-      <ActionWrapper onClick={props.handleButtonCLick}>
+      <ActionWrapper onClick={handleButtonCLick}>
         <ChevroneTwo className="Chev">
           <A_Icon iconName="ChevroneTwo" />
         </ChevroneTwo>
@@ -138,8 +141,8 @@ const O_SideMenu = (props: SMProps) => {
           justifyContent="center"
           style={{ width: 292, alignSelf: "center" }}
         >
-          <A_Qr code={props.code} />
-          <A_Button small solid handleButtonClick={props.handleButtonCLick}>
+          <A_Qr code={code} />
+          <A_Button small solid handleButtonClick={handleButtonCLick}>
             Завершить сессию
           </A_Button>
         </FlexBox>

@@ -50,11 +50,14 @@ const O_Modal = (props: ButtonProps) => {
           justifyContent="flex-end"
           style={{ width: "100%", marginTop: 65, marginBottom: 65 }}
         >
-          <O_Tracker step="gamecreated">
-            <A_Button solid handleButtonClick={props.handleButtonCLick}>
-              Продолжить
-            </A_Button>
-          </O_Tracker>
+          <O_Tracker
+            header
+            one="Создание персонажей"
+            three="Игра"
+            handleButtonClick={props.handleButtonCLick}
+            active="three"
+            buttonText="Продолжить"
+          />
         </FlexBox>
       </ModalWrapper>
     );

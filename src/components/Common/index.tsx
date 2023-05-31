@@ -12,4 +12,5 @@ export {
   G_Text,
   H_Text,
   J_Text,
+  K_Text,
 } from "./StyledFont";

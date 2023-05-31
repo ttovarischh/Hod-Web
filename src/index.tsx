@@ -20,6 +20,7 @@ import axios from "axios";
 import SingleGame from "./routes/GamePath/SingleGame";
 import { ActionCableProvider } from "react-actioncable-provider";
 import { API_WS_ROOT } from "./constants";
+import FullInitiative from "./routes/GamePath/FullInitiative";
 
 // axios.defaults.withCredentials = true;
 axios.defaults.headers.common["Authorization"] =
@@ -67,6 +68,10 @@ const router = createBrowserRouter([
       {
         path: "game/:code",
         element: <SingleGame />,
+      },
+      {
+        path: "game/:code/initiative",
+        element: <FullInitiative />,
       },
     ],
   },

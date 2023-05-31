@@ -1423,6 +1423,21 @@ const A_Icon = (props: PropsT) => {
         </defs>
       </svg>
     );
+  } else if (props.iconName === "TagPlus") {
+    return (
+      <svg
+        width="16"
+        height="14"
+        viewBox="0 0 16 14"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M6.2422 14V0H9.21341V14H6.2422ZM0.266663 8.38757V5.60207H15.2V8.38757H0.266663Z"
+          fill="#1A1A1A"
+        />
+      </svg>
+    );
   }
   return <></>;
 };

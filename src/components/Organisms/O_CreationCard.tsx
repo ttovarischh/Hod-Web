@@ -15,11 +15,11 @@ type Props = {
   handlePostNewPlayer?: any;
   handleDeleteNewPlayer?: any;
   disabled?: any;
-  name: any;
-  username: any;
-  ins: any;
-  inv: any;
-  perc: any;
+  name?: any;
+  username?: any;
+  ins?: any;
+  inv?: any;
+  perc?: any;
   language?: any;
   tags?: any;
   inputValue?: any;
@@ -30,6 +30,9 @@ type Props = {
   imagestring?: any;
   langs?: any;
   selectedOption?: any;
+  monster?: boolean;
+  armor?: any;
+  hp?: any;
 };
 
 const InputsWrapper = styled(FlexBox)`
@@ -69,6 +72,9 @@ const O_CreationCard = ({
   imagestring,
   langs,
   selectedOption,
+  monster,
+  armor,
+  hp,
   ...rest
 }: Props) => {
   const colourStyles: StylesConfig<any> = {
@@ -149,18 +155,38 @@ const O_CreationCard = ({
       <FlexBox>
         <InputsWrapper>
           <FlexBox direction="column">
-            <A_Avatar wide imagestring={imagestring} />
+            {!monster && <A_Avatar wide imagestring={imagestring} />}
             <InfoWrapper>
-              <M_CardPart info={name} label="Имя персонажа" />
-              <M_CardPart info={username} label="Имя игрока" />
-              <M_CardPart ins info={ins} label="Проницательность // Insight" />
-              <M_CardPart
-                inv
-                info={inv}
-                label="Расследование // Investigation"
-              />
-              <M_CardPart perc info={perc} label="Восприятие // Perception" />
-              <M_CardPart label="Языки" info={langs} langs />
+              {!monster ? (
+                <>
+                  <M_CardPart info={name} label="Имя персонажа" />
+                  <M_CardPart info={username} label="Имя игрока" />
+                  <M_CardPart
+                    ins
+                    info={ins}
+                    label="Проницательность // Insight"
+                  />
+                  <M_CardPart
+                    inv
+                    info={inv}
+                    label="Расследование // Investigation"
+                  />
+                  <M_CardPart
+                    perc
+                    info={perc}
+                    label="Восприятие // Perception"
+                  />
+                  <M_CardPart label="Языки" info={langs} langs />
+                </>
+              ) : (
+                <>
+                  <M_CardPart info={name} label="Имя или название НПС" />
+                  <M_CardPart info={armor} label="Класс брони" />
+                  <FlexBox style={{ marginBottom: 40 }}>
+                    <M_CardPart info={hp} label="Очки здоровья" />
+                  </FlexBox>
+                </>
+              )}
               <A_Button warning handleButtonClick={handleDeleteNewPlayer}>
                 Удалить
               </A_Button>
@@ -172,89 +198,132 @@ const O_CreationCard = ({
   }
 
   return (
-    <FlexBox>
+    <FlexBox
+      style={{
+        zIndex: monster ? 10001 : 1,
+      }}
+    >
       <InputsWrapper>
         <FlexBox direction="column">
-          <Select
-            options={options}
-            styles={colourStyles}
-            name="imagestring"
-            onChange={handleSelectChange}
-            value={selectedOption}
-            formatOptionLabel={(country) => (
-              <A_ImageInSelector src={country.image} />
-            )}
-            isSearchable={false}
-            placeholder={<A_ImageSelect />}
-            components={{
-              DropdownIndicator: () => null,
-              IndicatorSeparator: () => null,
-            }}
-          />
+          {!monster && (
+            <Select
+              options={options}
+              styles={colourStyles}
+              name="imagestring"
+              onChange={handleSelectChange}
+              value={selectedOption}
+              formatOptionLabel={(country) => (
+                <A_ImageInSelector src={country.image} />
+              )}
+              isSearchable={false}
+              placeholder={<A_ImageSelect />}
+              components={{
+                DropdownIndicator: () => null,
+                IndicatorSeparator: () => null,
+              }}
+            />
+          )}
           <div style={{ paddingLeft: 14, paddingRight: 14, paddingTop: 18 }}>
-            <A_Input
-              name="name"
-              type="text"
-              placeholder="Имя персонажа"
-              onChange={handleInputChange}
-              label="Имя персонажа"
-              style={{ marginBottom: 6 }}
-              value={name}
-            ></A_Input>
-            <A_Input
-              name="username"
-              type="text"
-              placeholder="Пароль"
-              onChange={handleInputChange}
-              label="Имя игрока"
-              style={{ marginBottom: 6 }}
-              value={username}
-            ></A_Input>
-            <A_Input
-              name="ins"
-              ins
-              type="text"
-              maxLength={2}
-              placeholder="Проницательность"
-              onChange={handleInputChange}
-              label="Проницательность"
-              style={{ marginBottom: 6 }}
-              value={ins}
-            ></A_Input>
-            <A_Input
-              name="inv"
-              type="text"
-              maxLength={2}
-              placeholder="Расследование"
-              onChange={handleInputChange}
-              label="Расследование"
-              style={{ marginBottom: 6 }}
-              value={inv}
-              inv
-            ></A_Input>
-            <A_Input
-              name="perc"
-              perc
-              type="text"
-              maxLength={2}
-              placeholder="Восприятие"
-              onChange={handleInputChange}
-              label="Восприятие"
-              style={{ marginBottom: 6 }}
-              value={perc}
-            ></A_Input>
-            <A_Input
-              languages
-              name="language"
-              type="text"
-              placeholder="Пароль"
-              handleTextChange={handleTextChange}
-              onKeyDown={handleKeyPress}
-              label="Языки"
-              value={inputValue}
-              tags={tags}
-              removeTag={removeTag}
-            ></A_Input>
+            {!monster ? (
+              <>
+                <A_Input
+                  name="name"
+                  type="text"
+                  placeholder="Имя персонажа"
+                  onChange={handleInputChange}
+                  label="Имя персонажа"
+                  style={{ marginBottom: 6 }}
+                  value={name}
+                ></A_Input>
+                <A_Input
+                  name="username"
+                  type="text"
+                  placeholder="Пароль"
+                  onChange={handleInputChange}
+                  label="Имя игрока"
+                  style={{ marginBottom: 6 }}
+                  value={username}
+                ></A_Input>
+                <A_Input
+                  name="ins"
+                  ins
+                  type="text"
+                  maxLength={2}
+                  placeholder="Проницательность"
+                  onChange={handleInputChange}
+                  label="Проницательность"
+                  style={{ marginBottom: 6 }}
+                  value={ins}
+                ></A_Input>
+                <A_Input
+                  name="inv"
+                  type="text"
+                  maxLength={2}
+                  placeholder="Расследование"
+                  onChange={handleInputChange}
+                  label="Расследование"
+                  style={{ marginBottom: 6 }}
+                  value={inv}
+                  inv
+                ></A_Input>
+                <A_Input
+                  name="perc"
+                  perc
+                  type="text"
+                  maxLength={2}
+                  placeholder="Восприятие"
+                  onChange={handleInputChange}
+                  label="Восприятие"
+                  style={{ marginBottom: 6 }}
+                  value={perc}
+                ></A_Input>
+                <A_Input
+                  languages
+                  name="language"
+                  type="text"
+                  placeholder="Пароль"
+                  handleTextChange={handleTextChange}
+                  onKeyDown={handleKeyPress}
+                  label="Языки"
+                  value={inputValue}
+                  tags={tags}
+                  removeTag={removeTag}
+                ></A_Input>
+              </>
+            ) : (
+              <>
+                <A_Input
+                  name="name"
+                  type="text"
+                  placeholder="Имя или название НПС"
+                  onChange={handleInputChange}
+                  label="Имя или название НПС"
+                  style={{ marginBottom: 6 }}
+                  value={name}
+                ></A_Input>
+                <A_Input
+                  name="armor"
+                  type="text"
+                  maxLength={2}
+                  placeholder="Класс брони"
+                  onChange={handleInputChange}
+                  label="Класс брони"
+                  style={{ marginBottom: 6 }}
+                  value={armor}
+                ></A_Input>
+                <A_Input
+                  name="hp"
+                  type="text"
+                  maxLength={2}
+                  placeholder="Очки здоровья"
+                  onChange={handleInputChange}
+                  label="Очки здоровья"
+                  style={{ marginBottom: 40 }}
+                  value={hp}
+                ></A_Input>
+              </>
+            )}
+
             <A_Button
               secondary
               disabled={disabled}

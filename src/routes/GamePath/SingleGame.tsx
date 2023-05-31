@@ -1,10 +1,8 @@
 import styled from "styled-components";
-import { FlexBox, A_Text } from "../../components/Common";
-import A_Button from "../../components/Atoms/A_Button";
-import { useNavigate, useLocation } from "react-router-dom";
+import { FlexBox } from "../../components/Common";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useAuth from "../../authContext/useAuth";
-import M_Card from "../../components/Molecules/M_Card";
 import axios from "axios";
 import A_Loader from "../../components/Atoms/A_Loader";
 import O_Tracker from "../../components/Organisms/O_Tracker";
@@ -12,7 +10,8 @@ import O_Modal from "../../components/Organisms/O_Modal";
 import M_BreadCrumb from "../../components/Molecules/M_BreadCrumb";
 import O_SideMenu from "../../components/Organisms/O_SideMenu";
 import { useParams } from "react-router-dom";
-import O_EffectCard from "../../components/Organisms/O_EffectCard";
+import O_Card from "../../components/Organisms/O_Card";
+import O_EffectList from "../../components/Organisms/O_EffectList";
 
 const AuthWrapper = styled(FlexBox)`
   justify-content: space-between;
@@ -29,19 +28,19 @@ const AuthWrapper = styled(FlexBox)`
   }
   flex-direction: column;
   transition: all 1s all;
+  flex-wrap: nowrap;
 `;
 
-const Lang = styled(FlexBox)`
-  padding: 8px 12px;
-  background: #383838;
-  border-radius: 10px;
-  justify-content: center;
-  align-content: center;
+const CardsScrollWrapper = styled(FlexBox)`
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
+  align-items: center;
 `;
 
 const CardsScroll = styled(FlexBox)`
-  width: fit-content;
-  flex-wrap: nowrap;
+  width: 100%;
+  flex-wrap: wrap;
   gap: 20px;
   :first-child {
     margin-left: 66px;
@@ -63,18 +62,17 @@ const RealBlur = styled(FlexBox)`
 
 export default function SingleGame() {
   const { code } = useParams<{ code: any }>();
-
   const [isModalOpened, setIsModalOpened] = useState(true);
   const [isLeftOpened, setIsLeftOpened] = useState(false);
   const [isRightOpened, setIsRightOpened] = useState(false);
-
-  // const [gameData, setGameData] = useState<any>(null);
+  const [isEffectsOpened, setEffectsOpened] = useState(false);
   const [gameData, setGameData] = useState<any>([]);
-
   const { user, login, loading, error } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(true);
   const [isOld, setIsOld] = useState(false);
+  const [effectsData, setEffectsData] = useState<any[]>([]);
+  const [selectedPlayerEffects, setSelectedPlayerEffects] = useState<any[]>([]);
 
   useEffect(() => {
     if (gameData && gameData.created_at) {
@@ -84,8 +82,9 @@ export default function SingleGame() {
         (currentTime.getTime() - createdAt.getTime()) / 1000
       );
 
-      if (timeDifferenceInSeconds > 30) {
+      if (timeDifferenceInSeconds > 600) {
         setIsOld(true);
+        setIsModalOpened(false);
       }
     }
   }, [gameData]);
@@ -96,18 +95,55 @@ export default function SingleGame() {
 
   useEffect(() => {
     console.log(code);
-    axios
-      .get("http://localhost:3000/api/v1/games/" + code)
-      .then(({ data }) => {
-        setGameData(data);
+
+    const getEffects = axios.get("http://localhost:3000/api/v1/effects");
+    const getGames = axios.get("http://localhost:3000/api/v1/games/" + code);
+
+    Promise.all([getEffects, getGames])
+      .then(([effectsResponse, gamesResponse]) => {
+        const effectsData = effectsResponse.data;
+        const gamesData = gamesResponse.data;
+
+        setEffectsData(effectsData);
+        setGameData(gamesData);
       })
       .catch((error) => console.error(error))
       .finally(() => {
         console.log("Done get");
-        console.log(gameData);
+        console.log(effectsData);
         setLoading(false);
       });
   }, []);
+
+  const handleButtonClick = (player: any) => {
+    new Promise<void>((resolve) => {
+      setSelectedPlayerEffects(player.effects);
+      resolve();
+    }).then(() => {
+      setEffectsOpened(true);
+    });
+  };
+
+  const handleCrossClick = () => {
+    setSelectedPlayerEffects([]);
+    setEffectsOpened(false);
+  };
+
+  // axios
+  //   .patch(`http://localhost:3000/api/v1/games/${code}`, {
+  //     game: {
+  //       fight: true,
+  //     },
+  //   })
+  //   .then((response) => {})
+  //   .catch((error) => console.error(error))
+  //   .finally(() => {
+  //     navigate(`/game/${code}/initiative`);
+  //   });
+
+  const handleTrackerButtonClick = () => {
+    navigate(`/game/${code}/initiative`);
+  };
 
   const list = () => {
     return gameData.players.map((player: any, index: any) => {
@@ -116,23 +152,19 @@ export default function SingleGame() {
         langs = player.language.split(" ");
       }
       return (
-        <M_Card
-          type="gameMode"
-          key={player.id}
+        <O_Card
+          key={index}
           imagestring={player.imagestring}
           playerName={player.name}
-          userName={player.username}
+          username={player.username}
           perc={player.perc}
           ins={player.ins}
           inv={player.inv}
-        >
-          {langs &&
-            langs.map((sublang: any, index: any) => (
-              <Lang key={index}>
-                <A_Text>{sublang}</A_Text>
-              </Lang>
-            ))}
-        </M_Card>
+          langs={langs}
+          effects={player.effects}
+          superSmall={index >= 3}
+          handlePlusClick={() => handleButtonClick(player)}
+        />
       );
     });
   };
@@ -143,51 +175,62 @@ export default function SingleGame() {
 
   return (
     <AuthWrapper className="AuthWrapper">
+      {isEffectsOpened && (
+        <O_EffectList
+          effectsData={effectsData}
+          handleCloseModal={() => setEffectsOpened(false)}
+          playerEffects={selectedPlayerEffects}
+        />
+      )}
       {isModalOpened && !isOld && (
         <>
           <FlexBox style={{ marginLeft: 66 }}>
             <M_BreadCrumb>Назад</M_BreadCrumb>
           </FlexBox>
           <O_Modal
-            handleButtonCLick={() => setIsModalOpened(false)}
+            handleButtonCLick={handleCrossClick}
             step="gamecreated"
             code={code}
           ></O_Modal>
         </>
       )}
-      <O_SideMenu
-        code={code}
-        isRightOpened={isRightOpened}
-        handleButtonCLick={() => setIsRightOpened(!isRightOpened)}
-      ></O_SideMenu>
-      <O_SideMenu
-        type="left"
-        isLeftOpened={isLeftOpened}
-        handleButtonCLick={() => setIsLeftOpened(!isLeftOpened)}
-      ></O_SideMenu>
+      {!isModalOpened && (
+        <>
+          <FlexBox style={{ left: 66, position: "absolute" }}>
+            <M_BreadCrumb>Назад</M_BreadCrumb>
+          </FlexBox>
+          {effectsData && ( // Render O_SideMenu only if effectsData is available
+            <O_SideMenu
+              code={code}
+              isRightOpened={isRightOpened}
+              handleButtonCLick={() => setIsRightOpened(!isRightOpened)}
+            />
+          )}
+          <O_SideMenu
+            type="left"
+            isLeftOpened={isLeftOpened}
+            handleButtonCLick={() => setIsLeftOpened(!isLeftOpened)}
+            effectsData={effectsData}
+          ></O_SideMenu>
+        </>
+      )}
       <RealBlur
         style={{
           background:
-            isLeftOpened || isRightOpened
-              ? "rgba(0, 0, 0, 0.78)"
+            isLeftOpened || isRightOpened || isEffectsOpened
+              ? "rgba(0, 0, 0, 0.8)"
               : "transparent",
-          zIndex: isLeftOpened || isRightOpened ? 1000 : -1,
+          zIndex: isLeftOpened || isRightOpened || isEffectsOpened ? 1000 : -1,
         }}
       ></RealBlur>
-      <FlexBox style={{ width: "100%", overflow: "scroll" }}>
+      <CardsScrollWrapper>
         <CardsScroll>{list()}</CardsScroll>
-      </FlexBox>
-      {/* <FlexBox style={{ marginRight: 66, alignSelf: "flex-end" }}>
-        <O_Tracker disabled={gameData.players.length < 1} step="gamecreated">
-          <A_Button
-            solid
-            small
-            handleButtonClick={() => console.log("Next Step")}
-          >
-            В режим инициативы
-          </A_Button>
-        </O_Tracker>
-      </FlexBox> */}
+      </CardsScrollWrapper>
+      <O_Tracker
+        offsetRight={70}
+        buttonText="В режим инициативы"
+        handleButtonClick={handleTrackerButtonClick}
+      />
     </AuthWrapper>
   );
 }

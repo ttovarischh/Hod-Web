@@ -281,10 +281,14 @@ export default function Create() {
         selectedOption={selectedOption}
       />
       <O_Tracker
-        step="gamecreation"
+        header
+        one="Создание персонажей"
+        three="Игра"
         disabled={players.length < 1}
         handleButtonClick={() => navigate(`/game/${code}`)}
-        // handleButtonClick={() => navigate(`/game`, { state: { code } })}
+        note="Сначала надо создать хотя бы одного персонажа"
+        active="one"
+        buttonText="Продолжить"
       />
     </Wrapper>
   );
