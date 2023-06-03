@@ -30,7 +30,7 @@ const TrackerWrapper = styled(FlexBox)`
   button {
     width: 292px !important;
   }
-  z-index: 10001;
+  // z-index: 10001;
 `;
 
 const O_Tracker = (props: ButtonProps) => {

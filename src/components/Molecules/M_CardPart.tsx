@@ -3,6 +3,8 @@ import { FlexBox, B_Text } from "../Common";
 import A_Icon from "../Atoms/A_Icon";
 import A_Tag from "../Atoms/A_Tag";
 import M_StatSet from "./M_StatSet";
+import A_Toggle from "../Atoms/A_Toggle";
+import A_Stat from "../Atoms/A_Stat";
 
 type BСProps = {
   info?: any;
@@ -16,7 +18,23 @@ type BСProps = {
   playerName?: any;
   username?: any;
   handlePlusClick?: any;
+  toggleConc?: any;
+  id?: any;
+  conc?: any;
+  code?: any;
+  monster?: boolean;
+  armor?: any;
 };
+
+const MonsterArmorImg = styled.div`
+  position: absolute;
+  background-size: contain;
+  height: 100%;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  pointer-events: none;
+`;
 
 const InfoFlexBox = styled(FlexBox)`
   width: calc(392px - 16px);
@@ -49,6 +67,16 @@ const IconWrapper = styled(FlexBox)`
   top: 11.5px;
 `;
 
+const MonsterArmorFlexBox = styled(FlexBox)`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 146px;
+  right: 0px;
+  justify-content: center;
+  align-items: flex-end;
+`;
+
 const Label = styled.p`
   font-size: 18px;
   line-height: 18px;
@@ -74,16 +102,17 @@ const TagsScroll = styled(FlexBox)`
   }
 `;
 
-const NamesCifWrapper = styled(FlexBox)`
+const NamesCifWrapper = styled(FlexBox)<{ monster?: boolean }>`
   flex-direction: column;
   justify-content: space-between;
-  height: 201px;
+  height: ${(props) => (props.monster ? "auto" : "201px")};
+  margin-bottom: ${(props) => (props.monster ? "13px" : "0px")};
   width: 232px;
 `;
 
-const NamesWrapper = styled(FlexBox)`
-  margin-left: 20px;
-  margin-top: 4px;
+const NamesWrapper = styled(FlexBox)<{ monster?: boolean }>`
+  margin-left: ${(props) => (props.monster ? "0px" : "20px")};
+  margin-top: ${(props) => (props.monster ? "14px" : "4px")};
   flex-direction: column;
 `;
 
@@ -99,17 +128,48 @@ const M_CardPart = ({
   playerName,
   username,
   handlePlusClick,
+  toggleConc,
+  id,
+  conc,
+  code,
+  monster,
+  armor,
   ...rest
 }: BСProps) => {
   if (playerName) {
     return (
-      <NamesCifWrapper>
-        <NamesWrapper>
+      <NamesCifWrapper monster={monster}>
+        <NamesWrapper monster={monster}>
           <B_Text color="#A4A4AC">{playerName}</B_Text>
-          <B_Text color="#7C7C7C">{username}</B_Text>
+          {!monster && <B_Text color="#7C7C7C">{username}</B_Text>}
         </NamesWrapper>
-        <M_StatSet ins={ins} perc={perc} inv={inv} />
+        {!monster && <M_StatSet ins={ins} perc={perc} inv={inv} />}
       </NamesCifWrapper>
+    );
+  }
+  if (toggleConc) {
+    return (
+      <FlexBox alignItems="center" style={{ gap: 12 }}>
+        <A_Toggle playerId={id} active={conc} code={code} />
+        <Label style={{ marginBottom: 0 }} className="ppmedium">
+          Концентрация
+        </Label>
+      </FlexBox>
+    );
+  }
+  if (armor) {
+    return (
+      <MonsterArmorFlexBox>
+        <MonsterArmorImg
+          style={{
+            backgroundImage:
+              "url(" + require("../../images/monsterAvatar.png") + ")",
+          }}
+        />
+        <FlexBox style={{ marginBottom: 10 }}>
+          <A_Stat iconName="ArmorIcon" stat={45} />
+        </FlexBox>
+      </MonsterArmorFlexBox>
     );
   }
   return (

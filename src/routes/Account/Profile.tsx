@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState, useContext } from "react";
-import { FlexBox, E_Text } from "../../components/Common";
+import { FlexBox } from "../../components/Common";
 import styled from "styled-components";
 import A_Button from "../../components/Atoms/A_Button";
 import useAuth from "../../authContext/useAuth";
@@ -9,6 +9,7 @@ import { ThemeContext } from "styled-components";
 import A_Loader from "../../components/Atoms/A_Loader";
 import A_Counter from "../../components/Atoms/A_Counter";
 import A_InactiveField from "../../components/Atoms/A_InactiveField";
+import { useTranslation } from "react-i18next";
 
 const ProfileWrapper = styled(FlexBox)`
   padding-top: 88px;
@@ -37,6 +38,7 @@ export default function Profile() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const theme = useContext(ThemeContext);
+  const { t } = useTranslation();
 
   const doLogout = () => {
     logout(user!.email);
@@ -65,20 +67,28 @@ export default function Profile() {
   return (
     <ProfileWrapper direction="column">
       <FlexBox style={{ gap: 80 }}>
-        <A_Counter header="игр сыграно">{effectsData!.length}</A_Counter>
-        <A_Counter header="игр проведено">{filteredGames!.length}</A_Counter>
+        <A_Counter header={t("common:masteredGames")}>
+          {effectsData!.length}
+        </A_Counter>
+        <A_Counter header={t("common:playedGames")}>
+          {filteredGames!.length}
+        </A_Counter>
       </FlexBox>
       <FlexBox direction="column" style={{ gap: 12 }}>
-        <A_InactiveField header="Почта">{user!.email}</A_InactiveField>
-        <A_InactiveField header="Пароль">∗∗∗∗∗∗∗</A_InactiveField>
-        <A_InactiveField header="Никнейм">{user!.username}</A_InactiveField>
+        <A_InactiveField header={t("common:email")}>
+          {user!.email}
+        </A_InactiveField>
+        <A_InactiveField header={t("common:password")}>∗∗∗∗∗∗∗</A_InactiveField>
+        <A_InactiveField header={t("common:nick")}>
+          {user!.username}
+        </A_InactiveField>
       </FlexBox>
       <FlexBox alignItems="center" style={{ gap: 42 }}>
         <Link to="../settings">
-          <A_Button solid>Редактировать профиль</A_Button>
+          <A_Button solid>{t("common:settings")}</A_Button>
         </Link>
         <A_Button secondary handleButtonClick={doLogout}>
-          Выйти из профиля
+          {t("common:logout")}
         </A_Button>
       </FlexBox>
       <MainImage

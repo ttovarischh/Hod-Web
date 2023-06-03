@@ -6,6 +6,7 @@ import { useState } from "react";
 import A_Input from "../../components/Atoms/A_Input";
 import useAuth from "../../authContext/useAuth";
 import A_UnderlinedButton from "../../components/Atoms/A_UnderlinedButton";
+import { useTranslation } from "react-i18next";
 
 const AuthWrapper = styled(FlexBox)`
   width: 100%;
@@ -53,6 +54,7 @@ const ActionWrapper = styled(FlexBox)`
 `;
 
 export default function SignIn() {
+  const { t } = useTranslation();
   const [isEmpty, setIsEmpty] = useState(false);
   const [newUser, setNewUser] = useState({
     email: "",
@@ -133,29 +135,30 @@ export default function SignIn() {
           <A_Input
             name="email"
             type="email"
-            placeholder="Почта"
+            placeholder={t("common:email")}
             onChange={handleInputChange}
-            label="Почта"
+            label={t("common:email")}
             style={{ marginBottom: 12 }}
           ></A_Input>
           <A_Input
             name="password"
             type="password"
-            placeholder="Пароль"
+            placeholder={t("common:password")}
             onChange={handleInputChange}
             className={isEmpty ? "empty" : ""}
-            label="Пароль"
+            label={t("common:password")}
           ></A_Input>
-          <A_UnderlinedButton>Забыли пароль?</A_UnderlinedButton>
+          <A_UnderlinedButton>{t("common:forgot")}</A_UnderlinedButton>
           <A_Button
             disabled={newUser.email === "" || newUser.password === ""}
             handleButtonClick={handleSubmit}
           >
-            Вход
+            {t("common:login")}
           </A_Button>
         </form>
         <J_Text>
-          Нет аккаунта? <Link to="../registration">Зарегистрируйтесь</Link>
+          {t("common:noAccount")}{" "}
+          <Link to="../registration">{t("common:doSignIn")}</Link>
         </J_Text>
       </ActionWrapper>
     </AuthWrapper>

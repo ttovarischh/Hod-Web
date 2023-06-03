@@ -3,6 +3,7 @@ import { FlexBox, H_Text } from "../Common";
 import { Link } from "react-router-dom";
 import A_Icon from "../Atoms/A_Icon";
 import useAuth from "../../authContext/useAuth";
+import { useTranslation } from "react-i18next";
 
 const NavBar = styled(FlexBox)`
   position: absolute;
@@ -22,6 +23,7 @@ const NavBar = styled(FlexBox)`
 
 const O_Navbar = (props: any) => {
   const { user } = useAuth();
+  const { t } = useTranslation();
   return (
     <NavBar>
       <Link to={`/`} style={{ textDecoration: "none" }}>
@@ -33,7 +35,7 @@ const O_Navbar = (props: any) => {
         </Link>
       ) : (
         <Link to={`login`} style={{ textDecoration: "none" }}>
-          <H_Text medium>Войти</H_Text>
+          <H_Text medium>{t("common:login")}</H_Text>
         </Link>
       )}
     </NavBar>

@@ -1,7 +1,7 @@
 import { FlexBox } from "../Common/FlexBox";
-import A_Icon from "./A_Icon";
+import A_Icon from "../Atoms/A_Icon";
 import { K_Text } from "../Common";
-import M_Tooltip from "../Molecules/M_Tooltip";
+import M_Tooltip from "./M_Tooltip";
 import styled from "styled-components";
 import { useState } from "react";
 
@@ -14,7 +14,7 @@ const TooltipStatWrapper = styled(FlexBox)`
   position: relative;
 `;
 
-const A_Stat = ({ stat, iconName }: Props) => {
+const M_MonsterAvatar = ({ stat, iconName }: Props) => {
   const [isTooltipVisible, setTooltipVisible] = useState(false);
   return (
     <TooltipStatWrapper>
@@ -39,12 +39,13 @@ const A_Stat = ({ stat, iconName }: Props) => {
           eng="Perception"
         />
       )}
+
       <FlexBox
         direction="column"
         alignItems="center"
         onMouseEnter={() => setTooltipVisible(true)}
         onMouseOut={() => setTooltipVisible(false)}
-        style={{ cursor: iconName === "ArmorIcon" ? "default" : "help" }}
+        style={{ cursor: "help" }}
       >
         <A_Icon width={24} iconName={iconName} fill="#A4A4AC" />
         <K_Text>{stat}</K_Text>
@@ -53,4 +54,4 @@ const A_Stat = ({ stat, iconName }: Props) => {
   );
 };
 
-export default A_Stat;
+export default M_MonsterAvatar;

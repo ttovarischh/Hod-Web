@@ -59,7 +59,6 @@ const SmallButton = styled(SolidButton)`
   padding: 0;
   padding-top: 10px;
   padding-bottom: 10px;
-  width: 100%;
 `;
 
 const HollowButton = styled(BigButton)`
@@ -91,6 +90,12 @@ const HollowButton = styled(BigButton)`
   }
 `;
 
+const SmallHollowButton = styled(HollowButton)`
+  padding: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+`;
+
 const RedHollowButton = styled(BigButton)`
   color: ${(props) =>
     props.disabled ? props.theme.button.border_disabled_text : "#FF4040"};
@@ -107,7 +112,7 @@ const RedHollowButton = styled(BigButton)`
 `;
 
 const A_Button = (props: ButtonProps) => {
-  if (props.secondary) {
+  if (props.secondary && !props.tracker) {
     return (
       <HollowButton
         className="PPMeduim"
@@ -116,6 +121,16 @@ const A_Button = (props: ButtonProps) => {
       >
         {props.children}
       </HollowButton>
+    );
+  } else if (props.tracker && props.secondary) {
+    return (
+      <SmallHollowButton
+        className="PPMeduim"
+        onClick={props.disabled ? undefined : props.handleButtonClick}
+        disabled={props.disabled}
+      >
+        {props.children}
+      </SmallHollowButton>
     );
   }
   if (props.warning) {

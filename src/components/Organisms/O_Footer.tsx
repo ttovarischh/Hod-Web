@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { FlexBox, H_Text } from "../Common";
 import { Link } from "react-router-dom";
+import Selector from "../../i18n/LanguageSelector";
+import { useTranslation } from "react-i18next";
 
 const Footer = styled(FlexBox)`
   position: absolute;
@@ -17,17 +19,19 @@ const Footer = styled(FlexBox)`
 `;
 
 const O_Footer = (props: any) => {
+  const { t } = useTranslation();
   return (
     <Footer justifyContent="space-between">
       <FlexBox style={{ gap: 36 }}>
         <Link to={`about`} style={{ textDecoration: "none" }}>
-          <H_Text medium>О проекте</H_Text>
+          <H_Text medium>{t("common:about")}</H_Text>
         </Link>
         <Link to={`policy`} style={{ textDecoration: "none" }}>
-          <H_Text medium>Политика конфиденциальности</H_Text>
+          <H_Text medium>{t("common:pp")}</H_Text>
         </Link>
       </FlexBox>
-      <H_Text medium>Ru/En</H_Text>
+      <Selector />
+      {/* <H_Text medium>Ru/En</H_Text> */}
     </Footer>
   );
 };

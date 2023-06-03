@@ -15,6 +15,7 @@ interface TextProps {
   size?: number;
   capitalize?: boolean;
   medium?: boolean;
+  underline?: boolean;
 }
 
 export const A_Text = (props: TextProps) => {
@@ -208,6 +209,7 @@ export const H_Text = (props: TextProps) => {
           : props.capitalize
           ? "capitalize"
           : "none",
+        textDecoration: props.underline ? "underline" : "none",
       }}
     >
       {props.children}

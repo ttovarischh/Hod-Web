@@ -20,22 +20,42 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   handleCrossPress?: any;
   handleTextChange?: any;
   removeTag?: any;
+  special?: boolean;
+  hp?: any;
+  hpInput?: boolean;
 }
 
 // print('u r so hot (*__*' )')
 
-const FlyingLabel = styled.label`
+const FlyingLabel = styled.label<{ special?: boolean }>`
   font-size: 18px;
   line-height: 18px;
   letter-spacing: -0.011em;
   position: absolute;
-  left: 16px;
+  left: ${(props) => (props.special ? "25px" : "16px")};
   top: 18px;
   margin: 0;
   padding: 0;
   transition: all 0.5s ease;
   color: ${({ theme }) => theme.input.placeholder};
   pointer-events: none;
+`;
+
+const HpLabel = styled.p`
+  color: #7c7c7c;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 13px;
+  margin: 0;
+`;
+
+const PrevHp = styled.p`
+  font-size: 48px;
+  line-height: 58px;
+  text-align: center;
+  margin: 0;
+  color: #ffffff;
 `;
 
 const Label = styled.label`
@@ -49,18 +69,55 @@ const Label = styled.label`
   margin-bottom: 12px;
 `;
 
-const InputWrapper = styled.input`
+const HpFlexBox = styled(FlexBox)`
+  width: 221px;
+  height: 71px;
+  background: #0e0e0e;
+  border: 1px solid #262626;
+  border-radius: 12px;
+  padding: 10px 15px;
+  &:focus-within {
+    outline: 1px solid;
+    outline-color: ${({ theme }) => theme.input.simple_border};
+  }
+`;
+
+const HpRealInput = styled.input`
   border: none;
   outline: none;
-  padding-bottom: 16px;
-  padding-left: 16px;
-  width: 392px;
-  height: 38px;
+  width: 72px;
+  background-color: ${({ theme }) => theme.input.fill};
+  color: white;
+  font-size: 48px;
+  line-height: 58px;
+  ::placeholder {
+    color: #7c7c7c;
+  }
+  :-webkit-autofill,
+  :-webkit-autofill:hover,
+  :-webkit-autofill:focus,
+  :-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 40px #0e0e0e inset !important;
+    -webkit-text-fill-color: ${({ theme }) => theme.input.text};
+  }
+  :focus {
+    outline: none;
+  }
+`;
+
+const InputWrapper = styled.input<{ hpInput?: boolean }>`
+  border: none;
+  outline: none;
+  padding-bottom: ${(props) => (props.hpInput ? "14px" : "16px")};
+  padding-left: ${(props) => (props.hpInput ? "16px" : "16px")};
+  width: ${(props) => (props.hpInput ? "251px" : "392px")};
+  height: ${(props) => (props.hpInput ? "77px" : "38px")};
   background-color: ${({ theme }) => theme.input.fill};
   border-radius: 9px;
   color: ${({ theme }) => theme.input.text};
-  font-size: 18px;
-  line-height: 22px;
+
+  font-size: ${(props) => (props.hpInput ? "48px" : "18px")};
+  line-height: ${(props) => (props.hpInput ? "58px" : "22px")};
   letter-spacing: -0.011em;
   ::placeholder {
     color: ${({ theme }) => theme.input.fill};
@@ -151,10 +208,10 @@ const TagsScroll = styled(FlexBox)`
   max-width: calc(100% - 120px);
   flex-wrap: nowrap;
   overflow-x: auto;
-  scrollbar-width: none; 
-  -ms-overflow-style: none; 
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   &::-webkit-scrollbar {
-    display: none; 
+    display: none;
   }
 `;
 
@@ -172,8 +229,38 @@ const A_Input = ({
   tags,
   handleCrossPress,
   removeTag,
+  special,
+  hp,
+  hpInput,
   ...rest
 }: InputProps) => {
+  if (hpInput) {
+    return (
+      <HpFlexBox
+        direction="row"
+        alignItems="baseline"
+        justifyContent="space-between"
+      >
+        <FlexBox direction="column">
+          <FlexBox style={{ gap: 4 }}>
+            <PrevHp className="ppmedium">10</PrevHp>
+            <PrevHp className="ppmedium">-</PrevHp>
+            <HpRealInput
+              placeholder="X"
+              value={value}
+              autoCapitalize="none"
+              autoComplete="off"
+              maxLength={2}
+              onChange={(e) => handleTextChange(e.target.value)}
+              {...rest}
+            />
+          </FlexBox>
+          <HpLabel className="ppmedium">Очки здоровья</HpLabel>
+        </FlexBox>
+        <A_Icon iconName="HpIcon" />
+      </HpFlexBox>
+    );
+  }
   if (languages) {
     return (
       <TextAreaFlexBox>
@@ -183,7 +270,12 @@ const A_Input = ({
         >
           <TagsScroll style={{ marginRight: tags.length === 0 ? 0 : 6 }}>
             {tags.map((tag: any, index: any) => (
-              <A_Tag create language removeTag={() => removeTag(index)} key={index}>
+              <A_Tag
+                create
+                language
+                removeTag={() => removeTag(index)}
+                key={index}
+              >
                 {tag}
               </A_Tag>
             ))}
@@ -209,7 +301,9 @@ const A_Input = ({
         value={value}
         {...rest}
       ></InputWrapper>
-      <FlyingLabel className="ppmedium">{label}</FlyingLabel>
+      <FlyingLabel special={special} className="ppmedium">
+        {label}
+      </FlyingLabel>
       {perc && (
         <IconWrapper>
           <A_Icon iconName="perception"></A_Icon>

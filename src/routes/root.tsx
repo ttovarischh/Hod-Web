@@ -13,9 +13,13 @@ const MainWrapper = styled(FlexBox)`
 export default function Root() {
   const location = useLocation();
   const [isSingleGameRoute, setIsSingleGameRoute] = useState(false);
+  const [isInitiativeRoute, setIsInitiativeRoute] = useState(false);
 
   useEffect(() => {
     setIsSingleGameRoute(location.pathname.startsWith("/game/"));
+  }, [location]);
+  useEffect(() => {
+    setIsInitiativeRoute(location.pathname.endsWith("/initiative"));
   }, [location]);
   return (
     <>
@@ -23,7 +27,8 @@ export default function Root() {
         <ScrollToTop></ScrollToTop>
         <Outlet />
         {!isSingleGameRoute && <O_Navbar />}
-        <O_Footer />
+
+        {!isInitiativeRoute && <O_Footer />}
       </MainWrapper>
     </>
   );

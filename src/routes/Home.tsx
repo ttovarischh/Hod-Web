@@ -3,6 +3,7 @@ import { FlexBox, Panama, E_Text, D_Text } from "../components/Common";
 import A_Button from "../components/Atoms/A_Button";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../authContext/useAuth";
+import { useTranslation } from "react-i18next";
 
 const HomeWrapper = styled(FlexBox)`
   width: 100%;
@@ -41,6 +42,7 @@ export default function Home() {
   const { user } = useAuth();
   const dateTime = new Date().toJSON();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -79,23 +81,12 @@ export default function Home() {
   return (
     <HomeWrapper>
       <PPWrapper>
-        <Panama>Ход Web</Panama>
-        <D_Text>
-          Эта версия предназначена для тех мастеров, которые предпочитают вести
-          игры с&nbsp;ноутбуком и&nbsp;им&nbsp;неудобно открывать Ход
-          на&nbsp;телефоне.
-        </D_Text>
-        <D_Text>
-          Здесь невозможно выступить в&nbsp;роли игрока и&nbsp;присоединиться
-          к&nbsp;существующей сесии
-        </D_Text>
+        <Panama>{t("common:name")}</Panama>
+        <D_Text>{t("common:hello")}</D_Text>
+        <D_Text>{t("common:hello1")}</D_Text>
       </PPWrapper>
       <FlexBox direction="column" style={{ gap: 20, marginBottom: 16 }}>
-        <E_Text>
-          {user
-            ? "Пора отправляться в новое приключение:"
-            : "Чтобы начать игру надо войти в аккаунт:"}
-        </E_Text>
+        <E_Text>{user ? t("common:start") : t("common:doLogin")}</E_Text>
         <FlexBox alignItems="center" style={{ gap: 42 }}>
           {!user ? (
             <>
@@ -104,22 +95,24 @@ export default function Home() {
                   solid
                   handleButtonClick={() => console.log("Clicked")}
                 >
-                  Войти
+                  {t("common:login")}
                 </A_Button>
               </Link>
-              <E_Text>или</E_Text>
+              <E_Text>{t("common:or")}</E_Text>
               <Link to="registration">
                 <A_Button
                   secondary
                   handleButtonClick={() => console.log("Clicked")}
                 >
-                  Зарегистрироваться
+                  {t("common:signUp")}
                 </A_Button>
               </Link>
             </>
           ) : (
             <>
-              <A_Button handleButtonClick={handleSubmit}>Начать игру</A_Button>
+              <A_Button handleButtonClick={handleSubmit}>
+                {t("common:createGame")}
+              </A_Button>
             </>
           )}
         </FlexBox>

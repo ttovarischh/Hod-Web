@@ -59,6 +59,7 @@ const EffectsWrapper = styled(FlexBox)`
   width: 355px;
   height: calc(100% - 70px);
   background: #0e0e0e;
+  flex-flow: column;
 `;
 
 const O_SideMenu = ({

@@ -10,6 +10,7 @@ import A_Loader from "../../components/Atoms/A_Loader";
 import A_Input from "../../components/Atoms/A_Input";
 import A_Counter from "../../components/Atoms/A_Counter";
 import A_UnderlinedButton from "../../components/Atoms/A_UnderlinedButton";
+import { useTranslation } from "react-i18next";
 
 const ProfileWrapper = styled(FlexBox)`
   padding-top: 88px;
@@ -38,6 +39,7 @@ export default function Settings() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const theme = useContext(ThemeContext);
+  const { t } = useTranslation();
   const [newUser, setNewUser] = useState({
     email: user!.email,
     password: "",
@@ -87,8 +89,12 @@ export default function Settings() {
   return (
     <ProfileWrapper direction="column">
       <FlexBox style={{ gap: 80 }}>
-        <A_Counter header="игр сыграно">{effectsData!.length}</A_Counter>
-        <A_Counter header="игр проведено">{filteredGames!.length}</A_Counter>
+        <A_Counter header={t("common:masteredGames")}>
+          {effectsData!.length}
+        </A_Counter>
+        <A_Counter header={t("common:playedGames")}>
+          {filteredGames!.length}
+        </A_Counter>
       </FlexBox>
       <form
         style={{
@@ -129,14 +135,14 @@ export default function Settings() {
           <FlexBox alignItems="center" style={{ gap: 46 }}>
             <Link to="login">
               <A_Button secondary handleButtonClick={() => navigate(-1)}>
-                Отменить изменения
+                {t("common:cancelSettings")}
               </A_Button>
             </Link>
             <A_Button handleButtonClick={handleSubmit}>
-              Сохранить изменения
+              {t("common:saveSettings")}
             </A_Button>
           </FlexBox>
-          <A_UnderlinedButton>Удалить аккаунт</A_UnderlinedButton>
+          <A_UnderlinedButton>{t("common:deleteAccount")}</A_UnderlinedButton>
         </FlexBox>
       </form>
       <MainImage
