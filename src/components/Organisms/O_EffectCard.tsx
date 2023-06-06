@@ -55,7 +55,7 @@ const O_EffectCard = ({ effect, handleCloseModal }: ButtonProps) => {
     const descrArray = descr.split(". ");
     return descrArray.map((descrOne: string, index: any) => {
       return (
-        <DescrRow>
+        <DescrRow key={index}>
           <J_Text offsetTop={2} offsetRight={24}>
             ({index + 1})
           </J_Text>

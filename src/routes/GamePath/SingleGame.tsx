@@ -1,17 +1,17 @@
 import styled from "styled-components";
 import { FlexBox } from "../../components/Common";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import useAuth from "../../authContext/useAuth";
+import { useTranslation } from "react-i18next";
+import { consumer } from "../../constants";
 import axios from "axios";
 import A_Loader from "../../components/Atoms/A_Loader";
 import O_Tracker from "../../components/Organisms/O_Tracker";
 import O_Modal from "../../components/Organisms/O_Modal";
-import M_BreadCrumb from "../../components/Molecules/M_BreadCrumb";
 import O_SideMenu from "../../components/Organisms/O_SideMenu";
-import { useParams } from "react-router-dom";
 import O_Card from "../../components/Organisms/O_Card";
 import O_EffectList from "../../components/Organisms/O_EffectList";
+import InactiveGame from "../MainFlow/InactiveGame";
 
 const AuthWrapper = styled(FlexBox)`
   justify-content: space-between;
@@ -66,13 +66,16 @@ export default function SingleGame() {
   const [isLeftOpened, setIsLeftOpened] = useState(false);
   const [isRightOpened, setIsRightOpened] = useState(false);
   const [isEffectsOpened, setEffectsOpened] = useState(false);
+  const [finalModalVisible, setFinalModalVisible] = useState(false);
   const [gameData, setGameData] = useState<any>([]);
-  const { user, login, loading, error } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(true);
   const [isOld, setIsOld] = useState(false);
   const [effectsData, setEffectsData] = useState<any[]>([]);
   const [selectedPlayerEffects, setSelectedPlayerEffects] = useState<any[]>([]);
+  const [selectedPlayerId, setSelectedPlayerId] = useState(null);
+  const { t } = useTranslation();
+  const [playerEffects, setPlayerEffects] = useState({});
 
   useEffect(() => {
     if (gameData && gameData.created_at) {
@@ -90,10 +93,6 @@ export default function SingleGame() {
   }, [gameData]);
 
   useEffect(() => {
-    console.log(gameData.players);
-  }, [gameData]);
-
-  useEffect(() => {
     console.log(code);
 
     const getEffects = axios.get("http://localhost:3000/api/v1/effects");
@@ -106,18 +105,69 @@ export default function SingleGame() {
 
         setEffectsData(effectsData);
         setGameData(gamesData);
+
+        const playerEffectsObject = gamesData.players.reduce(
+          (acc: any, player: any) => {
+            acc[player.id] = player.effects;
+            return acc;
+          },
+          {}
+        );
+        setPlayerEffects(playerEffectsObject);
       })
       .catch((error) => console.error(error))
       .finally(() => {
-        console.log("Done get");
-        console.log(effectsData);
         setLoading(false);
       });
+    const subscription = consumer.subscriptions.create(
+      { channel: "PlayereffectsChannel" },
+      {
+        received(data: any) {
+          const { type, payload } = data;
+          if (type === "ADD_EFFECT") {
+            const { player_id, effect } = payload;
+            setPlayerEffects((prevState: any) => {
+              return {
+                ...prevState,
+                [player_id]: [...prevState[player_id], effect],
+              };
+            });
+          } else if (type === "REMOVE_EFFECT") {
+            const { player_id, effect } = payload;
+            setPlayerEffects((prevState: any) => {
+              const updatedPlayerEffects = prevState[player_id].filter(
+                (e: any) => e.id !== effect.id
+              );
+              return {
+                ...prevState,
+                [player_id]: updatedPlayerEffects,
+              };
+            });
+          }
+        },
+      }
+    );
+    const gameSubscription = consumer.subscriptions.create(
+      { channel: "GamesChannel" },
+      {
+        received(data: any) {
+          if (data.code === code) {
+            setGameData(data);
+          }
+        },
+      }
+    );
+    return () => {
+      subscription.unsubscribe();
+      gameSubscription.unsubscribe();
+    };
   }, []);
 
   const handleButtonClick = (player: any) => {
     new Promise<void>((resolve) => {
-      setSelectedPlayerEffects(player.effects);
+      // @ts-ignore
+      setSelectedPlayerEffects(playerEffects[player.id]);
+      setSelectedPlayerId(player.id);
       resolve();
     }).then(() => {
       setEffectsOpened(true);
@@ -129,20 +179,18 @@ export default function SingleGame() {
     setEffectsOpened(false);
   };
 
-  // axios
-  //   .patch(`http://localhost:3000/api/v1/games/${code}`, {
-  //     game: {
-  //       fight: true,
-  //     },
-  //   })
-  //   .then((response) => {})
-  //   .catch((error) => console.error(error))
-  //   .finally(() => {
-  //     navigate(`/game/${code}/initiative`);
-  //   });
-
   const handleTrackerButtonClick = () => {
-    navigate(`/game/${code}/initiative`);
+    axios
+      .patch(`http://localhost:3000/api/v1/games/${code}`, {
+        game: {
+          fight: true,
+        },
+      })
+      .then((response) => {})
+      .catch((error) => console.error(error))
+      .finally(() => {
+        navigate(`/game/${code}/initiative`);
+      });
   };
 
   const list = () => {
@@ -161,16 +209,50 @@ export default function SingleGame() {
           ins={player.ins}
           inv={player.inv}
           langs={langs}
-          effects={player.effects}
+          effects={playerEffects}
           superSmall={index >= 3}
           handlePlusClick={() => handleButtonClick(player)}
+          playerId={player.id}
+          code={code}
         />
       );
     });
   };
 
+  const handleFinishGame = () => {
+    axios
+      .patch(`http://localhost:3000/api/v1/games/${code}`, {
+        game: {
+          active: false,
+        },
+      })
+      .then((response) => {})
+      .catch((error) => console.error(error))
+      .finally(() => {
+        navigate(`/`);
+      });
+  };
+
   if (isLoading) {
     return <A_Loader />;
+  }
+
+  if (finalModalVisible) {
+    return (
+      <O_Modal
+        handleButtonCLick={handleFinishGame}
+        code={code}
+        header={t("common:theEnd")}
+        textA={t("common:willDelete")}
+        one={t("common:final")}
+        three={t("common:mainPage")}
+        buttonText={t("common:out")}
+      ></O_Modal>
+    );
+  }
+
+  if (!gameData.active) {
+    return <InactiveGame />;
   }
 
   return (
@@ -180,30 +262,32 @@ export default function SingleGame() {
           effectsData={effectsData}
           handleCloseModal={() => setEffectsOpened(false)}
           playerEffects={selectedPlayerEffects}
+          code={code}
+          playerId={selectedPlayerId}
         />
       )}
       {isModalOpened && !isOld && (
         <>
-          <FlexBox style={{ marginLeft: 66 }}>
-            <M_BreadCrumb>Назад</M_BreadCrumb>
-          </FlexBox>
           <O_Modal
             handleButtonCLick={handleCrossClick}
-            step="gamecreated"
             code={code}
+            header={t("common:done")}
+            textA={t("common:allSaved")}
+            textB={t("common:urCode")}
+            one={t("common:chCreation")}
+            three={t("common:game")}
+            buttonText={t("common:continue")}
           ></O_Modal>
         </>
       )}
       {!isModalOpened && (
         <>
-          <FlexBox style={{ left: 66, position: "absolute" }}>
-            <M_BreadCrumb>Назад</M_BreadCrumb>
-          </FlexBox>
-          {effectsData && ( // Render O_SideMenu only if effectsData is available
+          {effectsData && (
             <O_SideMenu
               code={code}
               isRightOpened={isRightOpened}
               handleButtonCLick={() => setIsRightOpened(!isRightOpened)}
+              handleFinishSession={() => setFinalModalVisible(true)}
             />
           )}
           <O_SideMenu
@@ -211,6 +295,7 @@ export default function SingleGame() {
             isLeftOpened={isLeftOpened}
             handleButtonCLick={() => setIsLeftOpened(!isLeftOpened)}
             effectsData={effectsData}
+            handleFinishSession={() => setFinalModalVisible(true)}
           ></O_SideMenu>
         </>
       )}
@@ -228,7 +313,7 @@ export default function SingleGame() {
       </CardsScrollWrapper>
       <O_Tracker
         offsetRight={70}
-        buttonText="В режим инициативы"
+        buttonText={t("common:toFight")}
         handleButtonClick={handleTrackerButtonClick}
       />
     </AuthWrapper>

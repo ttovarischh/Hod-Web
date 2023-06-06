@@ -82,6 +82,5 @@ export default function T_PlayersList(props: ComponentProps) {
       </>
     );
   }
-
   return <></>;
 }

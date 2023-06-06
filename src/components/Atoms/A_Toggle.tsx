@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import { FlexBox } from "../Common/FlexBox";
-import { useState } from "react";
 import axios from "axios";
 
 type Props = {
   active: boolean;
   playerId: any;
   code: any;
+  monster?: boolean;
 };
 
 const ToggleWrapper = styled(FlexBox)<{ active?: boolean }>`
@@ -31,16 +31,16 @@ const Toggle = styled(FlexBox)<{ active?: boolean }>`
   }
 `;
 
-const A_Toggle = ({ active, code, playerId }: Props) => {
-  const [isActive, setIsActive] = useState(active);
-
+const A_Toggle = ({ active, code, playerId, monster }: Props) => {
   const handleToggleConc = (event: any) => {
     if (active) {
       axios
         .patch(
-          `http://localhost:3000/api/v1/games/${code}/players/${playerId}`,
+          `http://localhost:3000/api/v1/games/${code}/${
+            monster ? `monsters` : `players`
+          }/${playerId}`,
           {
-            player: {
+            [monster ? "monster" : "player"]: {
               conc: false,
             },
           }
@@ -51,9 +51,11 @@ const A_Toggle = ({ active, code, playerId }: Props) => {
     } else {
       axios
         .patch(
-          `http://localhost:3000/api/v1/games/${code}/players/${playerId}`,
+          `http://localhost:3000/api/v1/games/${code}/${
+            monster ? `monsters` : `players`
+          }/${playerId}`,
           {
-            player: {
+            [monster ? "monster" : "player"]: {
               conc: true,
             },
           }
@@ -65,8 +67,8 @@ const A_Toggle = ({ active, code, playerId }: Props) => {
   };
 
   return (
-    <ToggleWrapper active={isActive}>
-      <Toggle active={isActive} onClick={handleToggleConc} />
+    <ToggleWrapper active={active}>
+      <Toggle active={active} onClick={handleToggleConc} />
     </ToggleWrapper>
   );
 };

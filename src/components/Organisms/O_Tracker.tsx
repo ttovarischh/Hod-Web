@@ -20,6 +20,7 @@ type ButtonProps = {
   active?: any;
   note?: any;
   offsetBottom?: any;
+  zIndex?: any;
 };
 
 const TrackerWrapper = styled(FlexBox)`
@@ -30,7 +31,6 @@ const TrackerWrapper = styled(FlexBox)`
   button {
     width: 292px !important;
   }
-  // z-index: 10001;
 `;
 
 const O_Tracker = (props: ButtonProps) => {
@@ -38,6 +38,7 @@ const O_Tracker = (props: ButtonProps) => {
     <TrackerWrapper
       style={{
         marginRight: props.offsetRight ? props.offsetRight : 0,
+        zIndex: props.zIndex ? props.zIndex : 1,
       }}
     >
       {props.header && (

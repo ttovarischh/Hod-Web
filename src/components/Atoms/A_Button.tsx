@@ -8,7 +8,6 @@ type ButtonProps = {
   disabled?: boolean;
   small?: boolean;
   warning?: boolean;
-  //
   secondary?: boolean;
   tracker?: boolean;
 };
@@ -164,52 +163,6 @@ const A_Button = (props: ButtonProps) => {
       {props.children}
     </SolidButton>
   );
-  if (props.solid) {
-    if (props.small) {
-      return (
-        <SmallButton
-          className="PPMeduim"
-          onClick={props.disabled ? undefined : props.handleButtonClick}
-          disabled={props.disabled}
-        >
-          {props.children}
-        </SmallButton>
-      );
-    } else {
-      return (
-        <SolidButton
-          className="PPMeduim"
-          onClick={props.disabled ? undefined : props.handleButtonClick}
-          disabled={props.disabled}
-        >
-          {props.children}
-        </SolidButton>
-      );
-    }
-  } else {
-    if (props.warning) {
-      return (
-        <RedHollowButton
-          className="PPMeduim"
-          onClick={props.disabled ? undefined : props.handleButtonClick}
-          disabled={props.disabled}
-        >
-          {props.children}
-        </RedHollowButton>
-      );
-    } else {
-      return (
-        <HollowButton
-          className="PPMeduim"
-          onClick={props.disabled ? undefined : props.handleButtonClick}
-          disabled={props.disabled}
-        >
-          {props.children}
-        </HollowButton>
-      );
-    }
-  }
-  return <></>;
 };
 
 export default A_Button;

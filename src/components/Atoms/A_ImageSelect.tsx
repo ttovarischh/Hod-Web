@@ -1,7 +1,9 @@
 import { G_Text } from "../Common";
+import { useTranslation } from "react-i18next";
 
 const A_ImageSelect = (props: any) => {
   const url = require("../../images/Vector.png");
+  const { t } = useTranslation();
   return (
     <div
       style={{
@@ -17,7 +19,7 @@ const A_ImageSelect = (props: any) => {
         alt="placeholder-image"
       />
       <G_Text color="#7C7C7C" center offsetTop={6}>
-        Выберите аватар
+        {t("common:chooseAvatar")}
       </G_Text>
     </div>
   );

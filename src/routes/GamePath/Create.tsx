@@ -9,6 +9,7 @@ import A_Loader from "../../components/Atoms/A_Loader";
 import O_Tracker from "../../components/Organisms/O_Tracker";
 import T_PlayersList from "../../components/Templates/T_PlayersList";
 import O_CreationCard from "../../components/Organisms/O_CreationCard";
+import { useTranslation } from "react-i18next";
 
 const Wrapper = styled(FlexBox)`
   justify-content: space-between;
@@ -99,7 +100,6 @@ const options = [
 export default function Create() {
   const location = useLocation();
   const { code } = location.state;
-  const { user } = useAuth();
   const [newPlayer, setNewPlayer] = useState({
     name: "",
     username: "",
@@ -124,6 +124,7 @@ export default function Create() {
   const [tags, setTags] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [selectedOption, setSelectedOption] = useState(null);
+  const { t } = useTranslation();
 
   const handleTextChange = (text: string) => {
     if (!text.endsWith(" ")) {
@@ -167,7 +168,7 @@ export default function Create() {
     setLoading(false);
   };
 
-  const handlePostNewPlayer = (event: any) => {
+  const handlePostNewPlayer = () => {
     const tagsString = tags.join(" ");
     axios
       .post("http://localhost:3000/api/v1/games/" + code + "/players", {
@@ -181,7 +182,7 @@ export default function Create() {
           imagestring: newPlayer.imagestring,
         },
       })
-      .then(function (response) {
+      .then(function () {
         console.log("Done post");
       })
       .catch(function (error) {
@@ -212,7 +213,7 @@ export default function Create() {
       .delete(
         "http://localhost:3000/api/v1/games/" + code + "/players/" + playerId
       )
-      .then(({ data }) => {
+      .then(() => {
         console.log("Done delete");
       })
       .catch((error) => console.error(error))
@@ -282,13 +283,13 @@ export default function Create() {
       />
       <O_Tracker
         header
-        one="Создание персонажей"
-        three="Игра"
+        one={t("common:chCreation")}
+        three={t("common:game")}
         disabled={players.length < 1}
         handleButtonClick={() => navigate(`/game/${code}`)}
-        note="Сначала надо создать хотя бы одного персонажа"
+        note={t("common:createOne")}
         active="one"
-        buttonText="Продолжить"
+        buttonText={t("common:continue")}
       />
     </Wrapper>
   );

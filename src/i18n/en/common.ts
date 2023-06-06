@@ -54,6 +54,56 @@ export default {
     "We use the information we collect (both separately and in combination with other information collected in accordance with this notice) to help us manage our service, improve the website, and communicate with you.",
   nine: "We collect information from third parties to help us determine the user's connection source to the website.",
   howWe: "How we use information",
+  noPage:
+    "Looks like this page doesn't exist. It could be deleted or you made mistake in the URL",
+  goMain: "To main page",
+  goProfile: "To your profile",
+  chCreation: "Character creation",
+  game: "Game",
+  createOne: "Create at lest one character to begin",
+  continue: "Continue",
+  chooseAvatar: "Choose avatar",
+  playerName: "Player's name",
+  playerUserName: "User's name",
+  ins: "Insight",
+  inv: "Investigation",
+  perc: "Perception",
+  langs: "Languages",
+  type: "Type...",
+  add: "Add character",
+  back: "Back",
+  effects: "Effects",
+  writeAll: "Write all the neccessary stuff!",
+  notes: "Notes",
+  end: "Finish session",
+  states: "States",
+  toFight: "To initiative mode",
+  exhaustion: "Exhaustion",
+  spells: "Spell and Ability Effects",
+  npcName: "Name of the NPC",
+  armor: "Class of armor",
+  hp: "Points of health",
+  delete: "Delete",
+  npc: "NPC",
+  initiative: "Initiative",
+  oneNpc: "Create at lest one npc to begin",
+  turn: "turn",
+  nextTurn: "Next turn",
+  fightFalse: "Stop initiative",
+  conc: "Concentration",
+  allSaved:
+    "All the necessary information is saved, the dragons are sent to the dungeons and everything is ready for the adventure. Player cards will be in the center, and the QR code for joining will be in the menu on the left.",
+  urCode: "Your code:",
+  done: "Done",
+  theEnd: "The end",
+  willDelete:
+    "Player and monster cards will be deleted and the session will end. Are you sure you want to exit?",
+  final: "Final",
+  mainPage: "Main page",
+  out: "Exit",
+  wow: "Wow!",
+  inactiveGame:
+    "Either a creepy lich has stolen the page, or you have ended this session. Try creating a new game:",
 
   //
 
@@ -67,16 +117,12 @@ export default {
   hours: "Weeks in game",
   count: "Number of completed games",
   chooseInfo: "Choose what information will be shown in your profile",
-  done: "Done",
   auth: "Authorization",
 
   register: "Registration",
 
-  effects: "Effects",
   effect: "Effect",
-  back: "Back",
   addNpc: "Adding npc",
-  continue: "Continue",
   continueGame: "Continue game",
   gameCode: "Game code",
   askCode:
@@ -84,7 +130,6 @@ export default {
   repeat: "Please repeat your password to confirm it and avoid an error.",
   regDone: "Registration is finished",
   canAuth: "Now you can login to your account. Welcome to the Hod!",
-  wow: "Sakes alive!",
   wrongCode:
     "It seems like someone gave you the wrong connection code. There is no such game in our databases. Try again.",
   congrats: "Congratulations!",
@@ -93,7 +138,7 @@ export default {
   playerCreate: "Player creation",
   savePlayer: "Save player",
   beginGame: "Begin game",
-  chooseAvatar: "Choose player avatar",
+
   round: "round",
   saveNpc: "Save monster",
   uSure: "Are you sure?",
@@ -121,11 +166,7 @@ export default {
   canShare:
     "Players can connect to a session to monitor changes in states and situations on the battlefield",
   uNeed: "What you need when you need it",
-  langs:
-    "Languages spoken by heroes for social play and concentration for combat",
   allClear: "All clear",
   skip: "Skip",
-  conc: "Concentration",
   languages: "Languages",
-  type: "Type...",
 };

@@ -1,15 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { FlexBox } from "../Common/FlexBox";
+import { FlexBox, A_Text } from "../Common";
 import A_Button from "../Atoms/A_Button";
 import A_Icon from "../Atoms/A_Icon";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { A_Text } from "../Common/StyledFont";
 import A_Qr from "../Atoms/A_Qr";
 import O_EffectCard from "./O_EffectCard";
 import M_ListItem from "../Molecules/M_ListItem";
 import M_Textarea from "../Molecules/M_Textarea";
+import { useTranslation } from "react-i18next";
 
 type SMProps = {
   disabled?: boolean;
@@ -20,6 +18,7 @@ type SMProps = {
   isRightOpened?: any;
   type?: string;
   effectsData?: any;
+  handleFinishSession?: any;
 };
 
 const SMWrapper = styled(FlexBox)`
@@ -71,9 +70,11 @@ const O_SideMenu = ({
   isRightOpened,
   type,
   effectsData,
+  handleFinishSession,
 }: SMProps) => {
   const [selectedEffect, setSelectedEffect] = useState<any>(null);
   const [note, setNote] = useState("");
+  const { t } = useTranslation();
 
   const handleEffectClick = (effect: any) => {
     setSelectedEffect(effect);
@@ -111,7 +112,7 @@ const O_SideMenu = ({
         </ActionWrapper>
         <EffectsWrapper>
           <FlexBox style={{ marginLeft: 32, marginBottom: 20 }}>
-            <A_Text color="#7C7C7C">Эффекты</A_Text>
+            <A_Text color="#7C7C7C">{t("common:effects")}</A_Text>
           </FlexBox>
           {list()}
         </EffectsWrapper>
@@ -143,8 +144,8 @@ const O_SideMenu = ({
           style={{ width: 292, alignSelf: "center" }}
         >
           <A_Qr code={code} />
-          <A_Button small solid handleButtonClick={handleButtonCLick}>
-            Завершить сессию
+          <A_Button small solid handleButtonClick={handleFinishSession}>
+            {t("common:end")}
           </A_Button>
         </FlexBox>
       </EffectsWrapper>

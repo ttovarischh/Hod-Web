@@ -5,6 +5,7 @@ import A_Tag from "../Atoms/A_Tag";
 import M_StatSet from "./M_StatSet";
 import A_Toggle from "../Atoms/A_Toggle";
 import A_Stat from "../Atoms/A_Stat";
+import { useTranslation } from "react-i18next";
 
 type BСProps = {
   info?: any;
@@ -24,6 +25,7 @@ type BСProps = {
   code?: any;
   monster?: boolean;
   armor?: any;
+  handleRemoveTag?: any;
 };
 
 const MonsterArmorImg = styled.div`
@@ -134,8 +136,10 @@ const M_CardPart = ({
   code,
   monster,
   armor,
+  handleRemoveTag,
   ...rest
 }: BСProps) => {
+  const { t } = useTranslation();
   if (playerName) {
     return (
       <NamesCifWrapper monster={monster}>
@@ -150,9 +154,9 @@ const M_CardPart = ({
   if (toggleConc) {
     return (
       <FlexBox alignItems="center" style={{ gap: 12 }}>
-        <A_Toggle playerId={id} active={conc} code={code} />
+        <A_Toggle monster={monster} playerId={id} active={conc} code={code} />
         <Label style={{ marginBottom: 0 }} className="ppmedium">
-          Концентрация
+          {t("common:conc")}
         </Label>
       </FlexBox>
     );
@@ -167,7 +171,7 @@ const M_CardPart = ({
           }}
         />
         <FlexBox style={{ marginBottom: 10 }}>
-          <A_Stat iconName="ArmorIcon" stat={45} />
+          <A_Stat iconName="ArmorIcon" stat={armor} />
         </FlexBox>
       </MonsterArmorFlexBox>
     );
@@ -190,8 +194,8 @@ const M_CardPart = ({
           <FlyingLabel className="ppmedium">{label}</FlyingLabel>
         </>
       )}
-      {langs && <Label className="ppmedium">Языки</Label>}
-      {states && <Label className="ppmedium">Состояния</Label>}
+      {langs && <Label className="ppmedium">{t("common:langs")}</Label>}
+      {states && <Label className="ppmedium">{t("common:states")}</Label>}
       {perc && (
         <IconWrapper>
           <A_Icon iconName="perception"></A_Icon>
@@ -211,7 +215,12 @@ const M_CardPart = ({
         <TagsScroll>
           {info.length > 0 &&
             info.map((subinfo: any, index: any) => (
-              <A_Tag language={langs} create={states} key={index}>
+              <A_Tag
+                language={langs}
+                create={states}
+                key={index}
+                removeTag={() => handleRemoveTag(subinfo.id)}
+              >
                 {subinfo.name}
               </A_Tag>
             ))}

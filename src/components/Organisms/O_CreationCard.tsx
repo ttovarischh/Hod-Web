@@ -7,6 +7,7 @@ import A_Input from "../Atoms/A_Input";
 import A_ImageInSelector from "../Atoms/A_ImageInSelector";
 import M_CardPart from "../Molecules/M_CardPart";
 import A_Avatar from "../Atoms/A_Avatar";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   options?: any;
@@ -40,6 +41,9 @@ const InputsWrapper = styled(FlexBox)`
   padding-bottom: 20px;
   border-radius: 20px;
   overflow: hidden;
+  button {
+    width: 100%;
+  }
 `;
 
 const InfoWrapper = styled(FlexBox)`
@@ -75,7 +79,6 @@ const O_CreationCard = ({
   monster,
   armor,
   hp,
-  ...rest
 }: Props) => {
   const colourStyles: StylesConfig<any> = {
     container: (styles) => ({
@@ -149,6 +152,7 @@ const O_CreationCard = ({
       overflow: "hidden",
     }),
   };
+  const { t } = useTranslation();
 
   if (show) {
     return (
@@ -159,8 +163,11 @@ const O_CreationCard = ({
             <InfoWrapper>
               {!monster ? (
                 <>
-                  <M_CardPart info={name} label="Имя персонажа" />
-                  <M_CardPart info={username} label="Имя игрока" />
+                  <M_CardPart info={name} label={t("common:playerName")} />
+                  <M_CardPart
+                    info={username}
+                    label={t("common:playerUserName")}
+                  />
                   <M_CardPart
                     ins
                     info={ins}
@@ -176,19 +183,19 @@ const O_CreationCard = ({
                     info={perc}
                     label="Восприятие // Perception"
                   />
-                  <M_CardPart label="Языки" info={langs} langs />
+                  <M_CardPart label={t("common:langs")} info={langs} langs />
                 </>
               ) : (
                 <>
-                  <M_CardPart info={name} label="Имя или название НПС" />
-                  <M_CardPart info={armor} label="Класс брони" />
+                  <M_CardPart info={name} label={t("common:npcName")} />
+                  <M_CardPart info={armor} label={t("common:armor")} />
                   <FlexBox style={{ marginBottom: 40 }}>
-                    <M_CardPart info={hp} label="Очки здоровья" />
+                    <M_CardPart info={hp} label={t("common:hp")} />
                   </FlexBox>
                 </>
               )}
               <A_Button warning handleButtonClick={handleDeleteNewPlayer}>
-                Удалить
+                {t("common:delete")}
               </A_Button>
             </InfoWrapper>
           </FlexBox>
@@ -200,7 +207,7 @@ const O_CreationCard = ({
   return (
     <FlexBox
       style={{
-        zIndex: monster ? 10001 : 1,
+        zIndex: monster ? 10009 : 1,
       }}
     >
       <InputsWrapper>
@@ -229,18 +236,18 @@ const O_CreationCard = ({
                 <A_Input
                   name="name"
                   type="text"
-                  placeholder="Имя персонажа"
+                  placeholder={t("common:playerName")}
                   onChange={handleInputChange}
-                  label="Имя персонажа"
+                  label={t("common:playerName")}
                   style={{ marginBottom: 6 }}
                   value={name}
                 ></A_Input>
                 <A_Input
                   name="username"
                   type="text"
-                  placeholder="Пароль"
+                  placeholder={t("common:playerUserName")}
                   onChange={handleInputChange}
-                  label="Имя игрока"
+                  label={t("common:playerUserName")}
                   style={{ marginBottom: 6 }}
                   value={username}
                 ></A_Input>
@@ -249,9 +256,9 @@ const O_CreationCard = ({
                   ins
                   type="text"
                   maxLength={2}
-                  placeholder="Проницательность"
+                  placeholder={t("common:ins")}
                   onChange={handleInputChange}
-                  label="Проницательность"
+                  label={t("common:ins")}
                   style={{ marginBottom: 6 }}
                   value={ins}
                 ></A_Input>
@@ -259,9 +266,9 @@ const O_CreationCard = ({
                   name="inv"
                   type="text"
                   maxLength={2}
-                  placeholder="Расследование"
+                  placeholder={t("common:inv")}
                   onChange={handleInputChange}
-                  label="Расследование"
+                  label={t("common:inv")}
                   style={{ marginBottom: 6 }}
                   value={inv}
                   inv
@@ -271,9 +278,9 @@ const O_CreationCard = ({
                   perc
                   type="text"
                   maxLength={2}
-                  placeholder="Восприятие"
+                  placeholder={t("common:perc")}
                   onChange={handleInputChange}
-                  label="Восприятие"
+                  label={t("common:perc")}
                   style={{ marginBottom: 6 }}
                   value={perc}
                 ></A_Input>
@@ -281,10 +288,10 @@ const O_CreationCard = ({
                   languages
                   name="language"
                   type="text"
-                  placeholder="Пароль"
+                  placeholder={t("common:langs")}
                   handleTextChange={handleTextChange}
                   onKeyDown={handleKeyPress}
-                  label="Языки"
+                  label={t("common:langs")}
                   value={inputValue}
                   tags={tags}
                   removeTag={removeTag}
@@ -295,9 +302,9 @@ const O_CreationCard = ({
                 <A_Input
                   name="name"
                   type="text"
-                  placeholder="Имя или название НПС"
+                  placeholder={t("common:npcName")}
                   onChange={handleInputChange}
-                  label="Имя или название НПС"
+                  label={t("common:npcName")}
                   style={{ marginBottom: 6 }}
                   value={name}
                 ></A_Input>
@@ -305,9 +312,9 @@ const O_CreationCard = ({
                   name="armor"
                   type="text"
                   maxLength={2}
-                  placeholder="Класс брони"
+                  placeholder={t("common:armor")}
                   onChange={handleInputChange}
-                  label="Класс брони"
+                  label={t("common:armor")}
                   style={{ marginBottom: 6 }}
                   value={armor}
                 ></A_Input>
@@ -315,9 +322,9 @@ const O_CreationCard = ({
                   name="hp"
                   type="text"
                   maxLength={2}
-                  placeholder="Очки здоровья"
+                  placeholder={t("common:hp")}
                   onChange={handleInputChange}
-                  label="Очки здоровья"
+                  label={t("common:hp")}
                   style={{ marginBottom: 40 }}
                   value={hp}
                 ></A_Input>
@@ -329,7 +336,7 @@ const O_CreationCard = ({
               disabled={disabled}
               handleButtonClick={handlePostNewPlayer}
             >
-              Добавить
+              {t("common:add")}
             </A_Button>
           </div>
         </FlexBox>

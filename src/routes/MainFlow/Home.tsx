@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { FlexBox, Panama, E_Text, D_Text } from "../components/Common";
-import A_Button from "../components/Atoms/A_Button";
+import { FlexBox, Panama, E_Text, D_Text } from "../../components/Common";
+import A_Button from "../../components/Atoms/A_Button";
 import { Link, useNavigate } from "react-router-dom";
-import useAuth from "../authContext/useAuth";
+import useAuth from "../../authContext/useAuth";
 import { useTranslation } from "react-i18next";
 
 const HomeWrapper = styled(FlexBox)`
@@ -119,7 +119,7 @@ export default function Home() {
       </FlexBox>
       <MainImage
         style={{
-          backgroundImage: "url(" + require("../images/dragon.png") + ")",
+          backgroundImage: "url(" + require("../../images/dragon.png") + ")",
         }}
       ></MainImage>
     </HomeWrapper>

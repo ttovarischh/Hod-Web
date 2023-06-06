@@ -31,7 +31,6 @@ const O_Footer = (props: any) => {
         </Link>
       </FlexBox>
       <Selector />
-      {/* <H_Text medium>Ru/En</H_Text> */}
     </Footer>
   );
 };

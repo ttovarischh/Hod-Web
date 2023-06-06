@@ -5,7 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import A_Input from "../../components/Atoms/A_Input";
 import useAuth from "../../authContext/useAuth";
-import A_UnderlinedButton from "../../components/Atoms/A_UnderlinedButton";
 import { useTranslation } from "react-i18next";
 
 const AuthWrapper = styled(FlexBox)`
@@ -60,7 +59,7 @@ export default function SignUp() {
     password_confirmation: "",
     username: "",
   });
-  const { signUp, loading, error } = useAuth();
+  const { signUp } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = (event: any) => {

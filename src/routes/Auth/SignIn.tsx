@@ -60,7 +60,7 @@ export default function SignIn() {
     email: "",
     password: "",
   });
-  const { login, loading, error } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = (event: any) => {

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { FlexBox, G_Text } from "../Common";
+import { useTranslation } from "react-i18next";
 
 type BСProps = {
   handleInputChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
@@ -32,16 +33,18 @@ const LabelWrapper = styled(FlexBox)`
 `;
 
 const M_Textarea = ({ handleInputChange, value }: BСProps) => {
+  const { t } = useTranslation();
   return (
     <FlexBox style={{ alignSelf: "center", position: "relative" }}>
       <Input
         className="ppmedium"
-        placeholder="Запишите все, что нужно!"
+        // @ts-ignore
+        placeholder={t("common:writeAll")}
         onChange={handleInputChange}
         value={value}
       ></Input>
       <LabelWrapper>
-        <G_Text color="#7C7C7C">Заметки</G_Text>
+        <G_Text color="#7C7C7C">{t("common:notes")}</G_Text>
       </LabelWrapper>
     </FlexBox>
   );

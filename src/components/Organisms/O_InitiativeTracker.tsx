@@ -3,12 +3,14 @@ import { FlexBox } from "../Common";
 import A_Button from "../Atoms/A_Button";
 import A_Tracker from "../Atoms/A_Tracker";
 import A_SmallTracker from "../Atoms/A_SmallTracker";
+import { useTranslation } from "react-i18next";
 
 type ButtonProps = {
   players?: any;
   turn?: any;
   handleNextTurn?: any;
   handleFinishFight?: any;
+  activePlayerIndex?: any;
 };
 
 const MiddleTracker = styled(FlexBox)`
@@ -24,17 +26,23 @@ const O_InitiativeTracker = ({
   turn,
   handleNextTurn,
   handleFinishFight,
+  activePlayerIndex,
 }: ButtonProps) => {
+  const { t } = useTranslation();
+
   return (
     <MiddleTracker>
-      <A_Tracker data={players}></A_Tracker>
+      <A_Tracker
+        data={players}
+        activePlayerIndex={activePlayerIndex}
+      ></A_Tracker>
       <A_SmallTracker turn={turn} />
       <FlexBox style={{ gap: 20, marginRight: 66 }}>
         <A_Button handleButtonClick={handleNextTurn} tracker>
-          Следующий ход
+          {t("common:nextTurn")}
         </A_Button>
         <A_Button handleButtonClick={handleFinishFight} secondary tracker>
-          Выйти из инициативы
+          {t("common:fightFalse")}
         </A_Button>
       </FlexBox>
     </MiddleTracker>

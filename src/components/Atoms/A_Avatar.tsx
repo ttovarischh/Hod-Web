@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import styled from "styled-components";
 import { FlexBox } from "../Common/FlexBox";
 import { ThemeContext } from "styled-components";
@@ -36,7 +36,7 @@ const PlayerAvatar = styled.img`
   object-fit: cover;
 `;
 
-const A_Avatar = ({ wide, imagestring, ...rest }: Props) => {
+const A_Avatar = ({ wide, imagestring }: Props) => {
   const theme = useContext(ThemeContext);
   if (wide) {
     return (

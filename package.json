@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@rails/actioncable": "^7.0.4-3",
+    "@rails/actioncable": "^7.0.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -61,6 +61,7 @@
     ]
   },
   "devDependencies": {
-    "@types/actioncable": "^5.2.7"
+    "@types/actioncable": "^5.2.7",
+    "@types/rails__actioncable": "^6.1.6"
   }
 }

@@ -11,12 +11,14 @@ type Props = {
   removeTag?: any;
   plus?: boolean;
   handlePlusClick?: any;
+  handleTagClick?: any;
 };
 
 const Wrapper = styled(FlexBox)`
   justify-content: center;
   align-items: center;
   gap: 4px;
+  white-space: nowrap;
 `;
 
 const TagWrapper = styled(Wrapper)`
@@ -65,6 +67,7 @@ const A_Tag = ({
   removeTag,
   plus,
   handlePlusClick,
+  handleTagClick,
   ...rest
 }: Props) => {
   if (language) {
@@ -87,7 +90,7 @@ const A_Tag = ({
     );
   }
   return (
-    <TagWrapper>
+    <TagWrapper onClick={handleTagClick}>
       {create ? (
         <>
           <CrossWrapper onClick={removeTag}>

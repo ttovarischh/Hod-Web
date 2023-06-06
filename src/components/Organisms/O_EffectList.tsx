@@ -2,11 +2,16 @@ import styled from "styled-components";
 import { FlexBox, A_Text, H_Text } from "../Common";
 import A_Icon from "../Atoms/A_Icon";
 import A_Tag from "../Atoms/A_Tag";
+import { useTranslation } from "react-i18next";
+import axios from "axios";
 
 type ButtonProps = {
   effectsData?: any;
   handleCloseModal?: any;
   playerEffects?: any;
+  code?: any;
+  playerId?: any;
+  monster?: any;
 };
 
 const Wrapper = styled(FlexBox)`
@@ -46,7 +51,29 @@ const O_EffectList = ({
   effectsData,
   handleCloseModal,
   playerEffects,
+  code,
+  playerId,
+  monster,
 }: ButtonProps) => {
+  const { t } = useTranslation();
+
+  const handleAddClick = (effect_id: any, player_id: any) => {
+    axios
+      .post(
+        `http://localhost:3000/api/v1/games/${code}/${
+          monster ? `monsters` : `players`
+        }/${player_id}/effects`,
+        {
+          effect_id: effect_id,
+        }
+      )
+      .then((response) => {})
+      .catch((error) => console.error(error))
+      .finally(() => {
+        handleCloseModal();
+      });
+  };
+
   const secondRow = [
     "Истощен: уровень 1",
     "Истощен: уровень 2",
@@ -66,7 +93,14 @@ const O_EffectList = ({
           )
       )
       .map((effect: any, index: any) => {
-        return <A_Tag key={index}>{effect.name}</A_Tag>;
+        return (
+          <A_Tag
+            handleTagClick={() => handleAddClick(effect.id, playerId)}
+            key={index}
+          >
+            {effect.name}
+          </A_Tag>
+        );
       });
   };
   const listB = () => {
@@ -86,7 +120,7 @@ const O_EffectList = ({
         <Wrapper>
           <FlexBox>
             <EffectHeader style={{ alignItems: "baseline" }}>
-              <A_Text>Состояния</A_Text>
+              <A_Text>{t("common:states")}</A_Text>
               <FlexBox style={{ cursor: "pointer" }} onClick={handleCloseModal}>
                 <A_Icon fill="#7C7C7C" iconName="TagCross" />
               </FlexBox>
@@ -94,11 +128,11 @@ const O_EffectList = ({
             <Row>{list()}</Row>
           </FlexBox>
           <Column>
-            <H_Text color="#A4A4AC">Истощение</H_Text>
+            <H_Text color="#A4A4AC">{t("common:exhaustion")}</H_Text>
             <Row>{listB()}</Row>
           </Column>
           <Column>
-            <H_Text color="#A4A4AC">Эффекты заклинаний и способностей</H_Text>
+            <H_Text color="#A4A4AC">{t("common:spells")}</H_Text>
             <Row style={{ maxWidth: "100%" }}>{listC()}</Row>
           </Column>
         </Wrapper>

@@ -4,6 +4,7 @@ import A_Icon from "./A_Icon";
 
 type Props = {
   data?: any;
+  activePlayerIndex?: any;
 };
 
 const Wrapper = styled(FlexBox)`
@@ -19,21 +20,20 @@ const TrackerFlexBox = styled(FlexBox)`
   position: relative;
   margin-left: 66px;
 `;
-
-const A_Tracker = ({ data, ...rest }: Props) => {
-  const list = () => {
-    return data.slice(0, 3).map((player: any, index: any) => {
-      return (
-        <FlexBox style={{ gap: 15, marginRight: 15 }}>
-          <A_Text key={player.id}>{player.name}</A_Text>
-          <A_Icon width={19} height={19.5} iconName="smallArrow"></A_Icon>
-        </FlexBox>
-      );
-    });
+const A_Tracker = ({ data, activePlayerIndex, ...rest }: Props) => {
+  const renderPlayers = () => {
+    const playersToShow = data.slice(activePlayerIndex, activePlayerIndex + 3);
+    return playersToShow.map((player: any, index: any) => (
+      <FlexBox key={index} style={{ gap: 15, marginRight: 15 }}>
+        <A_Text key={player.id}>{player.name}</A_Text>
+        <A_Icon width={19} height={19.5} iconName="smallArrow"></A_Icon>
+      </FlexBox>
+    ));
   };
+
   return (
     <TrackerFlexBox>
-      {list()}
+      {renderPlayers()}
       <Wrapper />
     </TrackerFlexBox>
   );

@@ -3,6 +3,9 @@ import { FlexBox } from "../Common";
 import A_Avatar from "../Atoms/A_Avatar";
 import M_CardPart from "../Molecules/M_CardPart";
 import A_Input from "../Atoms/A_Input";
+import axios from "axios";
+import { useTranslation } from "react-i18next";
+import { useState } from "react";
 
 type Props = {
   monster?: boolean;
@@ -14,7 +17,6 @@ type Props = {
   ins?: any;
   langs?: any;
   effects?: any;
-  playerEffects?: any;
   superSmall?: boolean;
   handlePlusClick?: any;
   fight?: boolean;
@@ -24,6 +26,9 @@ type Props = {
   initiativeSet?: boolean;
   handleInitiativeInputChange?: any;
   initiative?: any;
+  armor?: any;
+  hp?: any;
+  active?: boolean;
 };
 
 const PcCardWrapper = styled(FlexBox)<{ fight?: boolean; monster?: boolean }>`
@@ -84,7 +89,6 @@ const O_Card = ({
   perc,
   ins,
   langs,
-  playerEffects,
   effects,
   superSmall,
   handlePlusClick,
@@ -95,10 +99,87 @@ const O_Card = ({
   initiativeSet,
   handleInitiativeInputChange,
   initiative,
+  armor,
+  hp,
+  active,
   ...rest
 }: Props) => {
+  const { t } = useTranslation();
+  const [newInitiative, setNewInitiative] = useState("");
+  const [newHp, setNewHp] = useState("");
+
+  const handleDeleteClick = (effect_id: any) => {
+    axios
+      .delete(
+        `http://localhost:3000/api/v1/games/${code}/${
+          monster ? `monsters` : `players`
+        }/${playerId}/effects`,
+        {
+          data: { effect_id: effect_id },
+        }
+      )
+      .then((response) => {})
+      .catch((error) => {
+        console.error(error);
+      })
+      .finally(() => {});
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      axios
+        .patch(
+          `http://localhost:3000/api/v1/games/${code}/${
+            monster ? "monsters" : "players"
+          }/${playerId}`,
+          {
+            [monster ? "monster" : "player"]: {
+              initiative: newInitiative,
+            },
+          }
+        )
+        .then((response) => {
+          setNewInitiative("");
+        })
+        .catch((error) => console.error(error))
+        .finally(() => {});
+    }
+  };
+
+  const handleKeyHpPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    // @ts-ignore
+    const minus = hp - newHp;
+    console.log(minus);
+    if (event.key === "Enter") {
+      axios
+        .patch(
+          `http://localhost:3000/api/v1/games/${code}/monsters/${playerId}`,
+          {
+            monster: {
+              hp: minus,
+            },
+          }
+        )
+        .then((response) => {
+          setNewHp("");
+        })
+        .catch((error) => console.error(error))
+        .finally(() => {});
+    }
+  };
+
   return (
-    <PcCardWrapper fight={fight} monster={monster} {...rest}>
+    <PcCardWrapper
+      fight={fight}
+      monster={monster}
+      {...rest}
+      style={{
+        boxShadow:
+          initiativeSet && active
+            ? "0px 0px 9px 1px rgba(240, 255, 0, 0.5)"
+            : "none",
+      }}
+    >
       <UpperStates initiativeSet={initiativeSet} monster={monster}>
         {!monster && (
           <>
@@ -129,25 +210,29 @@ const O_Card = ({
                 <A_Input
                   name="initiative"
                   type="text"
-                  placeholder="Очки здоровья"
-                  onChange={handleInitiativeInputChange}
-                  label="Очки здоровья"
-                  value={initiative}
+                  placeholder={t("common:hp")}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    const { value } = event.target;
+                    setNewHp(value);
+                    console.log("UR INITIATIVE", newHp);
+                  }}
+                  onKeyDown={handleKeyHpPress}
+                  label={t("common:hp")}
+                  value={newHp}
                   maxLength={2}
                   hpInput={true}
-                  hp={0}
+                  hp={hp}
                 ></A_Input>
               )}
             </FlexBox>
-            {initiativeSet && (
+            {(initiativeSet || !fight) && (
               <>
                 <FlexBox style={{ height: 20, width: 139 }} />
-                <M_CardPart armor={19} />
+                <M_CardPart armor={armor} />
               </>
             )}
           </>
         )}
-        {/* {monster && <A_Avatar monster={monster} imagestring={imagestring} />} */}
       </UpperStates>
 
       {fight && !initiativeSet && (
@@ -155,28 +240,40 @@ const O_Card = ({
           <A_Input
             name="initiative"
             type="text"
-            placeholder="Инициатива"
-            onChange={handleInitiativeInputChange}
-            label="Инициатива"
-            value={initiative}
+            placeholder={t("common:initiative")}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              const { value } = event.target;
+              setNewInitiative(value);
+              console.log("UR INITIATIVE", value);
+            }}
+            onKeyDown={handleKeyPress}
+            label={t("common:initiative")}
+            value={newInitiative}
             maxLength={2}
             style={{ width: 380, marginLeft: 11 }}
             special
           ></A_Input>
         </InputWrapper>
       )}
-      {!superSmall && initiativeSet && (
+      {((!superSmall && initiativeSet) || !fight) && (
         <BottomStates>
           <M_CardPart
             states
             small
-            info={effects}
+            info={effects[playerId]}
             handlePlusClick={handlePlusClick}
+            handleRemoveTag={handleDeleteClick}
           />
 
           {fight && initiativeSet && (
             <FlexBox>
-              <M_CardPart toggleConc conc={conc} id={playerId} code={code} />
+              <M_CardPart
+                toggleConc
+                conc={conc}
+                id={playerId}
+                code={code}
+                monster={monster}
+              />
             </FlexBox>
           )}
           {!fight && <M_CardPart langs small info={langs} />}

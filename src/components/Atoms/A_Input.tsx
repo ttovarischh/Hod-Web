@@ -4,6 +4,7 @@ import type { InputHTMLAttributes } from "react";
 import { FlexBox } from "../Common/FlexBox";
 import A_Icon from "./A_Icon";
 import A_Tag from "./A_Tag";
+import { useTranslation } from "react-i18next";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   handleChange?: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -58,6 +59,14 @@ const PrevHp = styled.p`
   color: #ffffff;
 `;
 
+const Minus = styled.h1`
+  font-size: 48px;
+  line-height: 58px;
+  text-align: center;
+  margin: 0;
+  color: ${({ theme }) => theme.input.fill};
+`;
+
 const Label = styled.label`
   font-size: 18px;
   line-height: 18px;
@@ -79,6 +88,9 @@ const HpFlexBox = styled(FlexBox)`
   &:focus-within {
     outline: 1px solid;
     outline-color: ${({ theme }) => theme.input.simple_border};
+    h1 {
+      color: #ffffff;
+    }
   }
 `;
 
@@ -91,7 +103,7 @@ const HpRealInput = styled.input`
   font-size: 48px;
   line-height: 58px;
   ::placeholder {
-    color: #7c7c7c;
+    color: ${({ theme }) => theme.input.fill};
   }
   :-webkit-autofill,
   :-webkit-autofill:hover,
@@ -102,11 +114,14 @@ const HpRealInput = styled.input`
   }
   :focus {
     outline: none;
+    ::placeholder {
+      color: #7c7c7c;
+    }
   }
 `;
 
 const InputWrapper = styled.input<{ hpInput?: boolean }>`
-  border: none;
+  border: 1px solid #262626;
   outline: none;
   padding-bottom: ${(props) => (props.hpInput ? "14px" : "16px")};
   padding-left: ${(props) => (props.hpInput ? "16px" : "16px")};
@@ -234,6 +249,7 @@ const A_Input = ({
   hpInput,
   ...rest
 }: InputProps) => {
+  const { t } = useTranslation();
   if (hpInput) {
     return (
       <HpFlexBox
@@ -243,8 +259,8 @@ const A_Input = ({
       >
         <FlexBox direction="column">
           <FlexBox style={{ gap: 4 }}>
-            <PrevHp className="ppmedium">10</PrevHp>
-            <PrevHp className="ppmedium">-</PrevHp>
+            <PrevHp className="ppmedium">{hp}</PrevHp>
+            <Minus className="ppmedium">-</Minus>
             <HpRealInput
               placeholder="X"
               value={value}
@@ -255,7 +271,7 @@ const A_Input = ({
               {...rest}
             />
           </FlexBox>
-          <HpLabel className="ppmedium">Очки здоровья</HpLabel>
+          <HpLabel className="ppmedium">{t("common:hp")}</HpLabel>
         </FlexBox>
         <A_Icon iconName="HpIcon" />
       </HpFlexBox>
@@ -264,7 +280,7 @@ const A_Input = ({
   if (languages) {
     return (
       <TextAreaFlexBox>
-        <Label className="ppmedium">Языки</Label>
+        <Label className="ppmedium">{t("common:langs")}</Label>
         <FlexBox
           style={{ width: "100%", maxWidth: "100%", flexWrap: "nowrap" }}
         >
@@ -281,7 +297,8 @@ const A_Input = ({
             ))}
           </TagsScroll>
           <PlayerRealInputWrapper
-            placeholder="Впишите..."
+            //@ts-ignore
+            placeholder={t("common:type")}
             value={value}
             autoCapitalize="none"
             autoComplete="off"
