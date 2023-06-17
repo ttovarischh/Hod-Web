@@ -19,6 +19,7 @@ type SMProps = {
   type?: string;
   effectsData?: any;
   handleFinishSession?: any;
+  isBottomOpened?: any;
 };
 
 const SMWrapper = styled(FlexBox)`
@@ -27,6 +28,11 @@ const SMWrapper = styled(FlexBox)`
   height: 100%;
   flex-direction: column;
   transition: all 0.5s ease;
+`;
+
+const SMWrapperBottom = styled(SMWrapper)`
+  top: 82px;
+  height: fit-content;
 `;
 
 const ActionWrapper = styled(FlexBox)`
@@ -71,6 +77,7 @@ const O_SideMenu = ({
   type,
   effectsData,
   handleFinishSession,
+  isBottomOpened,
 }: SMProps) => {
   const [selectedEffect, setSelectedEffect] = useState<any>(null);
   const [note, setNote] = useState("");
@@ -96,6 +103,34 @@ const O_SideMenu = ({
       );
     });
   };
+
+  if (type == "bottom") {
+    return (
+      <SMWrapperBottom
+        style={{
+          right: isBottomOpened ? 0 : -345,
+          zIndex: isRightOpened ? 0 : 1001,
+        }}
+      >
+        <ActionWrapper onClick={handleButtonCLick}>
+          <ChevroneTwo className="Chev">
+            <A_Icon iconName="ChevroneThree" />
+          </ChevroneTwo>
+        </ActionWrapper>
+        <EffectsWrapper>
+          <FlexBox
+            justifyContent="center"
+            style={{ width: 292, alignSelf: "center", marginBottom: 32 }}
+          >
+            <A_Qr code={code} />
+            <A_Button small solid handleButtonClick={handleFinishSession}>
+              {t("common:end")}
+            </A_Button>
+          </FlexBox>
+        </EffectsWrapper>
+      </SMWrapperBottom>
+    );
+  }
 
   if (type == "left") {
     return (
@@ -139,15 +174,6 @@ const O_SideMenu = ({
       </ActionWrapper>
       <EffectsWrapper>
         <M_Textarea handleInputChange={handleInputChange} value={note} />
-        <FlexBox
-          justifyContent="center"
-          style={{ width: 292, alignSelf: "center" }}
-        >
-          <A_Qr code={code} />
-          <A_Button small solid handleButtonClick={handleFinishSession}>
-            {t("common:end")}
-          </A_Button>
-        </FlexBox>
       </EffectsWrapper>
     </SMWrapper>
   );

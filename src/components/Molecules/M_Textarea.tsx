@@ -10,7 +10,7 @@ type BСProps = {
 
 const Input = styled.textarea`
   width: 270px;
-  height: 360px;
+  height: 670px;
   background: #1c1c1c;
   border: 1px solid #262626;
   border-radius: 10px;

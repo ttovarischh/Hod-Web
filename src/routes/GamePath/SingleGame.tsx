@@ -36,11 +36,14 @@ const CardsScrollWrapper = styled(FlexBox)`
   min-width: 100%;
   height: 100%;
   align-items: center;
+  overflow-x: auto;
+  padding-top: 3px;
+  padding-bottom: 3px;
 `;
 
 const CardsScroll = styled(FlexBox)`
-  width: 100%;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow: visible;
   gap: 20px;
   :first-child {
     margin-left: 66px;
@@ -65,6 +68,7 @@ export default function SingleGame() {
   const [isModalOpened, setIsModalOpened] = useState(true);
   const [isLeftOpened, setIsLeftOpened] = useState(false);
   const [isRightOpened, setIsRightOpened] = useState(false);
+  const [isBottomOpened, setIsBottomOpened] = useState(false);
   const [isEffectsOpened, setEffectsOpened] = useState(false);
   const [finalModalVisible, setFinalModalVisible] = useState(false);
   const [gameData, setGameData] = useState<any>([]);
@@ -269,7 +273,7 @@ export default function SingleGame() {
       {isModalOpened && !isOld && (
         <>
           <O_Modal
-            handleButtonCLick={handleCrossClick}
+            handleButtonCLick={() => setIsModalOpened(false)}
             code={code}
             header={t("common:done")}
             textA={t("common:allSaved")}
@@ -287,7 +291,6 @@ export default function SingleGame() {
               code={code}
               isRightOpened={isRightOpened}
               handleButtonCLick={() => setIsRightOpened(!isRightOpened)}
-              handleFinishSession={() => setFinalModalVisible(true)}
             />
           )}
           <O_SideMenu
@@ -297,15 +300,26 @@ export default function SingleGame() {
             effectsData={effectsData}
             handleFinishSession={() => setFinalModalVisible(true)}
           ></O_SideMenu>
+          <O_SideMenu
+            type="bottom"
+            code={code}
+            isBottomOpened={isBottomOpened}
+            isRightOpened={isRightOpened}
+            handleButtonCLick={() => setIsBottomOpened(!isBottomOpened)}
+            handleFinishSession={() => setFinalModalVisible(true)}
+          ></O_SideMenu>
         </>
       )}
       <RealBlur
         style={{
           background:
-            isLeftOpened || isRightOpened || isEffectsOpened
+            isLeftOpened || isRightOpened || isEffectsOpened || isBottomOpened
               ? "rgba(0, 0, 0, 0.8)"
               : "transparent",
-          zIndex: isLeftOpened || isRightOpened || isEffectsOpened ? 1000 : -1,
+          zIndex:
+            isLeftOpened || isRightOpened || isEffectsOpened || isBottomOpened
+              ? 1000
+              : -1,
         }}
       ></RealBlur>
       <CardsScrollWrapper>

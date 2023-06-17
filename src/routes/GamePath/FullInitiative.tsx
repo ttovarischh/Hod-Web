@@ -89,6 +89,7 @@ export default function FullInitiative() {
   const { code } = useParams<{ code: any }>();
   const [isLeftOpened, setIsLeftOpened] = useState(false);
   const [isRightOpened, setIsRightOpened] = useState(false);
+  const [isBottomOpened, setIsBottomOpened] = useState(false);
   const [isEffectsOpened, setEffectsOpened] = useState(false);
   const [isMonsterCreationOpened, setMonsterCreationOpened] = useState(false);
   const [gameData, setGameData] = useState<any>([]);
@@ -589,7 +590,6 @@ export default function FullInitiative() {
             code={code}
             isRightOpened={isRightOpened}
             handleButtonCLick={() => setIsRightOpened(!isRightOpened)}
-            handleFinishSession={() => setFinalModalVisible(true)}
           />
         )}
         <O_SideMenu
@@ -599,6 +599,14 @@ export default function FullInitiative() {
           effectsData={effectsData}
           handleFinishSession={() => setFinalModalVisible(true)}
         ></O_SideMenu>
+        <O_SideMenu
+          type="bottom"
+          code={code}
+          isBottomOpened={isBottomOpened}
+          isRightOpened={isRightOpened}
+          handleButtonCLick={() => setIsBottomOpened(!isBottomOpened)}
+          handleFinishSession={() => setFinalModalVisible(true)}
+        ></O_SideMenu>
       </>
       <RealBlur
         style={{
@@ -606,14 +614,16 @@ export default function FullInitiative() {
             isLeftOpened ||
             isRightOpened ||
             isEffectsOpened ||
-            isMonsterCreationOpened
+            isMonsterCreationOpened ||
+            isBottomOpened
               ? "rgba(0, 0, 0, 0.8)"
               : "transparent",
           zIndex:
             isLeftOpened ||
             isRightOpened ||
             isEffectsOpened ||
-            isMonsterCreationOpened
+            isMonsterCreationOpened ||
+            isBottomOpened
               ? 1000
               : -1,
         }}
