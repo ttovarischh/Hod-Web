@@ -193,19 +193,6 @@ export default function FullInitiative() {
   };
 
   useEffect(() => {
-    if (gameData.user_id === user?.id) {
-      if (gameData.turn < 1) {
-        axios
-          .patch(`http://localhost:3000/api/v1/games/${code}`, {
-            game: {
-              turn: 1,
-            },
-          })
-          .then((response) => {})
-          .catch((error) => console.error(error))
-          .finally(() => {});
-      }
-    }
     if (gameData.monsters && gameData.monsters.length < 1) {
       setMonsterCreationOpened(true);
     }
