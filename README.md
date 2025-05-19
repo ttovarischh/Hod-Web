@@ -1,6 +1,7 @@
 # HOD WEB APP
 React part for the best D&amp;D tracker ever → → →<br>
-<i>HOD is an ios&web app for tracking initiative, number of moves and ongoing states for D&amp;D players.<br>The application counts all the necessary numbers for master, allows players to synchronously follow the game process and makes your hobby more accessible than ever.</i>
+*HOD is an iOS & web app for tracking initiative, number of moves, and ongoing states for D&D players.  
+The application counts all the necessary numbers for the master, allows players to synchronously follow the game process, and makes your hobby more accessible than ever.*
 
 Σ>―(〃°ω°〃)♡→
 
@@ -39,6 +40,18 @@ This gives you node and npm, which are needed for React to work.
 + Go to https://nodejs.org
 + Download the LTS version (green button)
 + Open the .pkg file and follow the steps
+
+### ✅ 2. Check if it's installed correctly
+Open Terminal (on Mac) or PowerShell (on Windows), and type:
+
+`node -v
+npm -v`
+
+You should see version numbers, like:
+
+`v20.10.0
+10.5.0`
+If you see those — 🎉 you're good!
 
 σ(￣、￣〃)
 
