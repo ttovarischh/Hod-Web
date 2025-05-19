@@ -31,15 +31,15 @@ The application counts all the necessary numbers for the master, allows players 
 ### 1. Install Node.js
 This gives you node and npm, which are needed for React to work.
 
-💻 For Windows:
-+ Go to https://nodejs.org
-+ Download the LTS version (green button)
-+ Run the installer (click "Next" a bunch of times)
+**💻 For Windows:**
+1. Go to [nodejs.org](https://nodejs.org)
+2. Download the LTS version
+3. Run the installer (click "Next" a bunch of times)
 
-🍎 For Mac:
-+ Go to https://nodejs.org
-+ Download the LTS version (green button)
-+ Open the .pkg file and follow the steps
+**🍎 For Mac:**
+1. Go to [nodejs.org](https://nodejs.org)
+2. Download the LTS version
+3. Open the .pkg file and follow the steps
 
 
 ### 2. Check if it's installed correctly
