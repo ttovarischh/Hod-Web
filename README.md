@@ -9,6 +9,12 @@ Our long journey → → →<br>
 1/ <a href="https://portfolio.hse.ru/Project/168785">INTERFACE</a><br>
 2/ <a href="https://portfolio.hse.ru/Project/161194">IDENTITY</a><br>
 3/ <a href="https://portfolio.hse.ru/Project/149630">BRAND PLATFORM & IDEA</a>
+4/ <a href="https://portfolio.hse.ru/Project/149630">FINAL DECK</a>
+
+Other repos → → →<br>
+
+1/ <a href="https://github.com/ttovarischh/Hod_Mobile">Hod-Mobile</a><br>
+2/ <a href="https://github.com/ttovarischh/Hod-API">Hod-API</a><br>
 
 Our code&design team → → →<br>
 A/ <a href="https://hsedesign.ru/designer/fcf7466f5b72474c982ecf2c7d5b9c70">Efremova Maria</a><br>
