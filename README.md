@@ -28,7 +28,7 @@ The application counts all the necessary numbers for the master, allows players 
 
 ## 🧾 SETUP INSTRUCTIONS FOR THIS PROJECT
 
-### ✅ 1. Install Node.js
+### 1. Install Node.js
 This gives you node and npm, which are needed for React to work.
 
 💻 For Windows:
@@ -41,17 +41,60 @@ This gives you node and npm, which are needed for React to work.
 + Download the LTS version (green button)
 + Open the .pkg file and follow the steps
 
-### ✅ 2. Check if it's installed correctly
+
+### 2. Check if it's installed correctly
 Open Terminal (on Mac) or PowerShell (on Windows), and type:
 
-`node -v
-npm -v`
+```
+node -v
+npm -v
+```
 
 You should see version numbers, like:
 
-`v20.10.0
-10.5.0`
+```
+v20.10.0
+10.5.0
+```
+
 If you see those — 🎉 you're good!
+
+
+### 3. Clone the project
+If you haven't done this yet, go to the folder where you want to keep the code and run:
+
+```
+cd destination-folder-name
+git clone https://github.com/ttovarischh/this-repo-name.git
+```
+
+(Or just download the zip from GitHub and unzip it)
+
+### 4. Install the project libraries
+Inside the project folder, run:
+
+```
+npm install
+```
+This will download React and all other stuff the project needs.
+
+### 5. Start the app
+Run:
+
+```
+npm start
+```
+
+If you're on Windows and get a weird 'PORT' is not recognized error — let the project owner know, and they’ll fix it using cross-env 🧙‍♂️
+
+### 6. Open the app
+After a few seconds, a browser tab should open at:
+
+```
+http://localhost:3006
+```
+
+If it doesn’t open by itself — just type that into the browser.
 
 σ(￣、￣〃)
 
