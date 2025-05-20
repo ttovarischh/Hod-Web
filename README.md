@@ -18,17 +18,17 @@ The application counts all the necessary numbers for the master, allows players 
 ### Other repos → → →<br>
 
 + <a href="https://github.com/ttovarischh/Hod_Mobile">Hod-Mobile</a><br>
-+ <a href="https://github.com/ttovarischh/Hod-API">Hod-API</a><br>
++ <a href="https://github.com/ttovarischh/Hod-Web">Hod-Web</a><br>
 
 ### Our team → → →<br>
 + <a href="https://hsedesign.ru/designer/fcf7466f5b72474c982ecf2c7d5b9c70">🏃‍♀ Efremova Maria</a><br>
 + <a href="https://hsedesign.ru/designer/c968d54daa194b508e2d136bd75b77c4">⛹️‍♀️ Sysolyatina Nadya</a><br>
-+ <a href="https://hsedesign.ru/designer/a655cbba3c694d74a2827f83a308dcba">🤸 Sotnikova Polina</a><br>
++ <a href="https://ttovarischh.com/">🤸 Sotnikova Polina</a><br>
 
 
 ## 🧾 SETUP INSTRUCTIONS FOR THIS PROJECT
 
-### 1. Install Node.js
+### 1. Install [Node.js](https://nodejs.org/en)
 This gives you node and npm, which are needed for React to work.
 
 **💻 For Windows:**
@@ -95,6 +95,19 @@ http://localhost:3006
 ```
 
 If it doesn’t open by itself — just type that into the browser.
+
+### 7. Important! This app won't work without the backend 💣 ###
+The HOD Web App is just the frontend — it relies entirely on the backend API to fetch users, games, effects, and everything else. To make it work, you need to have the HOD API running locally with:
+
+- [x] a created database
+- [x] seeded data
+- [x] launched Rails server
+- [x] launched Redis server
+
+You can find full setup instructions in the backend repo:
+👉 [HOD-API GitHub Repository](https://github.com/ttovarischh/Hod-API)
+
+
 
 σ(￣、￣〃)
 
