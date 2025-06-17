@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   hod-web:
-    image: ghcr.io/ttovarischh/hod-web:latest
+    image: ghcr.io/ttovarischh/hod-web:0.1.0
     ports:
       - "80:80"
     restart: unless-stopped
